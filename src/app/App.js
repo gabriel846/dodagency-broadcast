@@ -1,6 +1,5 @@
 function App() {
-  return <div>Start</div>;
+  return <div></div>;
 }
 
 export default App;
-git
