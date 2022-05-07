@@ -5,12 +5,12 @@ import axios from "axios";
 import { moviesListActions } from "./movies-list-slice";
 
 // Theme
-import { MOVIES_LIST_URL } from "../../environment/theme/Variables";
+import { MOVIES_LIST_URL_WITH_PAGE } from "../../environment/theme/Variables";
 
-export const fetchMoviesList = () => {
+export const fetchMoviesList = (page) => {
   return async (dispatch) => {
     const fetchData = async () => {
-      const response = await axios.get(MOVIES_LIST_URL);
+      const response = await axios.get(`${MOVIES_LIST_URL_WITH_PAGE}${page}`);
 
       const data = await response.data;
 

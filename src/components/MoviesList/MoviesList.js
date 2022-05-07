@@ -1,5 +1,5 @@
 // Packages
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 // Components
 import { Loading } from "../Loading";
@@ -11,7 +11,6 @@ import {
   LOADING_MESSAGE,
   LOADING_MESSAGE_STYLE,
   NO_DATA_CONTAINER_STYLE,
-  NO_DATA_MESSAGE,
   NO_DATA_MESSAGE_STYLE,
 } from "../../environment/theme/Variables";
 
@@ -19,18 +18,7 @@ import {
 import { StyledMoviesList } from "./MoviesList.style";
 
 export function MoviesList(props) {
-  const [isLoading, setIsLoading] = useState(true);
-
-  const { moviesList, numberOfMovies } = props;
-
-  const isMoviesListSuccessfullyRetrieved =
-    moviesList.length === numberOfMovies;
-
-  useEffect(() => {
-    if (isLoading && isMoviesListSuccessfullyRetrieved) {
-      setIsLoading((previousValue) => !previousValue);
-    }
-  }, [isLoading, isMoviesListSuccessfullyRetrieved]);
+  const { isLoading, moviesList, noDataFoundMessage, numberOfMovies } = props;
 
   return (
     <>
@@ -43,7 +31,7 @@ export function MoviesList(props) {
       ) : numberOfMovies === 0 ? (
         <Loading
           containerStyle={NO_DATA_CONTAINER_STYLE}
-          message={NO_DATA_MESSAGE}
+          message={noDataFoundMessage}
           textStyle={NO_DATA_MESSAGE_STYLE}
         />
       ) : (
