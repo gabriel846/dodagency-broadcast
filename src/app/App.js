@@ -10,7 +10,7 @@ function App() {
   return (
     <>
       <Topbar />
-      <Main centeredMainAxis>
+      <Main centeredMainAxis vertical>
         <Routes />
       </Main>
     </>

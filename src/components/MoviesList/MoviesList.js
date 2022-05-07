@@ -27,7 +27,7 @@ export function MoviesList(props) {
     moviesList.length === numberOfMovies;
 
   useEffect(() => {
-    if (isMoviesListSuccessfullyRetrieved && isLoading) {
+    if (isLoading && isMoviesListSuccessfullyRetrieved) {
       setIsLoading((previousValue) => !previousValue);
     }
   }, [isLoading, isMoviesListSuccessfullyRetrieved]);

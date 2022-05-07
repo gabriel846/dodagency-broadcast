@@ -5,9 +5,11 @@ import React from "react";
 import { StyledMain } from "./Main.style";
 
 export function Main(props) {
-  const { centeredMainAxis, children } = props;
+  const { centeredMainAxis, children, vertical } = props;
 
   return (
-    <StyledMain centeredMainAxis={centeredMainAxis}>{children}</StyledMain>
+    <StyledMain centeredMainAxis={centeredMainAxis} vertical={vertical}>
+      {children}
+    </StyledMain>
   );
 }

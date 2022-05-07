@@ -9,5 +9,6 @@ export const StyledMain = styled.main`
   background-color: ${COLORS.PRIMARY};
   display: flex;
   flex: 1;
+  ${(props) => props.vertical && "flex-direction: column;"};
   padding: 5em;
 `;

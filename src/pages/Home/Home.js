@@ -10,9 +10,11 @@ import { fetchMoviesList } from "../../store/movies-list/movies-list-actions";
 import { moviesListActions } from "../../store/movies-list/movies-list-slice";
 
 // Components
+import { MovieGenresList } from "../../components/MovieGenresList/MovieGenresList";
 import { MoviesList } from "../../components/MoviesList";
 
 // Theme
+import { getMovieGenresList } from "../../environment/theme/Methods";
 import {
   CANCEL_FETCHING_NUMBER_OF_MOVIES_MESSAGE,
   MOVIES_LIST_URL,
@@ -48,9 +50,13 @@ export function Home() {
   }, []);
 
   const moviesList = useSelector((state) => state.moviesList.moviesList);
+  const movieGenresList = getMovieGenresList(moviesList);
 
   return (
     <>
+      {numberOfMovies > 0 && (
+        <MovieGenresList movieGenresList={movieGenresList} />
+      )}
       <MoviesList
         moviesList={moviesList}
         noDataFoundMessage={NO_DATA_MESSAGE}
