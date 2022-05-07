@@ -12,7 +12,7 @@ export function Movie(props) {
   return (
     <StyledMovie>
       <StyledMovieImage alt={movie.title} src={movie.large_cover_image} />
-      <StyledMovieTitle>{movie.title}</StyledMovieTitle>
+      <StyledMovieTitle>{`${movie.title} (${movie.year})`}</StyledMovieTitle>
     </StyledMovie>
   );
 }

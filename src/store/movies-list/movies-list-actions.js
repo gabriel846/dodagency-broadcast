@@ -4,7 +4,7 @@ import axios from "axios";
 // Redux slice
 import { moviesListActions } from "./movies-list-slice";
 
-// Variables
+// Theme
 import { MOVIES_LIST_URL } from "../../environment/theme/Variables";
 
 export const fetchMoviesList = () => {
