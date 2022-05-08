@@ -4,23 +4,23 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 // Redux actions
-import { fetchMoviesList } from "../../store/movies-list/movies-list-actions";
+import { fetchMoviesList } from "../../../store/movies-list/movies-list-actions";
 
 // Redux slices
-import { moviesListActions } from "../../store/movies-list/movies-list-slice";
+import { moviesListActions } from "../../../store/movies-list/movies-list-slice";
 
 // Components
-import { MovieGenresList } from "../../components/MovieGenresList/MovieGenresList";
-import { MoviesList } from "../../components/MoviesList";
-import { MoviesListNavigation } from "../../components/MoviesListNavigation/MoviesListNavigation";
+import { MovieGenresList } from "../../../components/MovieGenresList/MovieGenresList";
+import { MoviesList } from "../../../components/MoviesList";
+import { MoviesListNavigation } from "../../../components/MoviesListNavigation/MoviesListNavigation";
 
 // Theme
-import { getMovieGenresList } from "../../environment/theme/Methods";
+import { getMovieGenresList } from "../../../environment/theme/Methods";
 import {
   CANCEL_FETCHING_NUMBER_OF_MOVIES_MESSAGE,
   MOVIES_LIST_URL_WITH_PAGE,
   NO_DATA_MESSAGE,
-} from "../../environment/theme/Variables";
+} from "../../../environment/theme/Variables";
 
 export function Home() {
   const [currentPage, setCurrentPage] = useState(1);
