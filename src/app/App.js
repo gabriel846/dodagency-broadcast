@@ -6,7 +6,7 @@ import { Main } from "../components/UI/Main";
 import { Routes } from "../routes";
 import { Topbar } from "../components/Topbar";
 
-function App() {
+export function App() {
   return (
     <>
       <Topbar />
@@ -16,5 +16,3 @@ function App() {
     </>
   );
 }
-
-export default App;
