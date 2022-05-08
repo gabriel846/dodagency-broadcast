@@ -3,6 +3,23 @@ import COLORS from "./Colors";
 
 export const APP_NAME = "DodagencyBroadcast";
 
+export const AUTHENTICATION_BUTTON_STYLE = {
+  backgroundColor: COLORS.SECONDARY,
+  color: COLORS.PRIMARY,
+  fontSize: "large",
+  fontWeight: "bold",
+  padding: "1em 0",
+};
+
+export const AUTHENTICATION_INPUT_STYLE = {
+  backgroundColor: COLORS.PRIMARY,
+  border: `0.25em solid ${COLORS.SECONDARY}`,
+  color: COLORS.SECONDARY,
+  fontSize: "medium",
+  fontWeight: "bold",
+  outline: "none",
+};
+
 export const AUTHENTICATION_TYPES_LIST = [
   `LOGIN`,
   `REGISTER`,
