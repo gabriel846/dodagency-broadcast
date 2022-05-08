@@ -3,6 +3,12 @@ import COLORS from "./Colors";
 
 export const APP_NAME = "DodagencyBroadcast";
 
+export const AUTHENTICATION_TYPES_LIST = [
+  `LOGIN`,
+  `REGISTER`,
+  `FORGOT_PASSWORD`,
+];
+
 export const CANCEL_FETCHING_NUMBER_OF_MOVIES_MESSAGE =
   "Cancelled fetching number of movies";
 
