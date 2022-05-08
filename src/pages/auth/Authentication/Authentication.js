@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 
 // Components
-import { AuthenticationType } from "../AuthenticationType/AuthenticationType";
+import { AuthenticationType } from "../../../components/auth/AuthenticationType";
 import { AuthenticationTypesList } from "../../../components/auth/AuthenticationTypesList";
 import { ForgotPassword } from "../../../components/auth/ForgotPassword/ForgotPassword";
 import { Login } from "../../../components/auth/Login/Login";
