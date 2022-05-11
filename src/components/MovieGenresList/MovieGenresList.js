@@ -8,12 +8,17 @@ import { MovieGenre } from "../MovieGenre/MovieGenre";
 import { StyledMovieGenresList } from "./MovieGenresList.style";
 
 export function MovieGenresList(props) {
-  const { movieGenresList } = props;
+  const { movieGenresList, onMovieGenreClick, selectedMovieGenre } = props;
 
   return (
     <StyledMovieGenresList>
       {movieGenresList.map((movieGenre, index) => (
-        <MovieGenre key={index} movieGenre={movieGenre} />
+        <MovieGenre
+          isSelected={movieGenre === selectedMovieGenre}
+          key={index}
+          movieGenre={movieGenre}
+          onMovieGenreClick={onMovieGenreClick}
+        />
       ))}
     </StyledMovieGenresList>
   );

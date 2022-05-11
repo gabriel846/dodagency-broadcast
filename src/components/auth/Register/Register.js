@@ -44,7 +44,7 @@ export function Register(props) {
       <Button
         onClick={onClick}
         style={AUTHENTICATION_BUTTON_STYLE}
-        text="Reset password"
+        text="Register"
       />
     </StyledRegisterContainer>
   );

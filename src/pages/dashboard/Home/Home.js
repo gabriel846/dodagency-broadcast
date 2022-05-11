@@ -25,6 +25,7 @@ import {
 export function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [numberOfMovies, setNumberOfMovies] = useState(-1);
+  const [selectedMovieGenre, setSelectedMovieGenre] = useState("All");
 
   const dispatch = useDispatch();
 
@@ -58,19 +59,33 @@ export function Home() {
   const onPreviousButtonClickHandler = () => {
     if (currentPage > 1) {
       setCurrentPage((currentPage) => --currentPage);
+      setSelectedMovieGenre("All");
     }
   };
 
   const onNextButtonClickHandler = () => {
     if (currentPage > 0) {
       setCurrentPage((currentPage) => ++currentPage);
+      setSelectedMovieGenre("All");
     }
+  };
+
+  const switchSelectedMovieGenre = (newSelectedMovieGenre) => {
+    setSelectedMovieGenre((previousSelectedMovieGenre) =>
+      previousSelectedMovieGenre !== newSelectedMovieGenre
+        ? newSelectedMovieGenre
+        : "All"
+    );
   };
 
   return (
     <>
       {!isLoading && numberOfMovies > 0 && (
-        <MovieGenresList movieGenresList={movieGenresList} />
+        <MovieGenresList
+          movieGenresList={movieGenresList}
+          onMovieGenreClick={switchSelectedMovieGenre}
+          selectedMovieGenre={selectedMovieGenre}
+        />
       )}
       {!isLoading && numberOfMovies > 0 && (
         <MoviesListNavigation
@@ -84,6 +99,7 @@ export function Home() {
         moviesList={moviesList}
         noDataFoundMessage={NO_DATA_MESSAGE}
         numberOfMovies={numberOfMovies}
+        selectedMovieGenre={selectedMovieGenre}
       />
     </>
   );

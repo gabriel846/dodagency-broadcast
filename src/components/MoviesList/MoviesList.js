@@ -18,7 +18,13 @@ import {
 import { StyledMoviesList } from "./MoviesList.style";
 
 export function MoviesList(props) {
-  const { isLoading, moviesList, noDataFoundMessage, numberOfMovies } = props;
+  const {
+    isLoading,
+    moviesList,
+    noDataFoundMessage,
+    numberOfMovies,
+    selectedMovieGenre,
+  } = props;
 
   return (
     <>
@@ -36,9 +42,15 @@ export function MoviesList(props) {
         />
       ) : (
         <StyledMoviesList>
-          {moviesList.map((movie, index) => (
-            <Movie key={index} movie={movie} />
-          ))}
+          {moviesList
+            .filter((movie) =>
+              selectedMovieGenre === "All"
+                ? movie
+                : movie.genres.includes(selectedMovieGenre)
+            )
+            .map((movie, index) => (
+              <Movie key={index} movie={movie} />
+            ))}
         </StyledMoviesList>
       )}
     </>
