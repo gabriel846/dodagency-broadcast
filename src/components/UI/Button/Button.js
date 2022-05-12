@@ -5,10 +5,10 @@ import React from "react";
 import { StyledButton } from "./Button.style";
 
 export function Button(props) {
-  const { onClick, style, text, visible } = props;
+  const { onClick, style, text, type, visible } = props;
 
   return (
-    <StyledButton onClick={onClick} style={style} visible={visible}>
+    <StyledButton onClick={onClick} style={style} type={type} visible={visible}>
       {text}
     </StyledButton>
   );

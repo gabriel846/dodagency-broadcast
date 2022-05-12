@@ -19,20 +19,11 @@ export function Authentication() {
 
   const renderedComponent =
     authenticationType === `LOGIN` ? (
-      <Login
-        redirectToForgotPassword={() =>
-          switchAuthenticationType("FORGOT_PASSWORD")
-        }
-        redirectToRegister={() => switchAuthenticationType("REGISTER")}
-      />
+      <Login />
     ) : authenticationType === `REGISTER` ? (
-      <Register
-        redirectToLoginHandler={() => switchAuthenticationType("LOGIN")}
-      />
+      <Register onSuccess={() => switchAuthenticationType("LOGIN")} />
     ) : (
-      <ForgotPassword
-        redirectToLoginHandler={() => switchAuthenticationType("LOGIN")}
-      />
+      <ForgotPassword onSuccess={() => switchAuthenticationType("LOGIN")} />
     );
 
   const switchAuthenticationType = (newAuthenticationType) => {

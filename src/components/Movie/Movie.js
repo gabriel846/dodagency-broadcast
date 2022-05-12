@@ -11,7 +11,11 @@ export function Movie(props) {
 
   return (
     <StyledMovie>
-      <StyledMovieImage alt={movie.title} src={movie.large_cover_image} />
+      <StyledMovieImage
+        alt={movie.title}
+        onError={() => alert(`error loading image: ${movie.title}`)}
+        src={movie.large_cover_image}
+      />
       <StyledMovieTitle>{`${movie.title} (${movie.year})`}</StyledMovieTitle>
     </StyledMovie>
   );

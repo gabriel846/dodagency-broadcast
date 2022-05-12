@@ -8,8 +8,8 @@ export function NavLink(props) {
   const { active, children, onClick, style } = props;
 
   return (
-    <StyledNavLink.Link active={active} onClick={onClick} style={style}>
+    <StyledNavLink active={active} onClick={onClick} style={style}>
       {children}
-    </StyledNavLink.Link>
+    </StyledNavLink>
   );
 }

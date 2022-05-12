@@ -1,17 +1,33 @@
 // Packages
 import React from "react";
-import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { Container, Nav, Navbar } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 
+// Custom hooks
+import { useWindowSize } from "../../hooks";
+
 // Components
-import { StyledNavLink } from "../NavLink";
+import { Logo } from "../Logo/Logo";
+import { NavLink } from "../NavLink";
+import { UserAvatar } from "../UserAvatar/UserAvatar";
 
-// Variables
-import { APP_NAME } from "../../environment/theme/Variables";
+// Theme
+import { signOutUser } from "../../environment/firebase/firebase-methods";
 
-export function Topbar() {
+// Stylings
+import { StyledNavbar } from "./Topbar.style";
+
+export function Topbar(props) {
+  const { authenticatedUser } = props;
+
+  const [viewportWidth] = useWindowSize();
+
+  const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
+
+  const isSmallScreen = viewportWidth <= 992;
 
   const redirectToPageHandler = (route) => {
     if (location.pathname !== route) {
@@ -20,42 +36,69 @@ export function Topbar() {
   };
 
   return (
-    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <StyledNavbar collapseOnSelect expand="lg" variant="dark">
       <Container>
         <Navbar.Brand onClick={() => redirectToPageHandler("/")}>
-          {APP_NAME}
+          <Logo />
         </Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Toggle
+          aria-controls="responsive-navbar-nav"
+          style={{ borderColor: "red", color: "red" }}
+        />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link onClick={() => redirectToPageHandler("/")}>Home</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link>
-            <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown>
+            <NavLink href="#pricing">Pricing</NavLink>
           </Nav>
           <Nav>
-            <Nav.Link onClick={() => redirectToPageHandler("/authentication")}>
-              Authentication
-            </Nav.Link>
-            <Nav.Link onClick={() => redirectToPageHandler("/favorite-movies")}>
+            {!!!authenticatedUser && (
+              <NavLink
+                active={location.pathname === "/authentication"}
+                onClick={() => redirectToPageHandler("/authentication")}
+              >
+                Authentication
+              </NavLink>
+            )}
+            <NavLink
+              active={location.pathname === "/favorite-movies"}
+              onClick={() => redirectToPageHandler("/favorite-movies")}
+            >
               Favorite movies
-            </Nav.Link>
-            <Nav.Link eventKey={2} href="#memes">
+            </NavLink>
+            <NavLink eventKey={2} href="#memes">
               Dank memes
-            </Nav.Link>
-            <Nav.Link href="#signout">Sign out</Nav.Link>
+            </NavLink>
+            {!!authenticatedUser && isSmallScreen && (
+              <NavLink onClick={() => redirectToPageHandler("/profile")}>
+                Profile
+              </NavLink>
+            )}
+            {!!authenticatedUser && (
+              <NavLink
+                onClick={() => {
+                  signOutUser(dispatch);
+
+                  if (
+                    location.pathname === "/favorite-movies" ||
+                    location.pathname === "/profile"
+                  ) {
+                    history.push("/");
+                  }
+                }}
+              >
+                Sign out
+              </NavLink>
+            )}
+            {!!authenticatedUser && !isSmallScreen && (
+              <NavLink>
+                <UserAvatar
+                  authenticatedUser={authenticatedUser}
+                  onClick={() => redirectToPageHandler("/profile")}
+                />
+              </NavLink>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
-    </Navbar>
+    </StyledNavbar>
   );
 }

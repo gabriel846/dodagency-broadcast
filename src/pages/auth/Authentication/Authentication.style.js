@@ -9,3 +9,8 @@ export const StyledAuthenticationContainer = styled.div`
   margin: 5em;
   padding: 2em;
 `;
+
+export const StyledInputErrorMessage = styled.p`
+  color: ${COLORS.QUATERNARY};
+  margin: 0;
+`;
