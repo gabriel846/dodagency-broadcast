@@ -46,10 +46,6 @@ export function MovieDetails() {
     (state) => state.selectedMovie.selectedMovie
   );
 
-  const goBackHandler = () => {
-    history.goBack();
-  };
-
   return (
     <>
       {!!!selectedMovieDetails ? (
@@ -60,7 +56,7 @@ export function MovieDetails() {
         />
       ) : (
         <StyledMovieDetailsContainer>
-          <StyledMovieDetailsGoBack onClick={goBackHandler} />
+          <StyledMovieDetailsGoBack onClick={() => history.goBack()} />
           {!!selectedMovieDetails.title_long && (
             <h1 style={{ marginBottom: "0.5em" }}>
               {selectedMovieDetails.title_long}
