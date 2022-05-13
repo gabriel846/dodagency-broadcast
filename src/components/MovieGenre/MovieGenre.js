@@ -10,12 +10,8 @@ import {
 export function MovieGenre(props) {
   const { isSelected, movieGenre, onMovieGenreClick } = props;
 
-  if (isSelected) {
-    console.log(`isSelected: ${movieGenre}`);
-  }
-
   return (
-    <StyledMovieGenre onClick={() => onMovieGenreClick(movieGenre)}>
+    <StyledMovieGenre onClick={onMovieGenreClick}>
       <StyledMovieGenreContainer isSelected={isSelected}>
         {movieGenre}
       </StyledMovieGenreContainer>

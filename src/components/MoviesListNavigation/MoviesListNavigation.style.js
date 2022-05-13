@@ -6,5 +6,4 @@ export const StyledMoviesListNavigation = styled.div`
   grid-auto-flow: column;
   grid-template-columns: 10em 10em;
   justify-content: space-between;
-  margin-bottom: 5em;
 `;

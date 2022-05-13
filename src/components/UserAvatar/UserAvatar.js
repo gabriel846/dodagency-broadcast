@@ -7,9 +7,11 @@ import { StyledUserAvatar } from "./UserAvatar.style";
 export function UserAvatar(props) {
   const { authenticatedUser, onClick } = props;
 
+  const { name } = authenticatedUser;
+
   return (
     <StyledUserAvatar onClick={onClick}>
-      {authenticatedUser.name.charAt(0)}
+      {!!name ? name.charAt(0) : "?"}
     </StyledUserAvatar>
   );
 }

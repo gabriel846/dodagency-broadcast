@@ -8,6 +8,7 @@ import {
   sendPasswordResetEmail,
   setPersistence,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
 } from "firebase/auth";
 import { onValue, ref, remove, set } from "firebase/database";
@@ -16,7 +17,7 @@ import { onValue, ref, remove, set } from "firebase/database";
 import { authActions } from "../../store/auth/auth-slice";
 
 // Theme
-import { auth, db } from "./Firebase";
+import { auth, db, facebookAuthProvider } from "./Firebase";
 import {
   COULD_NOT_SIGN_OUT,
   EMAIL_ALREADY_IN_USE,
@@ -70,7 +71,7 @@ export const authenticateUser = (
 
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      const user = userCredential.user;
+      const { user } = userCredential;
 
       if (!user) {
         throw new Error(PLEASE_TRY_AGAIN.errorCode);
@@ -121,10 +122,37 @@ export const authenticateUser = (
     });
 };
 
+export const authenticateUserWithFacebook = (dispatch, goBackHandler) => {
+  signInWithPopup(auth, facebookAuthProvider)
+    .then((userCredential) => {
+      const { user } = userCredential;
+
+      if (!user) {
+        throw new Error(PLEASE_TRY_AGAIN.errorCode);
+      }
+
+      createPersonalInformationPath({ id: user.uid });
+
+      onValue(ref(db, `users/${user.uid}/personalInformation`), (snapshot) => {
+        const userPersonalInformation = snapshot.val();
+
+        dispatch(
+          authActions.setAuthenticatedUser({
+            authenticatedUser: userPersonalInformation,
+          })
+        );
+        goBackHandler();
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
 export const registerUser = (email, name, password, redirectToLoginHandler) => {
   createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      const user = userCredential.user;
+      const { user } = userCredential;
 
       if (!user) {
         return;

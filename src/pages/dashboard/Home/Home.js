@@ -85,6 +85,7 @@ export function Home() {
           movieGenresList={movieGenresList}
           onMovieGenreClick={switchSelectedMovieGenre}
           selectedMovieGenre={selectedMovieGenre}
+          style={{ marginBottom: "5em" }}
         />
       )}
       {!isLoading && numberOfMovies > 0 && (

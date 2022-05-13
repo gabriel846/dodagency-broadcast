@@ -1,7 +1,7 @@
 // Packages
 import axios from "axios";
 
-// Redux slice
+// Redux slices
 import { moviesListActions } from "./movies-list-slice";
 
 // Theme
@@ -20,13 +20,15 @@ export const fetchMoviesList = (page) => {
     try {
       const fetchedData = await fetchData();
 
-      const moviesData = fetchedData.data;
+      const { data: moviesData } = fetchedData;
 
       const moviesList = Object.values(moviesData.movies);
 
       moviesList
         .filter((movie) => movie.title)
         .forEach((movie) => dispatch(moviesListActions.addMovie({ movie })));
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 };

@@ -17,16 +17,16 @@ export function MoviesListNavigation(props) {
   const { currentPage, onNextButtonClick, onPreviousButtonClick } = props;
 
   return (
-    <StyledMoviesListNavigation>
+    <StyledMoviesListNavigation style={{ marginBottom: "5em" }}>
       <Button
         onClick={onPreviousButtonClick}
-        style={PREVIOUS_BUTTON_STYLE}
+        style={{ ...PREVIOUS_BUTTON_STYLE }}
         text="Previous"
         visible={currentPage > 1}
       />
       <Button
         onClick={onNextButtonClick}
-        style={NEXT_BUTTON_STYLE}
+        style={{ ...NEXT_BUTTON_STYLE }}
         text="Next"
         visible
       />
