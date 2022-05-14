@@ -5,8 +5,8 @@ import React from "react";
 import { StyledUserAvatar } from "./UserAvatar.style";
 
 export function UserAvatar(props) {
-  const { authenticatedUser, onClick, style } = props;
-  const { name } = authenticatedUser;
+  const { onClick, style, user } = props;
+  const { name } = user;
 
   return (
     <StyledUserAvatar onClick={onClick} style={style}>

@@ -92,9 +92,9 @@ export function Topbar(props) {
             {!!authenticatedUser && !isSmallScreen && (
               <NavLink>
                 <UserAvatar
-                  authenticatedUser={authenticatedUser}
                   onClick={() => redirectToPageHandler("/profile")}
                   style={USER_AVATAR_TOPBAR_STYLE}
+                  user={authenticatedUser}
                 />
               </NavLink>
             )}

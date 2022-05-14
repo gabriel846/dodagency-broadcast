@@ -36,8 +36,8 @@ export function AddComment(props) {
   return (
     <StyledAddCommentMainContainer>
       <UserAvatar
-        authenticatedUser={authenticatedUser}
         style={USER_AVATAR_MOVIE_COMMENTS_STYLE}
+        user={authenticatedUser}
       />
       <Formik
         initialValues={INITIAL_FORM_VALUES}
