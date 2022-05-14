@@ -14,6 +14,7 @@ import { UserAvatar } from "../UserAvatar/UserAvatar";
 
 // Theme
 import { signOutUser } from "../../environment/firebase/firebase-methods";
+import { USER_AVATAR_TOPBAR_STYLE } from "../../environment/theme/Variables";
 
 // Stylings
 import { StyledNavbar } from "./Topbar.style";
@@ -93,6 +94,7 @@ export function Topbar(props) {
                 <UserAvatar
                   authenticatedUser={authenticatedUser}
                   onClick={() => redirectToPageHandler("/profile")}
+                  style={USER_AVATAR_TOPBAR_STYLE}
                 />
               </NavLink>
             )}

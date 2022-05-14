@@ -11,11 +11,11 @@ import { selectedMovieActions } from "../../../store/selected-movie/selected-mov
 
 // Components
 import { Loading } from "../../../components/Loading";
+import { MovieComments } from "../../../components/MovieComments/MovieComments";
 import { MovieGenresList } from "../../../components/MovieGenresList";
 import { MovieTorrentsList } from "../../../components/MovieTorrentsList";
 
 // Themes
-import COLORS from "../../../environment/theme/Colors";
 import {
   FETCHING_MOVIE_DETAILS_MESSAGE,
   LOADING_CONTAINER_STYLE,
@@ -133,6 +133,10 @@ export function MovieDetails() {
                 />
               </div>
             )}
+          <div>
+            <h3>Comments</h3>
+            <MovieComments movieID={selectedMovieDetails.id} />
+          </div>
         </StyledMovieDetailsContainer>
       )}
     </>

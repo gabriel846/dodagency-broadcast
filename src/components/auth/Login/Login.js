@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 
 // Components
 import { Button } from "../../UI/Button";
-import { Input } from "../../Input";
+import { BaseInput } from "../../Input";
 
 // Theme
 import COLORS from "../../../environment/theme/Colors";
@@ -47,7 +47,7 @@ export function Login(props) {
               {formikProps.errors.email}
             </StyledInputErrorMessage>
           )}
-          <Input
+          <BaseInput
             cursorColor={COLORS.SECONDARY}
             onBlur={formikProps.handleBlur("email")}
             onChange={formikProps.handleChange("email")}
@@ -62,7 +62,7 @@ export function Login(props) {
               {formikProps.errors.password}
             </StyledInputErrorMessage>
           )}
-          <Input
+          <BaseInput
             cursorColor={COLORS.SECONDARY}
             onBlur={formikProps.handleBlur("password")}
             onChange={formikProps.handleChange("password")}

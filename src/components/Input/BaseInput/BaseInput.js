@@ -2,9 +2,9 @@
 import React from "react";
 
 // Stylings
-import { StyledInput } from "./Input.style";
+import { StyledBaseInput } from "./BaseInput.style";
 
-export function Input(props) {
+export function BaseInput(props) {
   const {
     cursorColor,
     onBlur,
@@ -17,7 +17,7 @@ export function Input(props) {
   } = props;
 
   return (
-    <StyledInput
+    <StyledBaseInput
       cursorColor={cursorColor}
       onBlur={onBlur}
       onChange={onChange}

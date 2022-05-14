@@ -1,6 +1,22 @@
 // Theme
 import COLORS from "./Colors";
 
+export const ADD_COMMENT_BUTTON_STYLE = {
+  backgroundColor: COLORS.SECONDARY,
+  color: COLORS.PRIMARY,
+  fontSize: "large",
+  fontWeight: "bold",
+  padding: "0.25em 0",
+};
+
+export const ADD_COMMENT_INPUT_STYLE = {
+  backgroundColor: COLORS.PRIMARY,
+  border: `0.25em solid ${COLORS.SECONDARY}`,
+  color: COLORS.SECONDARY,
+  fontSize: "medium",
+  outline: "none",
+};
+
 export const APP_NAME = "DodagencyBroadcast";
 
 export const AUTHENTICATION_BUTTON_STYLE = {
@@ -78,4 +94,14 @@ export const PREVIOUS_BUTTON_STYLE = {
   color: COLORS.PRIMARY,
   fontWeight: "bold",
   padding: "1em 2em",
+};
+
+export const USER_AVATAR_MOVIE_COMMENTS_STYLE = {
+  backgroundColor: COLORS.SECONDARY,
+  color: COLORS.PRIMARY,
+};
+
+export const USER_AVATAR_TOPBAR_STYLE = {
+  backgroundColor: COLORS.PRIMARY,
+  color: COLORS.SECONDARY,
 };

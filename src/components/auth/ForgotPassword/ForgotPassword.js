@@ -4,7 +4,7 @@ import React from "react";
 
 // Components
 import { Button } from "../../UI/Button";
-import { Input } from "../../Input";
+import { BaseInput } from "../../Input";
 
 // Theme
 import COLORS from "../../../environment/theme/Colors";
@@ -44,7 +44,7 @@ export function ForgotPassword(props) {
               {formikProps.errors.email}
             </StyledInputErrorMessage>
           )}
-          <Input
+          <BaseInput
             cursorColor={COLORS.SECONDARY}
             onBlur={formikProps.handleBlur("email")}
             onChange={formikProps.handleChange("email")}
