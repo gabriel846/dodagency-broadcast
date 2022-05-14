@@ -1,5 +1,5 @@
 // Packages
-import { ref, set } from "firebase/database";
+import { onValue, ref, set } from "firebase/database";
 import { v4 } from "uuid";
 
 // Firebase
@@ -32,6 +32,23 @@ export const genereateRandomUUID = () => {
   return v4();
 };
 
+// // nu merge la prima randare
+// export const getMovieCommentsList = async (movieID) => {
+//   const commentsListRef = ref(db, "comments");
+//   let commentsList = [];
+
+//   onValue(commentsListRef, (snapshot) => {
+//     commentsList = Object.values(snapshot.val()).filter(
+//       (comment) => comment.movieID === movieID
+//     );
+
+//     // commentsList.forEach((comment) => console.log(comment));
+//     // console.log(commentsList.length);
+//   });
+
+//   return commentsList;
+// };
+
 export const getMovieGenresList = (moviesList) => {
   let genresList = [];
 
@@ -48,4 +65,14 @@ export const getMovieGenresList = (moviesList) => {
   genresList = genresList.sort();
 
   return genresList;
+};
+
+export const getUserPersonalInformation = async (userID) => {
+  let personalInformation;
+
+  onValue(ref(db, `users/${userID}/personalInformation`), (snapshot) => {
+    personalInformation = snapshot.val();
+  });
+
+  return personalInformation;
 };

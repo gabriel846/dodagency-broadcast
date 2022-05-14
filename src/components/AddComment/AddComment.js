@@ -1,7 +1,6 @@
 // Packages
 import { Formik } from "formik";
 import React from "react";
-import { useSelector } from "react-redux";
 
 // Components
 import { Button } from "../UI/Button";

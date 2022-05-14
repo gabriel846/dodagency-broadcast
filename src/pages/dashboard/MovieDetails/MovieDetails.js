@@ -134,7 +134,9 @@ export function MovieDetails() {
               </div>
             )}
           <div>
-            <h3>Comments</h3>
+            <StyledMovieDetailsSectionTitle>
+              Comments
+            </StyledMovieDetailsSectionTitle>
             <MovieComments movieID={selectedMovieDetails.id} />
           </div>
         </StyledMovieDetailsContainer>
