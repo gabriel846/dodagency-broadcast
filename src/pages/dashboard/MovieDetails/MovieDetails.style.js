@@ -1,5 +1,4 @@
 // Packages
-import { MdArrowBack } from "react-icons/md";
 import styled from "styled-components";
 
 // Theme
@@ -12,10 +11,6 @@ export const StyledMovieDetailsContainer = styled.div`
   flex-direction: column;
   gap: 1em;
   padding: 1em;
-`;
-
-export const StyledMovieDetailsGoBack = styled(MdArrowBack)`
-  font-size: xx-large;
 `;
 
 export const StyledMovieDetailsSectionTitle = styled.h3`

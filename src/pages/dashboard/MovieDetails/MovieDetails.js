@@ -1,7 +1,7 @@
 // Packages
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 // Redux actions
 import { fetchSelectedMovie } from "../../../store/selected-movie/selected-movie-actions";
@@ -10,6 +10,7 @@ import { fetchSelectedMovie } from "../../../store/selected-movie/selected-movie
 import { selectedMovieActions } from "../../../store/selected-movie/selected-movie-slice";
 
 // Components
+import { GoBackIcon } from "../../../components/UI/GoBackIcon/GoBackIcon";
 import { Loading } from "../../../components/Loading";
 import { MovieComments } from "../../../components/MovieComments/MovieComments";
 import { MovieGenresList } from "../../../components/MovieGenresList";
@@ -25,14 +26,12 @@ import {
 // Stylings
 import {
   StyledMovieDetailsContainer,
-  StyledMovieDetailsGoBack,
   StyledMovieDetailsSectionTitle,
   StyledMovieImage,
 } from "./MovieDetails.style";
 
 export function MovieDetails() {
   const dispatch = useDispatch();
-  const history = useHistory();
   const location = useLocation();
 
   const selectedMovieID = location.pathname.split("/details/")[1];
@@ -57,7 +56,7 @@ export function MovieDetails() {
       ) : (
         <StyledMovieDetailsContainer>
           <div>
-            <StyledMovieDetailsGoBack onClick={() => history.goBack()} />
+            <GoBackIcon />
           </div>
           {!!selectedMovieDetails.title_long && (
             <h1 style={{ marginBottom: "0.5em" }}>

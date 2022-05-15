@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchFavoriteMoviesList } from "../../../store/favorite-movies-list/favorite-movies-list-actions";
 
 // Components
+import { GoBackIcon } from "../../../components/UI/GoBackIcon";
 import { MoviesList } from "../../../components/MoviesList";
 
 // Theme
@@ -56,7 +57,8 @@ export function FavoriteMovies(props) {
   const isLoading = favoriteMovies.length !== numberOfFavoriteMovies;
 
   return (
-    <>
+    <div style={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+      <GoBackIcon />
       <MoviesList
         isLoading={isLoading}
         isLoadingMessage={FETCHING_FAVORITE_MOVIES_MESSAGE}
@@ -65,6 +67,6 @@ export function FavoriteMovies(props) {
         numberOfMovies={numberOfFavoriteMovies}
         selectedMovieGenre="All"
       />
-    </>
+    </div>
   );
 }
