@@ -35,11 +35,11 @@ export function Comment(props) {
 
   return (
     <StyledComment>
-      {!!authenticatedUser && !!user && (
+      {!!user && (
         <UserAvatar
           style={{
             backgroundColor:
-              authenticatedUser.id === user.id
+              !!authenticatedUser && authenticatedUser.id === user.id
                 ? COLORS.TERTIARY
                 : COLORS.SECONDARY,
             color: COLORS.PRIMARY,
@@ -51,11 +51,11 @@ export function Comment(props) {
         <div>
           <div style={{ display: "flex" }}>
             <div style={{ display: "flex", gap: "0.5em" }}>
-              {!!authenticatedUser && !!user && (
+              {!!user && (
                 <p
                   style={{
                     color:
-                      authenticatedUser.id === user.id
+                      !!authenticatedUser && authenticatedUser.id === user.id
                         ? COLORS.TERTIARY
                         : COLORS.SECONDARY,
                     margin: 0,

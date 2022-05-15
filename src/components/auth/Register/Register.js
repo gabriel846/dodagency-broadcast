@@ -32,7 +32,6 @@ export function Register(props) {
       onSubmit={(values) => {
         const { email, name, password } = values;
 
-        console.log(values);
         registerUser(email, name, password, () => onSuccess());
       }}
       validationSchema={registerValidationSchema}

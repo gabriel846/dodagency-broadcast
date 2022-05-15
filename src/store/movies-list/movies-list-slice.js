@@ -8,9 +8,7 @@ const moviesListSlice = createSlice({
   initialState,
   reducers: {
     addMovie: (state, action) => {
-      const movie = action.payload.movie;
-
-      state.moviesList.push(movie);
+      state.moviesList.push(action.payload.movie);
     },
     clearMoviesList: (state) => {
       if (state.moviesList.length > 0) {

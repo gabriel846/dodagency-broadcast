@@ -27,7 +27,7 @@ import {
 import { StyledInputErrorMessage } from "../../pages/auth/Authentication/Authentication.style";
 
 // Validation
-import { addCommentValidationSchema } from "../../validation/add-coment/add-comment-validation";
+import { addCommentValidationSchema } from "../../validation/add-comment/add-comment-validation";
 
 export function AddComment(props) {
   const { authenticatedUser, movieID } = props;

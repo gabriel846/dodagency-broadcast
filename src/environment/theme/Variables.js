@@ -42,6 +42,9 @@ export const AUTHENTICATION_TYPES_LIST = [
   `FORGOT_PASSWORD`,
 ];
 
+export const CANCEL_FETCHING_NUMBER_OF_FAVORITE_MOVIES_MESSAGE =
+  "Cancelled fetching number of favorite movies";
+
 export const CANCEL_FETCHING_NUMBER_OF_MOVIES_MESSAGE =
   "Cancelled fetching number of movies";
 
@@ -49,6 +52,8 @@ export const FETCHING_ERROR_MESSAGE =
   "Something went wrong... Please try again!";
 
 export const FETCHING_MOVIE_DETAILS_MESSAGE = "Fetching movie details...";
+
+export const FETCHING_FAVORITE_MOVIES_MESSAGE = "Fetching favorite movies...";
 
 export const LOADING_CONTAINER_STYLE = {
   alignItems: "center",
@@ -68,14 +73,6 @@ export const MOVIES_LIST_URL_WITH_MOVIE_ID =
 export const MOVIES_LIST_URL_WITH_PAGE =
   "https://yts.mx/api/v2/list_movies.json?page=";
 
-export const NO_DATA_CONTAINER_STYLE = {
-  alignItems: "center",
-  display: "flex",
-  flex: 1,
-  justifyContent: "center",
-  userSelect: "none",
-};
-
 export const NEXT_BUTTON_STYLE = {
   backgroundColor: COLORS.TERTIARY,
   borderRadius: "0.5em",
@@ -84,9 +81,19 @@ export const NEXT_BUTTON_STYLE = {
   padding: "1em 2em",
 };
 
-export const NO_DATA_MESSAGE = "No data found...";
+export const NO_DATA_CONTAINER_STYLE = {
+  alignItems: "center",
+  display: "flex",
+  flex: 1,
+  justifyContent: "center",
+  userSelect: "none",
+};
 
 export const NO_DATA_MESSAGE_STYLE = { color: COLORS.SECONDARY };
+
+export const NO_MOVIE_COMMENTS_FOUND_MESSAGE = "No comments found";
+
+export const NO_MOVIES_FOUND_MESSAGE = "No data found...";
 
 export const PREVIOUS_BUTTON_STYLE = {
   backgroundColor: COLORS.TERTIARY,

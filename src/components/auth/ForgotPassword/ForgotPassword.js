@@ -32,7 +32,6 @@ export function ForgotPassword(props) {
       onSubmit={(values) => {
         const { email } = values;
 
-        console.log(values);
         resetPassword(email, () => onSuccess());
       }}
       validationSchema={forgotPasswordValidationSchema}

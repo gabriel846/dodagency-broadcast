@@ -35,7 +35,6 @@ export function Login(props) {
       onSubmit={(values) => {
         const { email, password } = values;
 
-        console.log(values);
         authenticateUser(dispatch, email, password, () => history.goBack());
       }}
       validationSchema={loginValidationSchema}

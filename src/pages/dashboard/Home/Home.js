@@ -19,8 +19,9 @@ import { MoviesListNavigation } from "../../../components/MoviesListNavigation/M
 import { getMovieGenresList } from "../../../environment/theme/Methods";
 import {
   CANCEL_FETCHING_NUMBER_OF_MOVIES_MESSAGE,
+  LOADING_MESSAGE,
   MOVIES_LIST_URL_WITH_PAGE,
-  NO_DATA_MESSAGE,
+  NO_MOVIES_FOUND_MESSAGE,
 } from "../../../environment/theme/Variables";
 
 export function Home() {
@@ -43,7 +44,7 @@ export function Home() {
     axios
       .get(MOVIES_LIST_URL_WITH_PAGE, { cancelToken: cancelTokenSource.token })
       .then((response) =>
-        response.data
+        !!response.data
           ? Object.values(response.data.data.movies).filter(
               (movie) => movie.title
             ).length
@@ -110,8 +111,9 @@ export function Home() {
       )}
       <MoviesList
         isLoading={isLoading}
+        isLoadingMessage={LOADING_MESSAGE}
         moviesList={moviesList}
-        noDataFoundMessage={NO_DATA_MESSAGE}
+        noDataFoundMessage={NO_MOVIES_FOUND_MESSAGE}
         numberOfMovies={numberOfMovies}
         selectedMovieGenre={selectedMovieGenre}
       />

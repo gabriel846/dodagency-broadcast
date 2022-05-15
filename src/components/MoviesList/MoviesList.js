@@ -8,7 +8,6 @@ import { Movie } from "../Movie";
 // Themes
 import {
   LOADING_CONTAINER_STYLE,
-  LOADING_MESSAGE,
   LOADING_MESSAGE_STYLE,
   NO_DATA_CONTAINER_STYLE,
   NO_DATA_MESSAGE_STYLE,
@@ -20,6 +19,7 @@ import { StyledMoviesList } from "./MoviesList.style";
 export function MoviesList(props) {
   const {
     isLoading,
+    isLoadingMessage,
     moviesList,
     noDataFoundMessage,
     numberOfMovies,
@@ -31,7 +31,7 @@ export function MoviesList(props) {
       {isLoading ? (
         <Loading
           containerStyle={LOADING_CONTAINER_STYLE}
-          message={LOADING_MESSAGE}
+          message={isLoadingMessage}
           textStyle={LOADING_MESSAGE_STYLE}
         />
       ) : numberOfMovies === 0 ? (
@@ -44,7 +44,7 @@ export function MoviesList(props) {
         <StyledMoviesList>
           {moviesList
             .filter((movie) =>
-              selectedMovieGenre === "All"
+              selectedMovieGenre === "All" || !!!movie.genres
                 ? movie
                 : movie.genres.includes(selectedMovieGenre)
             )

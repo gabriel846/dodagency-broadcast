@@ -9,6 +9,9 @@ import { fetchCommentsList } from "../../store/comments-list/comments-list-actio
 import { AddComment } from "../AddComment";
 import { MovieCommentsList } from "../MovieCommentsList";
 
+// Theme
+import { NO_MOVIE_COMMENTS_FOUND_MESSAGE } from "../../environment/theme/Variables";
+
 // Stylings
 import { StyledMovieCommentsContainer } from "./MovieComments.style";
 
@@ -32,6 +35,9 @@ export function MovieComments(props) {
       )}
       {!!commentsList && commentsList.length > 0 && (
         <MovieCommentsList commentsList={commentsList} movieID={movieID} />
+      )}
+      {commentsList.length === 0 && (
+        <p style={{ margin: 0 }}>{NO_MOVIE_COMMENTS_FOUND_MESSAGE}</p>
       )}
     </StyledMovieCommentsContainer>
   );
