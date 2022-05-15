@@ -6,8 +6,8 @@ export const StyledUserAvatar = styled.div`
   aspect-ratio: 1/1;
   border-radius: 50%;
   display: flex;
-  font-size: medium;
+  font-size: ${(props) => (props.textSize ? props.textSize : "medium")};
   justify-content: center;
   user-select: none;
-  width: 2em;
+  width: ${(props) => (props.size ? props.size : "2em")};
 `;

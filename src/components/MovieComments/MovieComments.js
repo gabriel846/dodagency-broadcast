@@ -10,7 +10,10 @@ import { AddComment } from "../AddComment";
 import { MovieCommentsList } from "../MovieCommentsList";
 
 // Theme
-import { NO_MOVIE_COMMENTS_FOUND_MESSAGE } from "../../environment/theme/Variables";
+import {
+  NO_MOVIE_COMMENTS_FOUND_BE_THE_FIRST_TO_COMMENT_MESSAGE,
+  NO_MOVIE_COMMENTS_FOUND_MESSAGE,
+} from "../../environment/theme/Variables";
 
 // Stylings
 import { StyledMovieCommentsContainer } from "./MovieComments.style";
@@ -30,14 +33,18 @@ export function MovieComments(props) {
 
   return (
     <StyledMovieCommentsContainer>
+      {commentsList.length === 0 && (
+        <p style={{ margin: 0 }}>
+          {!!authenticatedUser
+            ? NO_MOVIE_COMMENTS_FOUND_BE_THE_FIRST_TO_COMMENT_MESSAGE
+            : NO_MOVIE_COMMENTS_FOUND_MESSAGE}
+        </p>
+      )}
       {!!authenticatedUser && (
         <AddComment authenticatedUser={authenticatedUser} movieID={movieID} />
       )}
       {!!commentsList && commentsList.length > 0 && (
         <MovieCommentsList commentsList={commentsList} movieID={movieID} />
-      )}
-      {commentsList.length === 0 && (
-        <p style={{ margin: 0 }}>{NO_MOVIE_COMMENTS_FOUND_MESSAGE}</p>
       )}
     </StyledMovieCommentsContainer>
   );

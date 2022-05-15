@@ -27,15 +27,11 @@ export function Routes(props) {
         {!!authenticatedUser ? (
           <FavoriteMovies authenticatedUser={authenticatedUser} />
         ) : (
-          <Redirect to="/authentication" />
+          <Redirect to="/" />
         )}
       </Route>
       <Route exact path="/profile">
-        {!!authenticatedUser ? (
-          <UserProfile />
-        ) : (
-          <Redirect to="/authentication" />
-        )}
+        {!!authenticatedUser ? <UserProfile /> : <Redirect to="/" />}
       </Route>
       <Route path="*">
         <NotFound />

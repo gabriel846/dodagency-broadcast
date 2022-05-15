@@ -25,6 +25,7 @@ export const AUTHENTICATION_BUTTON_STYLE = {
   fontSize: "large",
   fontWeight: "bold",
   padding: "1em 0",
+  width: "100%",
 };
 
 export const AUTHENTICATION_INPUT_STYLE = {
@@ -47,6 +48,8 @@ export const CANCEL_FETCHING_NUMBER_OF_FAVORITE_MOVIES_MESSAGE =
 
 export const CANCEL_FETCHING_NUMBER_OF_MOVIES_MESSAGE =
   "Cancelled fetching number of movies";
+
+export const EMAIL_UPDATED_SUCCESSFULLY_MESSAGE = "Email updated successfully";
 
 export const FETCHING_ERROR_MESSAGE =
   "Something went wrong... Please try again!";
@@ -73,6 +76,8 @@ export const MOVIES_LIST_URL_WITH_MOVIE_ID =
 export const MOVIES_LIST_URL_WITH_PAGE =
   "https://yts.mx/api/v2/list_movies.json?page=";
 
+export const NAME_UPDATED_SUCCESSFULLY_MESSAGE = "Name updated successfully";
+
 export const NEXT_BUTTON_STYLE = {
   backgroundColor: COLORS.TERTIARY,
   borderRadius: "0.5em",
@@ -91,9 +96,15 @@ export const NO_DATA_CONTAINER_STYLE = {
 
 export const NO_DATA_MESSAGE_STYLE = { color: COLORS.SECONDARY };
 
+export const NO_MOVIE_COMMENTS_FOUND_BE_THE_FIRST_TO_COMMENT_MESSAGE =
+  "Be the first to comment!";
+
 export const NO_MOVIE_COMMENTS_FOUND_MESSAGE = "No comments found";
 
 export const NO_MOVIES_FOUND_MESSAGE = "No data found...";
+
+export const PASSWORD_UPDATED_SUCCESSFULLY_MESSAGE =
+  "Password updated successfully";
 
 export const PREVIOUS_BUTTON_STYLE = {
   backgroundColor: COLORS.TERTIARY,

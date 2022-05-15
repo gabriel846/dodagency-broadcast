@@ -7,9 +7,12 @@ export const registerValidationSchema = yup.object({
     .string()
     .required("Name is required")
     .matches(/^[a-z- \xC0-\xFF]+$/i, "Name is not valid")
-    .min(2, (chars) => `Name must be at least ${chars.min} characters`),
+    .min(2, (chars) => `Name must be at least ${chars.min} characters long`),
   password: yup
     .string()
     .required("Password is required")
-    .min(8, (chars) => `Password must be at least ${chars.min} characters`),
+    .min(
+      8,
+      (chars) => `Password must be at least ${chars.min} characters long`
+    ),
 });

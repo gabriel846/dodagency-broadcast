@@ -5,11 +5,16 @@ import React from "react";
 import { StyledUserAvatar } from "./UserAvatar.style";
 
 export function UserAvatar(props) {
-  const { onClick, style, user } = props;
-  const { name } = user;
+  const { onClick, size, style, textSize, user } = props;
+  const { name } = user || "?";
 
   return (
-    <StyledUserAvatar onClick={onClick} style={style}>
+    <StyledUserAvatar
+      onClick={onClick}
+      size={size}
+      style={style}
+      textSize={textSize}
+    >
       {!!name ? name.charAt(0) : "?"}
     </StyledUserAvatar>
   );

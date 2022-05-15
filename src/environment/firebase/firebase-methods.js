@@ -28,7 +28,7 @@ import {
   USER_NOT_FOUND,
   WRONG_PASSWORD,
 } from "./firebase-errors";
-import { createPersonalInformationPath } from "../theme/Methods";
+import { setPersonalInformationPath } from "../theme/Methods";
 
 export const authenticateUser = (
   dispatch,
@@ -78,6 +78,9 @@ export const authenticateUser = (
       }
 
       if (!user.emailVerified) {
+        sendEmailVerification(user).catch((sendEmailVerificationError) =>
+          console.log(sendEmailVerificationError)
+        );
         throw new Error(EMAIL_NOT_VERIFIED.errorCode);
       }
 
@@ -131,7 +134,7 @@ export const authenticateUserWithFacebook = (dispatch, goBackHandler) => {
         throw new Error(PLEASE_TRY_AGAIN.errorCode);
       }
 
-      createPersonalInformationPath({ id: user.uid });
+      setPersonalInformationPath({ id: user.uid });
 
       onValue(ref(db, `users/${user.uid}/personalInformation`), (snapshot) => {
         const userPersonalInformation = snapshot.val();
@@ -161,7 +164,7 @@ export const registerUser = (email, name, password, redirectToLoginHandler) => {
       sendEmailVerification(user).then(() => {
         alert(PLEASE_CHECK_YOUR_EMAIL.userMessage);
 
-        createPersonalInformationPath({ email, id: user.uid, name });
+        setPersonalInformationPath({ email, id: user.uid, name });
         redirectToLoginHandler();
       });
     })
