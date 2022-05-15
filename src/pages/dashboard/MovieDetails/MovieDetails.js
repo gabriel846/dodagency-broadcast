@@ -42,6 +42,9 @@ export function MovieDetails() {
     dispatch(fetchSelectedMovie(selectedMovieID));
   }, [dispatch, selectedMovieID]);
 
+  const authenticatedUser = useSelector(
+    (state) => state.auth.authenticatedUser
+  );
   const selectedMovieDetails = useSelector(
     (state) => state.selectedMovie.selectedMovie
   );
@@ -56,7 +59,9 @@ export function MovieDetails() {
         />
       ) : (
         <StyledMovieDetailsContainer>
-          <StyledMovieDetailsGoBack onClick={() => history.goBack()} />
+          <div>
+            <StyledMovieDetailsGoBack onClick={() => history.goBack()} />
+          </div>
           {!!selectedMovieDetails.title_long && (
             <h1 style={{ marginBottom: "0.5em" }}>
               {selectedMovieDetails.title_long}
@@ -137,7 +142,10 @@ export function MovieDetails() {
             <StyledMovieDetailsSectionTitle>
               Comments
             </StyledMovieDetailsSectionTitle>
-            <MovieComments movieID={selectedMovieDetails.id} />
+            <MovieComments
+              authenticatedUser={authenticatedUser}
+              movieID={selectedMovieDetails.id}
+            />
           </div>
         </StyledMovieDetailsContainer>
       )}

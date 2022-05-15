@@ -68,11 +68,14 @@ export const getMovieGenresList = (moviesList) => {
 };
 
 export const getUserPersonalInformation = async (userID) => {
-  let personalInformation;
+  let personalInformation = {};
 
   onValue(ref(db, `users/${userID}/personalInformation`), (snapshot) => {
+    // console.log(snapshot.val());
     personalInformation = snapshot.val();
   });
+
+  // console.log(personalInformation);
 
   return personalInformation;
 };

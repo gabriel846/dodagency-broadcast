@@ -1,6 +1,6 @@
 // Packages
 import { ref, remove } from "firebase/database";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 
 // Firebase
@@ -11,7 +11,6 @@ import { UserAvatar } from "../UserAvatar/UserAvatar";
 
 // Theme
 import COLORS from "../../environment/theme/Colors";
-import { getUserPersonalInformation } from "../../environment/theme/Methods";
 
 // Stylings
 import {
@@ -21,15 +20,8 @@ import {
 } from "./Comment.style";
 
 export function Comment(props) {
-  const [userPersonalInformation, setUserPersonalInformation] = useState(null);
-  const { comment } = props;
+  const { comment, user } = props;
   const commentDate = new Date(comment.date);
-
-  useEffect(() => {
-    getUserPersonalInformation(comment.userID).then((result) =>
-      setUserPersonalInformation(result)
-    );
-  }, [comment.userID]);
 
   const authenticatedUser = useSelector(
     (state) => state.auth.authenticatedUser
@@ -43,35 +35,33 @@ export function Comment(props) {
 
   return (
     <StyledComment>
-      {!!userPersonalInformation && (
+      {!!authenticatedUser && !!user && (
         <UserAvatar
           style={{
             backgroundColor:
-              !!authenticatedUser &&
-              authenticatedUser.id === userPersonalInformation.id
+              authenticatedUser.id === user.id
                 ? COLORS.TERTIARY
                 : COLORS.SECONDARY,
             color: COLORS.PRIMARY,
           }}
-          user={userPersonalInformation}
+          user={user}
         />
       )}
       <StyledCommentDataContainer>
         <div>
           <div style={{ display: "flex" }}>
             <div style={{ display: "flex", gap: "0.5em" }}>
-              {!!userPersonalInformation && (
+              {!!authenticatedUser && !!user && (
                 <p
                   style={{
                     color:
-                      !!authenticatedUser &&
-                      authenticatedUser.id === userPersonalInformation.id
+                      authenticatedUser.id === user.id
                         ? COLORS.TERTIARY
                         : COLORS.SECONDARY,
                     margin: 0,
                   }}
                 >
-                  {userPersonalInformation.name}
+                  {user.name}
                 </p>
               )}
               <span>&#x2605;</span>
@@ -89,7 +79,11 @@ export function Comment(props) {
             justifyContent: "center",
           }}
         >
-          <StyledDeleteCommentIcon onClick={removeCommentHandler} />
+          {!!authenticatedUser &&
+            !!user &&
+            authenticatedUser.id === user.id && (
+              <StyledDeleteCommentIcon onClick={removeCommentHandler} />
+            )}
         </div>
       </StyledCommentDataContainer>
     </StyledComment>

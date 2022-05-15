@@ -14,15 +14,14 @@ import { StyledMovieCommentsContainer } from "./MovieComments.style";
 
 export function MovieComments(props) {
   const dispatch = useDispatch();
-  const { movieID } = props;
+  const { authenticatedUser, movieID } = props;
+
+  console.log(movieID);
 
   useEffect(() => {
     dispatch(fetchCommentsList(movieID));
   }, [dispatch, movieID]);
 
-  const authenticatedUser = useSelector(
-    (state) => state.auth.authenticatedUser
-  );
   const commentsList = useSelector((state) => state.commentsList.commentsList);
 
   return (
@@ -31,7 +30,7 @@ export function MovieComments(props) {
         <AddComment authenticatedUser={authenticatedUser} movieID={movieID} />
       )}
       {!!commentsList && commentsList.length > 0 && (
-        <MovieCommentsList commentsList={commentsList} />
+        <MovieCommentsList commentsList={commentsList} movieID={movieID} />
       )}
     </StyledMovieCommentsContainer>
   );
