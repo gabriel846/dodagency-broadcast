@@ -15,14 +15,8 @@ import { Comment } from "../Comment/Comment";
 import { StyledMovieCommentsList } from "./MovieCommentsList.style";
 
 export function MovieCommentsList(props) {
-  const { commentsList, /*commentersList,*/ movieID } = props;
+  const { commentsList, movieID } = props;
   const dispatch = useDispatch();
-
-  // const authenticatedUser = useSelector(
-  //   (state) => state.auth.authenticatedUser
-  // );
-
-  // Object.values(commentsList).forEach((comment) => console.log(comment));
 
   useEffect(() => {
     dispatch(movieCommentersListActions.clearMovieCommentersList());
@@ -32,24 +26,13 @@ export function MovieCommentsList(props) {
   const commentersList = useSelector(
     (state) => state.movieCommentersList.movieCommentersList
   );
-  console.log(commentersList);
 
   return (
     <StyledMovieCommentsList>
       {!!commentsList &&
         commentsList.length > 0 &&
         commentsList.map((comment, index) => (
-          <Comment
-            key={index}
-            comment={comment}
-            user={commentersList[index]}
-            // user={
-            //   Object.values(commentsList).filter(
-            //     (filteredComment) =>
-            //       filteredComment.userID === authenticatedUser.id
-            //   )[0]
-            // }
-          />
+          <Comment key={index} comment={comment} user={commentersList[index]} />
         ))}
     </StyledMovieCommentsList>
   );

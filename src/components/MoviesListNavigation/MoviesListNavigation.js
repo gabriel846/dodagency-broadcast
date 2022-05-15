@@ -11,25 +11,34 @@ import {
 } from "../../environment/theme/Variables";
 
 // Stylings
-import { StyledMoviesListNavigation } from "./MoviesListNavigation.style";
+import {
+  StyledMoviesListNavigationButtonsContainer,
+  StyledMoviesListNavigationMainContainer,
+  StyledMoviesListNavigationPage,
+} from "./MoviesListNavigation.style";
 
 export function MoviesListNavigation(props) {
   const { currentPage, onNextButtonClick, onPreviousButtonClick } = props;
 
   return (
-    <StyledMoviesListNavigation style={{ marginBottom: "5em" }}>
-      <Button
-        onClick={onPreviousButtonClick}
-        style={{ ...PREVIOUS_BUTTON_STYLE }}
-        text="Previous"
-        visible={currentPage > 1}
-      />
-      <Button
-        onClick={onNextButtonClick}
-        style={{ ...NEXT_BUTTON_STYLE }}
-        text="Next"
-        visible
-      />
-    </StyledMoviesListNavigation>
+    <StyledMoviesListNavigationMainContainer>
+      <StyledMoviesListNavigationButtonsContainer>
+        <Button
+          onClick={onPreviousButtonClick}
+          style={{ ...PREVIOUS_BUTTON_STYLE }}
+          text="Previous"
+          visible={currentPage > 1}
+        />
+        <Button
+          onClick={onNextButtonClick}
+          style={{ ...NEXT_BUTTON_STYLE }}
+          text="Next"
+          visible
+        />
+      </StyledMoviesListNavigationButtonsContainer>
+      <StyledMoviesListNavigationPage>
+        Current page: {currentPage}
+      </StyledMoviesListNavigationPage>
+    </StyledMoviesListNavigationMainContainer>
   );
 }

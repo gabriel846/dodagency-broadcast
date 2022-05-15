@@ -42,9 +42,6 @@ export function MovieDetails() {
     dispatch(fetchSelectedMovie(selectedMovieID));
   }, [dispatch, selectedMovieID]);
 
-  const authenticatedUser = useSelector(
-    (state) => state.auth.authenticatedUser
-  );
   const selectedMovieDetails = useSelector(
     (state) => state.selectedMovie.selectedMovie
   );
@@ -142,10 +139,7 @@ export function MovieDetails() {
             <StyledMovieDetailsSectionTitle>
               Comments
             </StyledMovieDetailsSectionTitle>
-            <MovieComments
-              authenticatedUser={authenticatedUser}
-              movieID={selectedMovieDetails.id}
-            />
+            <MovieComments movieID={selectedMovieDetails.id} />
           </div>
         </StyledMovieDetailsContainer>
       )}

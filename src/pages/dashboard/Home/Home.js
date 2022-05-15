@@ -8,6 +8,7 @@ import { fetchMoviesList } from "../../../store/movies-list/movies-list-actions"
 
 // Redux slices
 import { moviesListActions } from "../../../store/movies-list/movies-list-slice";
+import { moviesListCurrentPageActions } from "../../../store/movies-list-current-page/movies-list-current-page-slice";
 
 // Components
 import { MovieGenresList } from "../../../components/MovieGenresList/MovieGenresList";
@@ -23,7 +24,9 @@ import {
 } from "../../../environment/theme/Variables";
 
 export function Home() {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(
+    useSelector((state) => state.moviesListCurrentPage.currentPage)
+  );
   const [numberOfMovies, setNumberOfMovies] = useState(-1);
   const [selectedMovieGenre, setSelectedMovieGenre] = useState("All");
 
@@ -58,6 +61,11 @@ export function Home() {
 
   const onPreviousButtonClickHandler = () => {
     if (currentPage > 1) {
+      dispatch(
+        moviesListCurrentPageActions.setCurrentPage({
+          newCurrentPage: currentPage - 1,
+        })
+      );
       setCurrentPage((currentPage) => --currentPage);
       setSelectedMovieGenre("All");
     }
@@ -65,6 +73,11 @@ export function Home() {
 
   const onNextButtonClickHandler = () => {
     if (currentPage > 0) {
+      dispatch(
+        moviesListCurrentPageActions.setCurrentPage({
+          newCurrentPage: currentPage + 1,
+        })
+      );
       setCurrentPage((currentPage) => ++currentPage);
       setSelectedMovieGenre("All");
     }
