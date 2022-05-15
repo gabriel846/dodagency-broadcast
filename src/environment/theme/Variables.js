@@ -103,6 +103,14 @@ export const NO_MOVIE_COMMENTS_FOUND_MESSAGE = "No comments found";
 
 export const NO_MOVIES_FOUND_MESSAGE = "No data found...";
 
+export const PAGE_NOT_FOUND_BUTTON_STYLE = {
+  backgroundColor: COLORS.SECONDARY,
+  borderRadius: "0.5em",
+  color: COLORS.PRIMARY,
+  fontWeight: "bold",
+  padding: "1em 2em",
+};
+
 export const PASSWORD_UPDATED_SUCCESSFULLY_MESSAGE =
   "Password updated successfully";
 
