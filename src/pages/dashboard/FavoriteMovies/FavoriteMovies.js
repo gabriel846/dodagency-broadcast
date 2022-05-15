@@ -62,7 +62,7 @@ export function FavoriteMovies(props) {
         isLoadingMessage={FETCHING_FAVORITE_MOVIES_MESSAGE}
         moviesList={favoriteMovies}
         noDataFoundMessage={NO_MOVIES_FOUND_MESSAGE}
-        numberOfMovies={2}
+        numberOfMovies={numberOfFavoriteMovies}
         selectedMovieGenre="All"
       />
     </>

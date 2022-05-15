@@ -25,7 +25,9 @@ export const fetchFavoriteMoviesList = (userID) => {
 
     try {
       onValue(ref(db, `users/${userID}/favoriteMovies`), (snapshot) => {
-        const favoriteMoviesIdList = Object.keys(snapshot.val());
+        const favoriteMoviesIdList = !!snapshot.val()
+          ? Object.keys(snapshot.val())
+          : [];
 
         dispatch(favoriteMoviesListActions.clearFavoriteMoviesList());
 
