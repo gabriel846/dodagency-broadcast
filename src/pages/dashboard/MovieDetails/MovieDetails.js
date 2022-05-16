@@ -149,7 +149,7 @@ export function MovieDetails() {
               <p>{selectedMovieDetails.date_uploaded}</p>
             </div>
           )}
-          {!!selectedMovieDetails.rating && (
+          {!isNaN(selectedMovieDetails.rating) && (
             <div>
               <StyledMovieDetailsSectionTitle>
                 Rating
@@ -157,7 +157,7 @@ export function MovieDetails() {
               <p>{selectedMovieDetails.rating}</p>
             </div>
           )}
-          {!!selectedMovieDetails.runtime && (
+          {!isNaN(selectedMovieDetails.runtime) && (
             <div>
               <StyledMovieDetailsSectionTitle>
                 Runtime

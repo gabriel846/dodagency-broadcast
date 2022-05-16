@@ -19,6 +19,24 @@ export function MovieTorrent(props) {
           <p>{torrent.quality}</p>
         </div>
       )}
+      {!!torrent.type && (
+        <div>
+          <h3>Type</h3>
+          <p>{torrent.type}</p>
+        </div>
+      )}
+      {!isNaN(torrent.seeds) && (
+        <div>
+          <h3>Seeds</h3>
+          <p>{torrent.seeds}</p>
+        </div>
+      )}
+      {!isNaN(torrent.peers) && (
+        <div>
+          <h3>Peers</h3>
+          <p>{torrent.peers}</p>
+        </div>
+      )}
       {!!torrent.size && (
         <div>
           <h3>Size</h3>
