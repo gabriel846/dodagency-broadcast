@@ -19,12 +19,15 @@ import {
   NO_MOVIES_FOUND_MESSAGE,
 } from "../../../environment/theme/Variables";
 
-export function FavoriteMovies(props) {
+export function FavoriteMovies() {
   const [numberOfFavoriteMovies, setNumberOfFavoriteMovies] = useState(-1);
   const [selectedMovieGenres, setSelectedMovieGenres] = useState([]);
-  const { authenticatedUser } = props;
+
   const dispatch = useDispatch();
   const { REACT_APP_REALTIME_DATABASE_URL: DATABASE_URL } = process.env;
+  const authenticatedUser = useSelector(
+    (state) => state.auth.authenticatedUser
+  );
 
   useEffect(() => {
     dispatch(fetchFavoriteMoviesList(authenticatedUser.id));
