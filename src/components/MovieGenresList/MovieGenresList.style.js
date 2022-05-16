@@ -6,6 +6,7 @@ export const StyledMovieGenresList = styled.ul`
   gap: 1em;
   grid-auto-rows: 1fr;
   grid-template-columns: repeat(5, 1fr);
+  margin: 0;
   padding: 0;
 
   @media screen and (max-width: 1400px) {

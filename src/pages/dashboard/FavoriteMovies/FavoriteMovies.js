@@ -8,9 +8,11 @@ import { fetchFavoriteMoviesList } from "../../../store/favorite-movies-list/fav
 
 // Components
 import { GoBackIcon } from "../../../components/UI/GoBackIcon";
+import { MovieGenresList } from "../../../components/MovieGenresList";
 import { MoviesList } from "../../../components/MoviesList";
 
 // Theme
+import { getMovieGenresList } from "../../../environment/theme/Methods";
 import {
   CANCEL_FETCHING_NUMBER_OF_FAVORITE_MOVIES_MESSAGE,
   FETCHING_FAVORITE_MOVIES_MESSAGE,
@@ -19,6 +21,7 @@ import {
 
 export function FavoriteMovies(props) {
   const [numberOfFavoriteMovies, setNumberOfFavoriteMovies] = useState(-1);
+  const [selectedMovieGenres, setSelectedMovieGenres] = useState([]);
   const { authenticatedUser } = props;
   const dispatch = useDispatch();
   const { REACT_APP_REALTIME_DATABASE_URL: DATABASE_URL } = process.env;
@@ -54,18 +57,39 @@ export function FavoriteMovies(props) {
     (state) => state.favoriteMoviesList.favoriteMoviesList
   );
 
+  const movieGenresList = getMovieGenresList(favoriteMovies);
   const isLoading = favoriteMovies.length !== numberOfFavoriteMovies;
 
+  const selectMovieGenreHandler = (newSelectedMovieGenre) => {
+    if (selectedMovieGenres.indexOf(newSelectedMovieGenre) > -1) {
+      setSelectedMovieGenres((oldArray) =>
+        oldArray.filter((element) => element !== newSelectedMovieGenre)
+      );
+    } else {
+      setSelectedMovieGenres((oldArray) => [
+        ...oldArray,
+        newSelectedMovieGenre,
+      ]);
+    }
+  };
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1em" }}>
-      {!!!isLoading && <GoBackIcon />}
+    <div style={{ display: "flex", flexDirection: "column", gap: "5em" }}>
+      {!isLoading && <GoBackIcon />}
+      {!isLoading && numberOfFavoriteMovies > 0 && (
+        <MovieGenresList
+          movieGenresList={movieGenresList}
+          onMovieGenreClick={selectMovieGenreHandler}
+          selectedMovieGenres={selectedMovieGenres.sort()}
+        />
+      )}
       <MoviesList
         isLoading={isLoading}
         isLoadingMessage={FETCHING_FAVORITE_MOVIES_MESSAGE}
         moviesList={favoriteMovies}
         noDataFoundMessage={NO_MOVIES_FOUND_MESSAGE}
         numberOfMovies={numberOfFavoriteMovies}
-        selectedMovieGenre="All"
+        selectedMovieGenres={selectedMovieGenres.sort()}
       />
     </div>
   );
