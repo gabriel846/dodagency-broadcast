@@ -1,4 +1,5 @@
 // Packages
+import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import styled from "styled-components";
 
 // Theme
@@ -20,4 +21,14 @@ export const StyledMovieDetailsSectionTitle = styled.h3`
 export const StyledMovieImage = styled.img`
   border: 0.25em solid ${COLORS.SECONDARY};
   max-width: 100%;
+`;
+
+export const StyledMovieIsAddedToFavoritesIcon = styled(MdFavorite)`
+  color: ${COLORS.QUATERNARY};
+  font-size: ${(props) => (props.size ? props.size : "xx-large")};
+`;
+
+export const StyledMovieIsNotAddedToFavoritesIcon = styled(MdFavoriteBorder)`
+  color: ${COLORS.QUATERNARY};
+  font-size: ${(props) => (props.size ? props.size : "xx-large")};
 `;

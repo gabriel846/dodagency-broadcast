@@ -70,6 +70,14 @@ export const LOADING_MESSAGE = "Loading...";
 
 export const LOADING_MESSAGE_STYLE = { color: COLORS.SECONDARY };
 
+export const MOCKED_AUTHENTICATED_USER_ID = "MOCKED_AUTHENTICATED_USER_ID";
+
+export const MOVIE_ADDED_TO_FAVORITES_MESSAGE =
+  "The movie was successfully added to favorites";
+
+export const MOVIE_REMOVED_FROM_FAVORITES_MESSAGE =
+  "The movie was successfully removed from favorites";
+
 export const MOVIES_LIST_URL_WITH_MOVIE_ID =
   "https://yts.mx/api/v2/movie_details.json?movie_id=";
 
