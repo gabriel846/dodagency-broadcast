@@ -84,28 +84,7 @@ export function Home() {
     }
   };
 
-  const switchSelectedMovieGenre = (newSelectedMovieGenre) => {
-    // setSelectedMovieGenre((previousSelectedMovieGenre) =>
-    //   previousSelectedMovieGenre !== newSelectedMovieGenre
-    //     ? newSelectedMovieGenre
-    //     : "All"
-    // );
-
-    // if (selectedMovieGenres.indexOf(newSelectedMovieGenre) > -1) {
-    //   const index = selectedMovieGenres.indexOf(newSelectedMovieGenre);
-
-    //   if (index > -1) {
-    //     setSelectedMovieGenres((previousValue) =>
-    //       previousValue.splice(index, 1)
-    //     );
-    //   }
-    // } else {
-    //   setSelectedMovieGenres((previousValue) =>
-    //     previousValue.push(newSelectedMovieGenre)
-    //   );
-    //   // setSelectedMovieGenres((previousValue) => previousValue.sort());
-    // }
-
+  const selectMovieGenreHandler = (newSelectedMovieGenre) => {
     if (selectedMovieGenres.indexOf(newSelectedMovieGenre) > -1) {
       setSelectedMovieGenres((oldArray) =>
         oldArray.filter((element) => element !== newSelectedMovieGenre)
@@ -118,14 +97,12 @@ export function Home() {
     }
   };
 
-  // console.log(selectedMovieGenres);
-
   return (
     <>
       {!isLoading && numberOfMovies > 0 && (
         <MovieGenresList
           movieGenresList={movieGenresList}
-          onMovieGenreClick={switchSelectedMovieGenre}
+          onMovieGenreClick={selectMovieGenreHandler}
           selectedMovieGenres={selectedMovieGenres.sort()}
           style={{ marginBottom: "5em" }}
         />
