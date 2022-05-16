@@ -60,6 +60,17 @@ export const CANCEL_FETCHING_NUMBER_OF_FAVORITE_MOVIES_MESSAGE =
 export const CANCEL_FETCHING_NUMBER_OF_MOVIES_MESSAGE =
   "Cancelled fetching number of movies";
 
+export const DELETE_ACCOUNT_BUTTON_STYLE = {
+  backgroundColor: COLORS.QUATERNARY,
+  color: COLORS.PRIMARY,
+  fontSize: "large",
+  fontWeight: "bold",
+  padding: "1em 0",
+  width: "100%",
+};
+
+export const DELETE_ACCOUNT_MESSAGE = "Account successfully deleted";
+
 export const EMAIL_UPDATED_SUCCESSFULLY_MESSAGE = "Email updated successfully";
 
 export const FETCHING_ERROR_MESSAGE =

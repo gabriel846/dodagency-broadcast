@@ -1,7 +1,11 @@
 // Packages
 import { Formik } from "formik";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+
+// Redux slices
+import { authActions } from "../../../store/auth/auth-slice";
 
 // Hooks
 import { useWindowSize } from "../../../hooks";
@@ -15,6 +19,7 @@ import { UserAvatar } from "../../../components/UserAvatar/UserAvatar";
 // Theme
 import COLORS from "../../../environment/theme/Colors";
 import {
+  deleteUserAccount,
   updateUserEmail,
   updateUserName,
   updateUserPassword,
@@ -22,6 +27,8 @@ import {
 import {
   AUTHENTICATION_BUTTON_STYLE,
   AUTHENTICATION_INPUT_STYLE,
+  DELETE_ACCOUNT_BUTTON_STYLE,
+  DELETE_ACCOUNT_MESSAGE,
   EMAIL_UPDATED_SUCCESSFULLY_MESSAGE,
   NAME_UPDATED_SUCCESSFULLY_MESSAGE,
   PASSWORD_UPDATED_SUCCESSFULLY_MESSAGE,
@@ -33,6 +40,7 @@ import { StyledInputErrorMessage } from "../../auth/Authentication/Authenticatio
 
 // Validation
 import {
+  userProfileDeleteAccountValidationSchema,
   userProfileEmailValidationSchema,
   userProfileNameValidationSchema,
   userProfilePasswordValidationSchema,
@@ -40,6 +48,8 @@ import {
 
 export function UserProfile() {
   const [viewportWidth] = useWindowSize();
+  const dispatch = useDispatch();
+  const history = useHistory();
   const authenticatedUser = useSelector(
     (state) => state.auth.authenticatedUser
   );
@@ -50,6 +60,7 @@ export function UserProfile() {
     ).length > 0;
 
   const INITIAL_FORM_VALUES = {
+    DELETE_ACCOUNT: { password: "" },
     UPDATE_EMAIL: { email: authenticatedUser.email, password: "" },
     UPDATE_NAME: { name: authenticatedUser.name },
     UPDATE_PASSWORD: { newPassword: "", password: "" },
@@ -243,6 +254,52 @@ export function UserProfile() {
                 )}
               </Formik>
             )}
+          <Formik
+            initialValues={INITIAL_FORM_VALUES.DELETE_ACCOUNT}
+            onSubmit={(values) =>
+              deleteUserAccount(values.password, () => {
+                alert(DELETE_ACCOUNT_MESSAGE);
+                history.goBack();
+                dispatch(authActions.clearAuthenticatedUser());
+              })
+            }
+            validationSchema={userProfileDeleteAccountValidationSchema}
+          >
+            {(formikProps) => (
+              <StyledUserProfileContainer
+                bordered
+                centeredCrossAxis
+                centeredMainAxis
+                vertical
+              >
+                {formikProps.touched.password &&
+                  formikProps.errors.password && (
+                    <StyledInputErrorMessage style={{ width: "100%" }}>
+                      {formikProps.errors.password}
+                    </StyledInputErrorMessage>
+                  )}
+                <BaseInput
+                  cursorColor={COLORS.SECONDARY}
+                  onBlur={formikProps.handleBlur("password")}
+                  onChange={formikProps.handleChange("password")}
+                  placeholder="Password"
+                  placeholderColor={COLORS.SECONDARY}
+                  style={{
+                    ...AUTHENTICATION_INPUT_STYLE,
+                    ...{ width: "100%" },
+                  }}
+                  type="password"
+                  value={formikProps.values.password}
+                />
+                <Button
+                  onClick={formikProps.handleSubmit}
+                  style={DELETE_ACCOUNT_BUTTON_STYLE}
+                  text="Delete account"
+                  type="submit"
+                />
+              </StyledUserProfileContainer>
+            )}
+          </Formik>
         </StyledUserProfileContainer>
         <StyledUserProfileContainer
           bordered

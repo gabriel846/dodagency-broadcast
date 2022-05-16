@@ -3,6 +3,7 @@ import {
   browserLocalPersistence,
   browserSessionPersistence,
   createUserWithEmailAndPassword,
+  deleteUser,
   EmailAuthProvider,
   GoogleAuthProvider,
   Persistence,
@@ -16,7 +17,7 @@ import {
   updateEmail,
   updatePassword,
 } from "firebase/auth";
-import { onValue, ref, set } from "firebase/database";
+import { onValue, ref, remove, set } from "firebase/database";
 
 // Redux slices
 import { authActions } from "../../store/auth/auth-slice";
@@ -193,6 +194,24 @@ export const authenticateUserWithGoogle = (dispatch, goBackHandler) => {
       goBackHandler();
     })
     .catch((googleSignInError) => console.log(googleSignInError));
+};
+
+export const deleteUserAccount = (password, onSuccess) => {
+  const { currentUser } = auth;
+  const { email, uid } = currentUser;
+  const credential = EmailAuthProvider.credential(email, password);
+
+  reauthenticateWithCredential(currentUser, credential)
+    .then(() =>
+      deleteUser(currentUser)
+        .then(() => {
+          remove(ref(db, `users/${uid}`))
+            .then(() => onSuccess())
+            .catch((deleteUserPathError) => console.log(deleteUserPathError));
+        })
+        .catch((deleteUserError) => console.log(deleteUserError))
+    )
+    .catch((reauthenticationError) => console.log(reauthenticationError));
 };
 
 export const registerUser = (email, name, password, redirectToLoginHandler) => {
