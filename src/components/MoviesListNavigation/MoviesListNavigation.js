@@ -18,7 +18,12 @@ import {
 } from "./MoviesListNavigation.style";
 
 export function MoviesListNavigation(props) {
-  const { currentPage, onNextButtonClick, onPreviousButtonClick } = props;
+  const {
+    currentPage,
+    isCurrentPageShown,
+    onNextButtonClick,
+    onPreviousButtonClick,
+  } = props;
 
   return (
     <StyledMoviesListNavigationMainContainer>
@@ -36,9 +41,11 @@ export function MoviesListNavigation(props) {
           visible
         />
       </StyledMoviesListNavigationButtonsContainer>
-      <StyledMoviesListNavigationPage>
-        Current page: {currentPage}
-      </StyledMoviesListNavigationPage>
+      {isCurrentPageShown && (
+        <StyledMoviesListNavigationPage>
+          Current page: {currentPage}
+        </StyledMoviesListNavigationPage>
+      )}
     </StyledMoviesListNavigationMainContainer>
   );
 }

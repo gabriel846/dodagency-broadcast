@@ -98,18 +98,18 @@ export function Home() {
   };
 
   return (
-    <>
+    <div style={{ display: "flex", flexDirection: "column", gap: "5em" }}>
       {!isLoading && numberOfMovies > 0 && (
         <MovieGenresList
           movieGenresList={movieGenresList}
           onMovieGenreClick={selectMovieGenreHandler}
           selectedMovieGenres={selectedMovieGenres.sort()}
-          style={{ marginBottom: "5em" }}
         />
       )}
       {!isLoading && numberOfMovies > 0 && (
         <MoviesListNavigation
           currentPage={currentPage}
+          isCurrentPageShown
           onNextButtonClick={onNextButtonClickHandler}
           onPreviousButtonClick={onPreviousButtonClickHandler}
         />
@@ -122,6 +122,13 @@ export function Home() {
         numberOfMovies={numberOfMovies}
         selectedMovieGenres={selectedMovieGenres.sort()}
       />
-    </>
+      {!isLoading && numberOfMovies > 0 && (
+        <MoviesListNavigation
+          currentPage={currentPage}
+          onNextButtonClick={onNextButtonClickHandler}
+          onPreviousButtonClick={onPreviousButtonClickHandler}
+        />
+      )}
+    </div>
   );
 }

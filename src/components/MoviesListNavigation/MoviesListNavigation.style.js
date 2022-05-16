@@ -15,7 +15,6 @@ export const StyledMoviesListNavigationMainContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5em;
-  margin-bottom: 5em;
 `;
 
 export const StyledMoviesListNavigationPage = styled.span`
