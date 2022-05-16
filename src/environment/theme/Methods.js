@@ -22,6 +22,9 @@ export const addMovieComment = (comment) => {
   set(commentRef, comment);
 };
 
+export const arrayContainsAllElementsFrom = (array, target) =>
+  target.every((element) => array.includes(element));
+
 export const genereateRandomUUID = () => {
   return v4();
 };

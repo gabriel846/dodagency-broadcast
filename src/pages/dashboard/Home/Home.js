@@ -29,7 +29,7 @@ export function Home() {
     useSelector((state) => state.moviesListCurrentPage.currentPage)
   );
   const [numberOfMovies, setNumberOfMovies] = useState(-1);
-  const [selectedMovieGenre, setSelectedMovieGenre] = useState("All");
+  const [selectedMovieGenres, setSelectedMovieGenres] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -68,7 +68,7 @@ export function Home() {
         })
       );
       setCurrentPage((currentPage) => --currentPage);
-      setSelectedMovieGenre("All");
+      setSelectedMovieGenres([]);
     }
   };
 
@@ -80,16 +80,21 @@ export function Home() {
         })
       );
       setCurrentPage((currentPage) => ++currentPage);
-      setSelectedMovieGenre("All");
+      setSelectedMovieGenres([]);
     }
   };
 
-  const switchSelectedMovieGenre = (newSelectedMovieGenre) => {
-    setSelectedMovieGenre((previousSelectedMovieGenre) =>
-      previousSelectedMovieGenre !== newSelectedMovieGenre
-        ? newSelectedMovieGenre
-        : "All"
-    );
+  const selectMovieGenreHandler = (newSelectedMovieGenre) => {
+    if (selectedMovieGenres.indexOf(newSelectedMovieGenre) > -1) {
+      setSelectedMovieGenres((oldArray) =>
+        oldArray.filter((element) => element !== newSelectedMovieGenre)
+      );
+    } else {
+      setSelectedMovieGenres((oldArray) => [
+        ...oldArray,
+        newSelectedMovieGenre,
+      ]);
+    }
   };
 
   return (
@@ -97,8 +102,8 @@ export function Home() {
       {!isLoading && numberOfMovies > 0 && (
         <MovieGenresList
           movieGenresList={movieGenresList}
-          onMovieGenreClick={switchSelectedMovieGenre}
-          selectedMovieGenre={selectedMovieGenre}
+          onMovieGenreClick={selectMovieGenreHandler}
+          selectedMovieGenres={selectedMovieGenres.sort()}
           style={{ marginBottom: "5em" }}
         />
       )}
@@ -115,7 +120,7 @@ export function Home() {
         moviesList={moviesList}
         noDataFoundMessage={NO_MOVIES_FOUND_MESSAGE}
         numberOfMovies={numberOfMovies}
-        selectedMovieGenre={selectedMovieGenre}
+        selectedMovieGenres={selectedMovieGenres.sort()}
       />
     </>
   );
