@@ -30,11 +30,13 @@ export function MoviesList(props) {
     selectedMovieGenres,
   } = props;
 
-  const filteredMoviesList = moviesList.filter((movie) =>
-    selectedMovieGenres === [] || !!!movie.genres
-      ? movie
-      : arrayContainsAllElementsFrom(movie.genres, selectedMovieGenres)
-  );
+  const filteredMoviesList = !!selectedMovieGenres
+    ? moviesList.filter((movie) =>
+        selectedMovieGenres === [] || !!!movie.genres
+          ? movie
+          : arrayContainsAllElementsFrom(movie.genres, selectedMovieGenres)
+      )
+    : moviesList;
 
   return (
     <>
