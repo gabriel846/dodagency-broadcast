@@ -58,7 +58,7 @@ export function FavoriteMovies(props) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "1em" }}>
-      <GoBackIcon />
+      {!!!isLoading && <GoBackIcon />}
       <MoviesList
         isLoading={isLoading}
         isLoadingMessage={FETCHING_FAVORITE_MOVIES_MESSAGE}
