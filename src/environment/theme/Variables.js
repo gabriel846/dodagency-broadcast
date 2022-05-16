@@ -73,6 +73,15 @@ export const DELETE_ACCOUNT_MESSAGE = "Account successfully deleted";
 
 export const EMAIL_UPDATED_SUCCESSFULLY_MESSAGE = "Email updated successfully";
 
+export const FAVORITE_MOVIES_NO_DATA_FOUND_BUTTON_STYLE = {
+  backgroundColor: COLORS.SECONDARY,
+  borderRadius: "0.5em",
+  color: COLORS.PRIMARY,
+  fontWeight: "bold",
+  padding: "1em 2em",
+  width: "fit-content",
+};
+
 export const FETCHING_ERROR_MESSAGE =
   "Something went wrong... Please try again!";
 
@@ -139,6 +148,7 @@ export const PAGE_NOT_FOUND_BUTTON_STYLE = {
   color: COLORS.PRIMARY,
   fontWeight: "bold",
   padding: "1em 2em",
+  width: "fit-content",
 };
 
 export const PASSWORD_UPDATED_SUCCESSFULLY_MESSAGE =

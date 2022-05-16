@@ -258,9 +258,9 @@ export function UserProfile() {
             initialValues={INITIAL_FORM_VALUES.DELETE_ACCOUNT}
             onSubmit={(values) =>
               deleteUserAccount(values.password, () => {
-                alert(DELETE_ACCOUNT_MESSAGE);
                 history.goBack();
                 dispatch(authActions.clearAuthenticatedUser());
+                alert(DELETE_ACCOUNT_MESSAGE);
               })
             }
             validationSchema={userProfileDeleteAccountValidationSchema}
