@@ -29,7 +29,7 @@ export function Home() {
     useSelector((state) => state.moviesListCurrentPage.currentPage)
   );
   const [numberOfMovies, setNumberOfMovies] = useState(-1);
-  const [selectedMovieGenre, setSelectedMovieGenre] = useState("All");
+  const [selectedMovieGenres, setSelectedMovieGenres] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -68,7 +68,7 @@ export function Home() {
         })
       );
       setCurrentPage((currentPage) => --currentPage);
-      setSelectedMovieGenre("All");
+      setSelectedMovieGenres([]);
     }
   };
 
@@ -80,17 +80,45 @@ export function Home() {
         })
       );
       setCurrentPage((currentPage) => ++currentPage);
-      setSelectedMovieGenre("All");
+      setSelectedMovieGenres([]);
     }
   };
 
   const switchSelectedMovieGenre = (newSelectedMovieGenre) => {
-    setSelectedMovieGenre((previousSelectedMovieGenre) =>
-      previousSelectedMovieGenre !== newSelectedMovieGenre
-        ? newSelectedMovieGenre
-        : "All"
-    );
+    // setSelectedMovieGenre((previousSelectedMovieGenre) =>
+    //   previousSelectedMovieGenre !== newSelectedMovieGenre
+    //     ? newSelectedMovieGenre
+    //     : "All"
+    // );
+
+    // if (selectedMovieGenres.indexOf(newSelectedMovieGenre) > -1) {
+    //   const index = selectedMovieGenres.indexOf(newSelectedMovieGenre);
+
+    //   if (index > -1) {
+    //     setSelectedMovieGenres((previousValue) =>
+    //       previousValue.splice(index, 1)
+    //     );
+    //   }
+    // } else {
+    //   setSelectedMovieGenres((previousValue) =>
+    //     previousValue.push(newSelectedMovieGenre)
+    //   );
+    //   // setSelectedMovieGenres((previousValue) => previousValue.sort());
+    // }
+
+    if (selectedMovieGenres.indexOf(newSelectedMovieGenre) > -1) {
+      setSelectedMovieGenres((oldArray) =>
+        oldArray.filter((element) => element !== newSelectedMovieGenre)
+      );
+    } else {
+      setSelectedMovieGenres((oldArray) => [
+        ...oldArray,
+        newSelectedMovieGenre,
+      ]);
+    }
   };
+
+  // console.log(selectedMovieGenres);
 
   return (
     <>
@@ -98,7 +126,7 @@ export function Home() {
         <MovieGenresList
           movieGenresList={movieGenresList}
           onMovieGenreClick={switchSelectedMovieGenre}
-          selectedMovieGenre={selectedMovieGenre}
+          selectedMovieGenres={selectedMovieGenres.sort()}
           style={{ marginBottom: "5em" }}
         />
       )}
@@ -115,7 +143,7 @@ export function Home() {
         moviesList={moviesList}
         noDataFoundMessage={NO_MOVIES_FOUND_MESSAGE}
         numberOfMovies={numberOfMovies}
-        selectedMovieGenre={selectedMovieGenre}
+        selectedMovieGenres={selectedMovieGenres.sort()}
       />
     </>
   );
