@@ -11,6 +11,7 @@ import { moviesListActions } from "../../../store/movies-list/movies-list-slice"
 import { moviesListCurrentPageActions } from "../../../store/movies-list-current-page/movies-list-current-page-slice";
 
 // Components
+import { Button } from "../../../components/UI/Button";
 import { MovieGenresList } from "../../../components/MovieGenresList/MovieGenresList";
 import { MoviesList } from "../../../components/MoviesList";
 import { MoviesListNavigation } from "../../../components/MoviesListNavigation/MoviesListNavigation";
@@ -18,6 +19,7 @@ import { MoviesListNavigation } from "../../../components/MoviesListNavigation/M
 // Theme
 import { getMovieGenresList } from "../../../environment/theme/Methods";
 import {
+  BACK_TO_TOP_BUTTON_STYLE,
   CANCEL_FETCHING_NUMBER_OF_MOVIES_MESSAGE,
   LOADING_MESSAGE,
   MOVIES_LIST_URL_WITH_PAGE,
@@ -127,6 +129,13 @@ export function Home() {
           currentPage={currentPage}
           onNextButtonClick={onNextButtonClickHandler}
           onPreviousButtonClick={onPreviousButtonClickHandler}
+        />
+      )}
+      {!isLoading && numberOfMovies > 0 && (
+        <Button
+          onClick={() => window.scrollTo(0, 0)}
+          style={BACK_TO_TOP_BUTTON_STYLE}
+          text="Back to the top"
         />
       )}
     </div>

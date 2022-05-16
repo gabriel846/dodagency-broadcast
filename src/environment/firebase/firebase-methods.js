@@ -99,12 +99,10 @@ export const authenticateUser = (
       }
 
       onValue(ref(db, `users/${user.uid}/personalInformation`), (snapshot) => {
-        const userPersonalInformation = snapshot.val();
-
         dispatch(
           authActions.setAuthenticatedUser({
             authenticatedUser: {
-              ...userPersonalInformation,
+              ...snapshot.val(),
               providers: user.providerData,
             },
           })
@@ -183,10 +181,7 @@ export const authenticateUserWithGoogle = (dispatch, goBackHandler) => {
         name: user.displayName,
       };
 
-      console.log(result.user);
-
       addUserPersonalInformationIfItDoesNotExist(user.uid, personalInformation);
-
       dispatch(
         authActions.setAuthenticatedUser({
           authenticatedUser: {
@@ -195,7 +190,6 @@ export const authenticateUserWithGoogle = (dispatch, goBackHandler) => {
           },
         })
       );
-
       goBackHandler();
     })
     .catch((googleSignInError) => console.log(googleSignInError));

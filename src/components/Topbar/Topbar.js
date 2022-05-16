@@ -47,9 +47,7 @@ export function Topbar(props) {
           style={{ borderColor: "red", color: "red" }}
         />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            <NavLink href="#pricing">Pricing</NavLink>
-          </Nav>
+          <Nav className="me-auto"></Nav>
           <Nav>
             {!!!authenticatedUser && (
               <NavLink
@@ -59,15 +57,14 @@ export function Topbar(props) {
                 Authentication
               </NavLink>
             )}
-            <NavLink
-              active={location.pathname === "/favorite-movies"}
-              onClick={() => redirectToPageHandler("/favorite-movies")}
-            >
-              Favorite movies
-            </NavLink>
-            <NavLink eventKey={2} href="#memes">
-              Dank memes
-            </NavLink>
+            {!!authenticatedUser && (
+              <NavLink
+                active={location.pathname === "/favorite-movies"}
+                onClick={() => redirectToPageHandler("/favorite-movies")}
+              >
+                Favorite movies
+              </NavLink>
+            )}
             {!!authenticatedUser && isSmallScreen && (
               <NavLink onClick={() => redirectToPageHandler("/profile")}>
                 Profile

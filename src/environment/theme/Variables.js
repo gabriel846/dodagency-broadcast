@@ -43,6 +43,17 @@ export const AUTHENTICATION_TYPES_LIST = [
   `FORGOT_PASSWORD`,
 ];
 
+export const BACK_TO_TOP_BUTTON_STYLE = {
+  backgroundColor: COLORS.PRIMARY,
+  border: `0.25em solid ${COLORS.SECONDARY}`,
+  borderRadius: "0.5em",
+  color: COLORS.SECONDARY,
+  fontSize: "large",
+  fontWeight: "bold",
+  padding: "1em 0",
+  width: "100%",
+};
+
 export const CANCEL_FETCHING_NUMBER_OF_FAVORITE_MOVIES_MESSAGE =
   "Cancelled fetching number of favorite movies";
 
