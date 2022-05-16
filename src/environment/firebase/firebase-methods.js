@@ -5,8 +5,7 @@ import {
   createUserWithEmailAndPassword,
   deleteUser,
   EmailAuthProvider,
-  GoogleAuthProvider,
-  Persistence,
+  // GoogleAuthProvider,
   reauthenticateWithCredential,
   sendEmailVerification,
   sendPasswordResetEmail,
@@ -49,96 +48,74 @@ export const authenticateUser = (
   dispatch,
   email,
   password,
-  goBackHandler
-  //   rememberMe
+  goBackHandler,
+  rememberMe = false
 ) => {
-  // const PERSISTENCE = rememberMe
-  //   ? browserLocalPersistence
-  //   : browserSessionPersistence;
+  setPersistence(
+    auth,
+    rememberMe ? browserLocalPersistence : browserSessionPersistence
+  )
+    .then(() =>
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const { user } = userCredential;
 
-  // setPersistence(auth, PERSISTENCE)
-  //   .then(() => {
-  //     signInWithEmailAndPassword(auth, email, password)
-  //       .then((userCredential) => {
-  //         const user = userCredential.user;
+          if (!user) {
+            throw new Error(PLEASE_TRY_AGAIN.errorCode);
+          }
 
-  //         if (!user || !user.emailVerified) {
-  //           return;
-  //         }
+          if (!user.emailVerified) {
+            sendEmailVerification(user).catch((sendEmailVerificationError) =>
+              console.log(sendEmailVerificationError)
+            );
+            throw new Error(EMAIL_NOT_VERIFIED.errorCode);
+          }
 
-  //         onValue(
-  //           ref(db, `users/${user.uid}/personalInformation`),
-  //           (snapshot) => {
-  //             const userPersonalInformation: User = snapshot.val();
+          onValue(
+            ref(db, `users/${user.uid}/personalInformation`),
+            (snapshot) => {
+              dispatch(
+                authActions.setAuthenticatedUser({
+                  authenticatedUser: {
+                    ...snapshot.val(),
+                    providers: user.providerData,
+                  },
+                })
+              );
+              goBackHandler();
+            }
+          );
+        })
+        .catch((error) => {
+          console.log(error.message);
+          console.log(error.code);
 
-  //             dispatch(
-  //               authActions.setAuthenticatedUser({
-  //                 authenticatedUser: userPersonalInformation,
-  //               })
-  //             );
-  //             goBackHandler();
-  //           }
-  //         );
-  //       })
-  //       .catch((error) => console.log(error));
-  //   })
-  //   .catch((error) => console.log(error));
+          if (error.message === EMAIL_NOT_VERIFIED.errorCode) {
+            alert(EMAIL_NOT_VERIFIED.userMessage);
+            return;
+          }
 
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      const { user } = userCredential;
+          let errorMessage;
 
-      if (!user) {
-        throw new Error(PLEASE_TRY_AGAIN.errorCode);
-      }
+          switch (error.code) {
+            case TOO_MANY_REQUESTS.errorCode:
+              errorMessage = TOO_MANY_REQUESTS.userMessage;
+              break;
+            case USER_NOT_FOUND.errorCode:
+              errorMessage = USER_NOT_FOUND.userMessage;
+              break;
+            case WRONG_PASSWORD.errorCode:
+              errorMessage = WRONG_PASSWORD.userMessage;
+              break;
+            default:
+              errorMessage = PLEASE_TRY_AGAIN.userMessage;
+              break;
+          }
 
-      if (!user.emailVerified) {
-        sendEmailVerification(user).catch((sendEmailVerificationError) =>
-          console.log(sendEmailVerificationError)
-        );
-        throw new Error(EMAIL_NOT_VERIFIED.errorCode);
-      }
-
-      onValue(ref(db, `users/${user.uid}/personalInformation`), (snapshot) => {
-        dispatch(
-          authActions.setAuthenticatedUser({
-            authenticatedUser: {
-              ...snapshot.val(),
-              providers: user.providerData,
-            },
-          })
-        );
-        goBackHandler();
-      });
-    })
-    .catch((error) => {
-      console.log(error.message);
-      console.log(error.code);
-
-      if (error.message === EMAIL_NOT_VERIFIED.errorCode) {
-        alert(EMAIL_NOT_VERIFIED.userMessage);
-        return;
-      }
-
-      let errorMessage;
-
-      switch (error.code) {
-        case TOO_MANY_REQUESTS.errorCode:
-          errorMessage = TOO_MANY_REQUESTS.userMessage;
-          break;
-        case USER_NOT_FOUND.errorCode:
-          errorMessage = USER_NOT_FOUND.userMessage;
-          break;
-        case WRONG_PASSWORD.errorCode:
-          errorMessage = WRONG_PASSWORD.userMessage;
-          break;
-        default:
-          errorMessage = PLEASE_TRY_AGAIN.userMessage;
-          break;
-      }
-
-      alert(errorMessage);
-    });
+          alert(errorMessage);
+        })
+    )
+    .catch((setPersistenceError) => console.log(setPersistenceError));
 };
 
 export const authenticateUserWithFacebook = (dispatch, goBackHandler) => {
@@ -174,7 +151,7 @@ export const authenticateUserWithFacebook = (dispatch, goBackHandler) => {
 export const authenticateUserWithGoogle = (dispatch, goBackHandler) => {
   signInWithPopup(auth, googleAuthProvider)
     .then((result) => {
-      const credential = GoogleAuthProvider.credentialFromResult(result);
+      // const credential = GoogleAuthProvider.credentialFromResult(result);
       const { user } = result;
       const personalInformation = {
         email: user.email,

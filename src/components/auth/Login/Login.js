@@ -1,5 +1,5 @@
 // Packages
-import { Formik } from "formik";
+import { Field, Formik } from "formik";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -27,7 +27,7 @@ import { StyledLoginContainer } from "./Login.style";
 import { loginValidationSchema } from "../../../validation";
 
 export function Login(props) {
-  const INITIAL_FORM_VALUES = { email: "", password: "" };
+  const INITIAL_FORM_VALUES = { email: "", password: "", rememberMe: false };
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -36,11 +36,15 @@ export function Login(props) {
     <>
       <Formik
         initialValues={INITIAL_FORM_VALUES}
-        onSubmit={(values) => {
-          const { email, password } = values;
-
-          authenticateUser(dispatch, email, password, () => history.goBack());
-        }}
+        onSubmit={(values) =>
+          authenticateUser(
+            dispatch,
+            values.email,
+            values.password,
+            () => history.goBack(),
+            values.rememberMe
+          )
+        }
         validationSchema={loginValidationSchema}
       >
         {(formikProps) => (
@@ -75,6 +79,14 @@ export function Login(props) {
               type="password"
               value={formikProps.values.password}
             />
+            <label style={{ color: COLORS.SECONDARY }}>
+              <Field
+                name="rememberMe"
+                style={{ margin: "0 1em 0 0" }}
+                type="checkbox"
+              />
+              Remember me
+            </label>
             <Button
               onClick={formikProps.handleSubmit}
               style={AUTHENTICATION_BUTTON_STYLE}
