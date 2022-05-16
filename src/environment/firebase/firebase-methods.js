@@ -3,21 +3,28 @@ import {
   browserLocalPersistence,
   browserSessionPersistence,
   createUserWithEmailAndPassword,
+  EmailAuthProvider,
+  GoogleAuthProvider,
   Persistence,
+  reauthenticateWithCredential,
   sendEmailVerification,
   sendPasswordResetEmail,
   setPersistence,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateEmail,
+  updatePassword,
 } from "firebase/auth";
-import { onValue, ref, remove, set } from "firebase/database";
+import { onValue, ref, set } from "firebase/database";
 
 // Redux slices
 import { authActions } from "../../store/auth/auth-slice";
 
+import { addUserPersonalInformationIfItDoesNotExist } from "../../lib/api";
+
 // Theme
-import { auth, db, facebookAuthProvider } from "./Firebase";
+import { auth, db, facebookAuthProvider, googleAuthProvider } from "./Firebase";
 import {
   COULD_NOT_SIGN_OUT,
   EMAIL_ALREADY_IN_USE,
@@ -28,7 +35,14 @@ import {
   USER_NOT_FOUND,
   WRONG_PASSWORD,
 } from "./firebase-errors";
-import { setPersonalInformationPath } from "../theme/Methods";
+
+export const addMovieComment = (comment) => {
+  if (!!!comment) {
+    return;
+  }
+
+  set(ref(db, `comments/${comment.id}`), comment);
+};
 
 export const authenticateUser = (
   dispatch,
@@ -89,7 +103,10 @@ export const authenticateUser = (
 
         dispatch(
           authActions.setAuthenticatedUser({
-            authenticatedUser: userPersonalInformation,
+            authenticatedUser: {
+              ...userPersonalInformation,
+              providers: user.providerData,
+            },
           })
         );
         goBackHandler();
@@ -141,7 +158,10 @@ export const authenticateUserWithFacebook = (dispatch, goBackHandler) => {
 
         dispatch(
           authActions.setAuthenticatedUser({
-            authenticatedUser: userPersonalInformation,
+            authenticatedUser: {
+              ...userPersonalInformation,
+              providers: user.providerData,
+            },
           })
         );
         goBackHandler();
@@ -150,6 +170,35 @@ export const authenticateUserWithFacebook = (dispatch, goBackHandler) => {
     .catch((error) => {
       console.log(error);
     });
+};
+
+export const authenticateUserWithGoogle = (dispatch, goBackHandler) => {
+  signInWithPopup(auth, googleAuthProvider)
+    .then((result) => {
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const { user } = result;
+      const personalInformation = {
+        email: user.email,
+        id: user.uid,
+        name: user.displayName,
+      };
+
+      console.log(result.user);
+
+      addUserPersonalInformationIfItDoesNotExist(user.uid, personalInformation);
+
+      dispatch(
+        authActions.setAuthenticatedUser({
+          authenticatedUser: {
+            ...personalInformation,
+            providers: user.providerData,
+          },
+        })
+      );
+
+      goBackHandler();
+    })
+    .catch((googleSignInError) => console.log(googleSignInError));
 };
 
 export const registerUser = (email, name, password, redirectToLoginHandler) => {
@@ -174,29 +223,6 @@ export const registerUser = (email, name, password, redirectToLoginHandler) => {
       }
     });
 };
-
-// export const removeMovieFromFavorites = (movieId, onSuccess, userId) => {
-//   checkIfMovieIsAddedToFavorites(databaseURL, userId, movieId).then(
-//     (checkResult) => {
-//       if (!!!checkResult) {
-//         return;
-//       }
-
-//       getFavoriteMovieKey(databaseURL, userId, movieId).then(
-//         (favoriteMovieKeyResult) => {
-//           if (favoriteMovieKeyResult.trim().length > 0) {
-//             remove(
-//               ref(
-//                 db,
-//                 `users/${userId}/favoriteMovies/${favoriteMovieKeyResult}`
-//               )
-//             ).then(() => onSuccess());
-//           }
-//         }
-//       );
-//     }
-//   );
-// };
 
 export const resetPassword = (email, redirectToLoginHandler) => {
   sendPasswordResetEmail(auth, email)
@@ -230,6 +256,17 @@ export const resetPassword = (email, redirectToLoginHandler) => {
     });
 };
 
+export const setPersonalInformationPath = (personalInformation) => {
+  if (!!!personalInformation || !!!personalInformation.id) {
+    return;
+  }
+
+  set(
+    ref(db, `users/${personalInformation.id}/personalInformation`),
+    personalInformation
+  );
+};
+
 export const signOutUser = (dispatch) => {
   signOut(auth)
     .then(() => {
@@ -238,4 +275,55 @@ export const signOutUser = (dispatch) => {
     .catch(() => {
       alert(COULD_NOT_SIGN_OUT.userMessage);
     });
+};
+
+export const updateUserEmail = (newEmail, password, onSuccess) => {
+  const { currentUser } = auth;
+  const credential = EmailAuthProvider.credential(currentUser.email, password);
+
+  reauthenticateWithCredential(currentUser, credential)
+    .then(() => {
+      updateEmail(currentUser, newEmail)
+        .then(() => {
+          const userEmailRef = ref(
+            db,
+            `users/${currentUser.uid}/personalInformation/email`
+          );
+
+          set(userEmailRef, newEmail)
+            .then(() => {
+              sendEmailVerification(currentUser)
+                .then(() => onSuccess())
+                .catch((sendEmailVerificationError) =>
+                  console.log(sendEmailVerificationError)
+                );
+            })
+            .catch((updateDatabaseEmailError) =>
+              console.log(updateDatabaseEmailError)
+            );
+        })
+        .catch((updateEmailError) => console.log(updateEmailError));
+    })
+    .catch((reauthenticationError) => console.log(reauthenticationError));
+};
+
+export const updateUserName = (newName, onSuccess) => {
+  const { currentUser } = auth;
+
+  set(ref(db, `users/${currentUser.uid}/personalInformation/name`), newName)
+    .then(() => onSuccess())
+    .catch((updateDatabaseNameError) => console.log(updateDatabaseNameError));
+};
+
+export const updateUserPassword = (password, newPassword, onSuccess) => {
+  const { currentUser } = auth;
+  const credential = EmailAuthProvider.credential(currentUser.email, password);
+
+  reauthenticateWithCredential(currentUser, credential)
+    .then(() => {
+      updatePassword(currentUser, newPassword)
+        .then(() => onSuccess())
+        .catch((updatePasswordError) => console.log(updatePasswordError));
+    })
+    .catch((reauthenticationError) => console.log(reauthenticationError));
 };

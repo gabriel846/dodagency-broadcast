@@ -4,6 +4,7 @@ import {
   getAuth,
   EmailAuthProvider,
   FacebookAuthProvider,
+  GoogleAuthProvider,
 } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
@@ -33,3 +34,4 @@ export const auth = getAuth(app);
 export const db = getDatabase(app);
 export const emailAuthProvider = new EmailAuthProvider();
 export const facebookAuthProvider = new FacebookAuthProvider();
+export const googleAuthProvider = new GoogleAuthProvider();

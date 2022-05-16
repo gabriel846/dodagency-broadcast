@@ -14,7 +14,10 @@ import {
   AUTHENTICATION_BUTTON_STYLE,
   AUTHENTICATION_INPUT_STYLE,
 } from "../../../environment/theme/Variables";
-import { authenticateUser } from "../../../environment/firebase/firebase-methods";
+import {
+  authenticateUser,
+  authenticateUserWithGoogle,
+} from "../../../environment/firebase/firebase-methods";
 
 // Stylings
 import { StyledInputErrorMessage } from "../../../pages/auth/Authentication/Authentication.style";
@@ -30,55 +33,64 @@ export function Login(props) {
   const history = useHistory();
 
   return (
-    <Formik
-      initialValues={INITIAL_FORM_VALUES}
-      onSubmit={(values) => {
-        const { email, password } = values;
+    <>
+      <Formik
+        initialValues={INITIAL_FORM_VALUES}
+        onSubmit={(values) => {
+          const { email, password } = values;
 
-        authenticateUser(dispatch, email, password, () => history.goBack());
-      }}
-      validationSchema={loginValidationSchema}
-    >
-      {(formikProps) => (
-        <StyledLoginContainer>
-          {formikProps.touched.email && formikProps.errors.email && (
-            <StyledInputErrorMessage>
-              {formikProps.errors.email}
-            </StyledInputErrorMessage>
-          )}
-          <BaseInput
-            cursorColor={COLORS.SECONDARY}
-            onBlur={formikProps.handleBlur("email")}
-            onChange={formikProps.handleChange("email")}
-            placeholder="Email"
-            placeholderColor={COLORS.SECONDARY}
-            style={AUTHENTICATION_INPUT_STYLE}
-            type="email"
-            value={formikProps.values.email}
-          />
-          {formikProps.touched.password && formikProps.errors.password && (
-            <StyledInputErrorMessage>
-              {formikProps.errors.password}
-            </StyledInputErrorMessage>
-          )}
-          <BaseInput
-            cursorColor={COLORS.SECONDARY}
-            onBlur={formikProps.handleBlur("password")}
-            onChange={formikProps.handleChange("password")}
-            placeholder="Password"
-            placeholderColor={COLORS.SECONDARY}
-            style={AUTHENTICATION_INPUT_STYLE}
-            type="password"
-            value={formikProps.values.password}
-          />
-          <Button
-            onClick={formikProps.handleSubmit}
-            style={AUTHENTICATION_BUTTON_STYLE}
-            text="Log in"
-            type="submit"
-          />
-        </StyledLoginContainer>
-      )}
-    </Formik>
+          authenticateUser(dispatch, email, password, () => history.goBack());
+        }}
+        validationSchema={loginValidationSchema}
+      >
+        {(formikProps) => (
+          <StyledLoginContainer>
+            {formikProps.touched.email && formikProps.errors.email && (
+              <StyledInputErrorMessage>
+                {formikProps.errors.email}
+              </StyledInputErrorMessage>
+            )}
+            <BaseInput
+              cursorColor={COLORS.SECONDARY}
+              onBlur={formikProps.handleBlur("email")}
+              onChange={formikProps.handleChange("email")}
+              placeholder="Email"
+              placeholderColor={COLORS.SECONDARY}
+              style={AUTHENTICATION_INPUT_STYLE}
+              type="email"
+              value={formikProps.values.email}
+            />
+            {formikProps.touched.password && formikProps.errors.password && (
+              <StyledInputErrorMessage>
+                {formikProps.errors.password}
+              </StyledInputErrorMessage>
+            )}
+            <BaseInput
+              cursorColor={COLORS.SECONDARY}
+              onBlur={formikProps.handleBlur("password")}
+              onChange={formikProps.handleChange("password")}
+              placeholder="Password"
+              placeholderColor={COLORS.SECONDARY}
+              style={AUTHENTICATION_INPUT_STYLE}
+              type="password"
+              value={formikProps.values.password}
+            />
+            <Button
+              onClick={formikProps.handleSubmit}
+              style={AUTHENTICATION_BUTTON_STYLE}
+              text="Log in"
+              type="submit"
+            />
+          </StyledLoginContainer>
+        )}
+      </Formik>
+      <Button
+        onClick={() =>
+          authenticateUserWithGoogle(dispatch, () => history.goBack())
+        }
+        style={AUTHENTICATION_BUTTON_STYLE}
+        text="Log in with Google"
+      />
+    </>
   );
 }
