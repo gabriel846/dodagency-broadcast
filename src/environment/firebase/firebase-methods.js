@@ -181,11 +181,11 @@ export const deleteUserAccount = (password, onSuccess) => {
   reauthenticateWithCredential(currentUser, credential)
     .then(() =>
       deleteUser(currentUser)
-        .then(() => {
+        .then(() =>
           remove(ref(db, `users/${uid}`))
             .then(() => onSuccess())
-            .catch((deleteUserPathError) => console.log(deleteUserPathError));
-        })
+            .catch((deleteUserPathError) => console.log(deleteUserPathError))
+        )
         .catch((deleteUserError) => console.log(deleteUserError))
     )
     .catch((reauthenticationError) => console.log(reauthenticationError));

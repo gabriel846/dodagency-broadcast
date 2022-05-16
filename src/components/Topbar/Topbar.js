@@ -1,5 +1,5 @@
 // Packages
-import React from "react";
+import React, { useState } from "react";
 import { Container, Nav, Navbar } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
@@ -17,11 +17,15 @@ import { signOutUser } from "../../environment/firebase/firebase-methods";
 import { USER_AVATAR_TOPBAR_STYLE } from "../../environment/theme/Variables";
 
 // Stylings
-import { StyledNavbar } from "./Topbar.style";
+import {
+  StyledHamburgerIconClosed,
+  StyledHamburgerIconOpen,
+  StyledNavbar,
+} from "./Topbar.style";
 
 export function Topbar(props) {
   const { authenticatedUser } = props;
-
+  const [isNavbarExpanded, setIsNavbarExpanded] = useState(false);
   const [viewportWidth] = useWindowSize();
 
   const dispatch = useDispatch();
@@ -36,23 +40,54 @@ export function Topbar(props) {
     }
   };
 
+  const closeNavbarHandler = () => {
+    if (isNavbarExpanded) {
+      setIsNavbarExpanded(false);
+    }
+  };
+
+  const toggleNavbarHandler = () =>
+    setIsNavbarExpanded((prevState) => !prevState);
+
   return (
-    <StyledNavbar collapseOnSelect expand="lg" variant="dark">
+    <StyledNavbar
+      collapseOnSelect
+      expand="lg"
+      expanded={isNavbarExpanded}
+      variant="dark"
+    >
       <Container>
-        <Navbar.Brand onClick={() => redirectToPageHandler("/")}>
+        <Navbar.Brand
+          onClick={() => {
+            closeNavbarHandler();
+            redirectToPageHandler("/");
+          }}
+        >
           <Logo />
         </Navbar.Brand>
         <Navbar.Toggle
           aria-controls="responsive-navbar-nav"
-          style={{ borderColor: "red", color: "red" }}
-        />
+          onClick={() => toggleNavbarHandler()}
+          style={{ border: "none", color: "transparent" }}
+        >
+          <span>
+            {isNavbarExpanded ? (
+              <StyledHamburgerIconOpen />
+            ) : (
+              <StyledHamburgerIconClosed />
+            )}
+          </span>
+        </Navbar.Toggle>
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto"></Nav>
           <Nav>
             {!!!authenticatedUser && (
               <NavLink
                 active={location.pathname === "/authentication"}
-                onClick={() => redirectToPageHandler("/authentication")}
+                onClick={() => {
+                  closeNavbarHandler();
+                  redirectToPageHandler("/authentication");
+                }}
               >
                 Authentication
               </NavLink>
@@ -60,13 +95,21 @@ export function Topbar(props) {
             {!!authenticatedUser && (
               <NavLink
                 active={location.pathname === "/favorite-movies"}
-                onClick={() => redirectToPageHandler("/favorite-movies")}
+                onClick={() => {
+                  closeNavbarHandler();
+                  redirectToPageHandler("/favorite-movies");
+                }}
               >
                 Favorite movies
               </NavLink>
             )}
             {!!authenticatedUser && isSmallScreen && (
-              <NavLink onClick={() => redirectToPageHandler("/profile")}>
+              <NavLink
+                onClick={() => {
+                  closeNavbarHandler();
+                  redirectToPageHandler("/profile");
+                }}
+              >
                 Profile
               </NavLink>
             )}
@@ -89,7 +132,10 @@ export function Topbar(props) {
             {!!authenticatedUser && !isSmallScreen && (
               <NavLink>
                 <UserAvatar
-                  onClick={() => redirectToPageHandler("/profile")}
+                  onClick={() => {
+                    closeNavbarHandler();
+                    redirectToPageHandler("/profile");
+                  }}
                   style={USER_AVATAR_TOPBAR_STYLE}
                   user={authenticatedUser}
                 />
