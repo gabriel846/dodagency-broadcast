@@ -17,7 +17,10 @@ import { MoviesList } from "../../../components/MoviesList";
 import { MoviesListNavigation } from "../../../components/MoviesListNavigation/MoviesListNavigation";
 
 // Theme
-import { getMovieGenresList } from "../../../environment/theme/Methods";
+import {
+  arrayContainsAllElementsFrom,
+  getMovieGenresList,
+} from "../../../environment/theme/Methods";
 import {
   BACK_TO_TOP_BUTTON_STYLE,
   CANCEL_FETCHING_NUMBER_OF_MOVIES_MESSAGE,
@@ -60,6 +63,13 @@ export function Home() {
 
   const moviesList = useSelector((state) => state.moviesList.moviesList);
   const movieGenresList = getMovieGenresList(moviesList);
+  const filteredMoviesNumber = Object.values(moviesList).filter((movie) =>
+    !!selectedMovieGenres
+      ? selectedMovieGenres === [] || !!!movie.genres
+        ? movie
+        : arrayContainsAllElementsFrom(movie.genres, selectedMovieGenres)
+      : moviesList
+  ).length;
   const isLoading = moviesList.length !== numberOfMovies;
 
   const onPreviousButtonClickHandler = () => {
@@ -87,16 +97,11 @@ export function Home() {
   };
 
   const selectMovieGenreHandler = (newSelectedMovieGenre) => {
-    if (selectedMovieGenres.indexOf(newSelectedMovieGenre) > -1) {
-      setSelectedMovieGenres((oldArray) =>
-        oldArray.filter((element) => element !== newSelectedMovieGenre)
-      );
-    } else {
-      setSelectedMovieGenres((oldArray) => [
-        ...oldArray,
-        newSelectedMovieGenre,
-      ]);
-    }
+    setSelectedMovieGenres((oldArray) =>
+      selectedMovieGenres.indexOf(newSelectedMovieGenre) > -1
+        ? oldArray.filter((element) => element !== newSelectedMovieGenre)
+        : [...oldArray, newSelectedMovieGenre]
+    );
   };
 
   return (
@@ -124,14 +129,14 @@ export function Home() {
         numberOfMovies={numberOfMovies}
         selectedMovieGenres={selectedMovieGenres.sort()}
       />
-      {!isLoading && numberOfMovies > 0 && (
+      {!isLoading && numberOfMovies > 0 && filteredMoviesNumber > 0 && (
         <MoviesListNavigation
           currentPage={currentPage}
           onNextButtonClick={onNextButtonClickHandler}
           onPreviousButtonClick={onPreviousButtonClickHandler}
         />
       )}
-      {!isLoading && numberOfMovies > 0 && (
+      {!isLoading && numberOfMovies > 0 && filteredMoviesNumber > 0 && (
         <Button
           onClick={() => window.scrollTo(0, 0)}
           style={BACK_TO_TOP_BUTTON_STYLE}
