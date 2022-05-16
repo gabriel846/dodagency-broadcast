@@ -6,7 +6,7 @@ import { Loading } from "../Loading";
 import { Movie } from "../Movie";
 
 // Themes
-import COLORS from "../../environment/theme/Colors";
+import { arrayContainsAllElementsFrom } from "../../environment/theme/Methods";
 import {
   LOADING_CONTAINER_STYLE,
   LOADING_MESSAGE_STYLE,
@@ -29,9 +29,6 @@ export function MoviesList(props) {
     numberOfMovies,
     selectedMovieGenres,
   } = props;
-
-  const arrayContainsAllElementsFrom = (array, target) =>
-    target.every((element) => array.includes(element));
 
   const filteredMoviesList = moviesList.filter((movie) =>
     selectedMovieGenres === [] || !!!movie.genres
