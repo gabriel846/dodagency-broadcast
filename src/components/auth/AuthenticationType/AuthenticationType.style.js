@@ -8,7 +8,7 @@ export const StyledAuthenticationType = styled.li`
   align-items: center;
   background-color: ${COLORS.PRIMARY};
   color: ${COLORS.SECONDARY};
-  isplay: flex;
+  display: flex;
   flex: 1;
   font-weight: bold;
   justify-content: center;
