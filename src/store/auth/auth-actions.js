@@ -24,7 +24,10 @@ export const fetchAuthenticatedUser = () => {
 
         dispatch(
           authActions.setAuthenticatedUser({
-            authenticatedUser: personalInformation,
+            authenticatedUser: {
+              ...personalInformation,
+              providers: user.providerData,
+            },
           })
         );
       });

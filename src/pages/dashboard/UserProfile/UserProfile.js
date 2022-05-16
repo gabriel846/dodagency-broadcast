@@ -18,7 +18,7 @@ import {
   updateUserEmail,
   updateUserName,
   updateUserPassword,
-} from "../../../environment/theme/Methods";
+} from "../../../environment/firebase/firebase-methods";
 import {
   AUTHENTICATION_BUTTON_STYLE,
   AUTHENTICATION_INPUT_STYLE,
@@ -43,6 +43,11 @@ export function UserProfile() {
   const authenticatedUser = useSelector(
     (state) => state.auth.authenticatedUser
   );
+
+  const userHasPasswordAuthenticationProvider =
+    Object.values(authenticatedUser.providers).filter(
+      (provider) => provider.providerId === "password"
+    ).length > 0;
 
   const INITIAL_FORM_VALUES = {
     UPDATE_EMAIL: { email: authenticatedUser.email, password: "" },
@@ -172,69 +177,72 @@ export function UserProfile() {
               </StyledUserProfileContainer>
             )}
           </Formik>
-          <Formik
-            initialValues={INITIAL_FORM_VALUES.UPDATE_PASSWORD}
-            onSubmit={(values) => {
-              updateUserPassword(values.password, values.newPassword, () =>
-                alert(PASSWORD_UPDATED_SUCCESSFULLY_MESSAGE)
-              );
-            }}
-            validationSchema={userProfilePasswordValidationSchema}
-          >
-            {(formikProps) => (
-              <StyledUserProfileContainer
-                bordered
-                centeredCrossAxis
-                centeredMainAxis
-                vertical
+          {!!authenticatedUser.providers &&
+            userHasPasswordAuthenticationProvider && (
+              <Formik
+                initialValues={INITIAL_FORM_VALUES.UPDATE_PASSWORD}
+                onSubmit={(values) => {
+                  updateUserPassword(values.password, values.newPassword, () =>
+                    alert(PASSWORD_UPDATED_SUCCESSFULLY_MESSAGE)
+                  );
+                }}
+                validationSchema={userProfilePasswordValidationSchema}
               >
-                {formikProps.touched.password &&
-                  formikProps.errors.password && (
-                    <StyledInputErrorMessage style={{ width: "100%" }}>
-                      {formikProps.errors.password}
-                    </StyledInputErrorMessage>
-                  )}
-                <BaseInput
-                  cursorColor={COLORS.SECONDARY}
-                  onBlur={formikProps.handleBlur("password")}
-                  onChange={formikProps.handleChange("password")}
-                  placeholder="Password"
-                  placeholderColor={COLORS.SECONDARY}
-                  style={{
-                    ...AUTHENTICATION_INPUT_STYLE,
-                    ...{ width: "100%" },
-                  }}
-                  type="password"
-                  value={formikProps.values.password}
-                />
-                {formikProps.touched.newPassword &&
-                  formikProps.errors.newPassword && (
-                    <StyledInputErrorMessage style={{ width: "100%" }}>
-                      {formikProps.errors.newPassword}
-                    </StyledInputErrorMessage>
-                  )}
-                <BaseInput
-                  cursorColor={COLORS.SECONDARY}
-                  onBlur={formikProps.handleBlur("newPassword")}
-                  onChange={formikProps.handleChange("newPassword")}
-                  placeholder="New password"
-                  placeholderColor={COLORS.SECONDARY}
-                  style={{
-                    ...AUTHENTICATION_INPUT_STYLE,
-                    ...{ width: "100%" },
-                  }}
-                  type="password"
-                  value={formikProps.values.newPassword}
-                />
-                <Button
-                  onClick={formikProps.handleSubmit}
-                  style={AUTHENTICATION_BUTTON_STYLE}
-                  text="Update password"
-                  type="submit"
-                />
-              </StyledUserProfileContainer>
+                {(formikProps) => (
+                  <StyledUserProfileContainer
+                    bordered
+                    centeredCrossAxis
+                    centeredMainAxis
+                    vertical
+                  >
+                    {formikProps.touched.password &&
+                      formikProps.errors.password && (
+                        <StyledInputErrorMessage style={{ width: "100%" }}>
+                          {formikProps.errors.password}
+                        </StyledInputErrorMessage>
+                      )}
+                    <BaseInput
+                      cursorColor={COLORS.SECONDARY}
+                      onBlur={formikProps.handleBlur("password")}
+                      onChange={formikProps.handleChange("password")}
+                      placeholder="Password"
+                      placeholderColor={COLORS.SECONDARY}
+                      style={{
+                        ...AUTHENTICATION_INPUT_STYLE,
+                        ...{ width: "100%" },
+                      }}
+                      type="password"
+                      value={formikProps.values.password}
+                    />
+                    {formikProps.touched.newPassword &&
+                      formikProps.errors.newPassword && (
+                        <StyledInputErrorMessage style={{ width: "100%" }}>
+                          {formikProps.errors.newPassword}
+                        </StyledInputErrorMessage>
+                      )}
+                    <BaseInput
+                      cursorColor={COLORS.SECONDARY}
+                      onBlur={formikProps.handleBlur("newPassword")}
+                      onChange={formikProps.handleChange("newPassword")}
+                      placeholder="New password"
+                      placeholderColor={COLORS.SECONDARY}
+                      style={{
+                        ...AUTHENTICATION_INPUT_STYLE,
+                        ...{ width: "100%" },
+                      }}
+                      type="password"
+                      value={formikProps.values.newPassword}
+                    />
+                    <Button
+                      onClick={formikProps.handleSubmit}
+                      style={AUTHENTICATION_BUTTON_STYLE}
+                      text="Update password"
+                      type="submit"
+                    />
+                  </StyledUserProfileContainer>
+                )}
+              </Formik>
             )}
-          </Formik>
         </StyledUserProfileContainer>
         <StyledUserProfileContainer
           bordered

@@ -8,11 +8,9 @@ import { CommentInput } from "../Input";
 import { UserAvatar } from "../UserAvatar/UserAvatar";
 
 // Theme
+import { addMovieComment } from "../../environment/firebase/firebase-methods";
 import COLORS from "../../environment/theme/Colors";
-import {
-  addMovieComment,
-  genereateRandomUUID,
-} from "../../environment/theme/Methods";
+import { genereateRandomUUID } from "../../environment/theme/Methods";
 import {
   ADD_COMMENT_BUTTON_STYLE,
   ADD_COMMENT_INPUT_STYLE,
