@@ -6,8 +6,11 @@ import COLORS from "../../../environment/theme/Colors";
 
 export const StyledAuthenticationContainer = styled.div`
   border: 0.25em solid ${COLORS.SECONDARY};
-  margin: 5em;
-  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  margin: ${(props) => (props.noMargin ? 0 : "5em")};
+  padding: 1em;
 `;
 
 export const StyledInputErrorMessage = styled.p`
