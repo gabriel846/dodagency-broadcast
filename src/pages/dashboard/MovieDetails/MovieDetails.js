@@ -46,6 +46,7 @@ import {
 
 export function MovieDetails() {
   const [hasFetchingError, setHasFetchingError] = useState(false);
+  const [hasImageLoadingError, setHasImageLoadingError] = useState(false);
   const dispatch = useDispatch();
   const location = useLocation();
   const selectedMovieID = location.pathname.split("/details/")[1];
@@ -102,34 +103,39 @@ export function MovieDetails() {
               (isAddedToFavorites ? (
                 <StyledMovieIsAddedToFavoritesIcon
                   onClick={() =>
-                    removeMovieFromFavorites(
-                      authenticatedUserID,
-                      selectedMovieID,
-                      () => alert(MOVIE_REMOVED_FROM_FAVORITES_MESSAGE)
-                    )
+                    removeMovieFromFavorites({
+                      userID: authenticatedUserID,
+                      movieID: selectedMovieID,
+                      onFail: () =>
+                        alert("Couldn't remove the movie from favorites..."),
+                      onSuccess: () =>
+                        alert(MOVIE_REMOVED_FROM_FAVORITES_MESSAGE),
+                    })
                   }
                 />
               ) : (
                 <StyledMovieIsNotAddedToFavoritesIcon
                   onClick={() =>
-                    addMovieToFavorites(
-                      authenticatedUserID,
-                      selectedMovieID,
-                      () => alert(MOVIE_ADDED_TO_FAVORITES_MESSAGE)
-                    )
+                    addMovieToFavorites({
+                      userID: authenticatedUserID,
+                      movieID: selectedMovieID,
+                      onFail: () => alert("Couldn't add movie to favorites..."),
+                      onSuccess: () => alert(MOVIE_ADDED_TO_FAVORITES_MESSAGE),
+                    })
                   }
                 />
               ))}
           </div>
           {!!selectedMovieDetails.title_long && (
-            <h1 style={{ marginBottom: "0.5em" }}>
-              {selectedMovieDetails.title_long}
-            </h1>
+            <h1>{selectedMovieDetails.title_long}</h1>
           )}
-          {!!selectedMovieDetails.large_cover_image && (
+          {!!selectedMovieDetails.large_cover_image && !hasImageLoadingError && (
             <div>
               <StyledMovieImage
                 alt={selectedMovieDetails.title_long}
+                onError={() =>
+                  setHasImageLoadingError((previousValue) => !previousValue)
+                }
                 src={selectedMovieDetails.medium_cover_image}
               />
             </div>

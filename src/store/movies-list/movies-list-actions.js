@@ -7,7 +7,7 @@ import { moviesListActions } from "./movies-list-slice";
 // Theme
 import { MOVIES_LIST_URL_WITH_PAGE } from "../../environment/theme/Variables";
 
-export const fetchMoviesList = (page, onFail = () => {}) => {
+export const fetchMoviesList = ({ page, onFail = () => {} }) => {
   return async (dispatch) => {
     const fetchData = async () => {
       const response = await axios.get(`${MOVIES_LIST_URL_WITH_PAGE}${page}`);
@@ -25,7 +25,6 @@ export const fetchMoviesList = (page, onFail = () => {}) => {
         .filter((movie) => movie.title)
         .forEach((movie) => dispatch(moviesListActions.addMovie({ movie })));
     } catch (error) {
-      console.log(error);
       onFail();
     }
   };

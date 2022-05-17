@@ -65,9 +65,6 @@ export function UserProfile() {
       (provider) => provider.providerId === "password"
     ).length > 0;
 
-  console.log(userHasPasswordAuthenticationProvider);
-  console.log(authenticatedUser.providers);
-
   const INITIAL_FORM_VALUES = {
     DELETE_ACCOUNT: { password: "" },
     UPDATE_EMAIL_WITH_GOOGLE: { email: "" },
@@ -102,9 +99,18 @@ export function UserProfile() {
               <Formik
                 initialValues={INITIAL_FORM_VALUES.UPDATE_EMAIL_WITH_GOOGLE}
                 onSubmit={(values) =>
-                  updateUserEmailWithGoogle(values.email, () =>
-                    alert(EMAIL_UPDATED_SUCCESSFULLY_MESSAGE)
-                  )
+                  updateUserEmailWithGoogle({
+                    newEmail: values.email,
+                    onReauthenticationError: () =>
+                      alert("Couldn't reauthenticate..."),
+                    onSendEmailVerificationError: () =>
+                      alert("Couldn't send the email verification link..."),
+                    onSuccess: () => alert(EMAIL_UPDATED_SUCCESSFULLY_MESSAGE),
+                    onUpdateDatabaseError: () =>
+                      alert("Couldn't update the database..."),
+                    onUpdateEmailError: () =>
+                      alert("Couldn't update the email..."),
+                  })
                 }
                 validationSchema={userProfileEmailWithGoogleValidationSchema}
               >
@@ -148,11 +154,19 @@ export function UserProfile() {
               <Formik
                 initialValues={INITIAL_FORM_VALUES.UPDATE_EMAIL_WITH_PASSWORD}
                 onSubmit={(values) => {
-                  updateUserEmailWithPassword(
-                    values.email,
-                    values.password,
-                    () => alert(EMAIL_UPDATED_SUCCESSFULLY_MESSAGE)
-                  );
+                  updateUserEmailWithPassword({
+                    newEmail: values.email,
+                    password: values.password,
+                    onReauthenticationError: () =>
+                      alert("Couldn't reauthenticate..."),
+                    onSendEmailVerificationError: () =>
+                      alert("Couldn't send the email verification link..."),
+                    onSuccess: () => alert(EMAIL_UPDATED_SUCCESSFULLY_MESSAGE),
+                    onUpdateDatabaseError: () =>
+                      alert("Couldn't update the database..."),
+                    onUpdateEmailError: () =>
+                      alert("Couldn't update the email..."),
+                  });
                 }}
                 validationSchema={userProfileEmailWithPasswordValidationSchema}
               >
@@ -212,11 +226,14 @@ export function UserProfile() {
             )}
           <Formik
             initialValues={INITIAL_FORM_VALUES.UPDATE_NAME}
-            onSubmit={(values) => {
-              updateUserName(values.name, () =>
-                alert(NAME_UPDATED_SUCCESSFULLY_MESSAGE)
-              );
-            }}
+            onSubmit={(values) =>
+              updateUserName({
+                newName: values.name,
+                onSuccess: () => alert(NAME_UPDATED_SUCCESSFULLY_MESSAGE),
+                onUpdateDatabaseError: () =>
+                  alert("Couldn't update the database..."),
+              })
+            }
             validationSchema={userProfileNameValidationSchema}
           >
             {(formikProps) => (
@@ -258,9 +275,16 @@ export function UserProfile() {
               <Formik
                 initialValues={INITIAL_FORM_VALUES.UPDATE_PASSWORD}
                 onSubmit={(values) => {
-                  updateUserPassword(values.password, values.newPassword, () =>
-                    alert(PASSWORD_UPDATED_SUCCESSFULLY_MESSAGE)
-                  );
+                  updateUserPassword({
+                    password: values.password,
+                    newPassword: values.newPassword,
+                    onReauthenticationError: () =>
+                      alert("Couldn't reauthenticate..."),
+                    onSuccess: () =>
+                      alert(PASSWORD_UPDATED_SUCCESSFULLY_MESSAGE),
+                    onUpdatePasswordError: () =>
+                      alert("Couldn't update the password..."),
+                  });
                 }}
                 validationSchema={userProfilePasswordValidationSchema}
               >
@@ -322,10 +346,19 @@ export function UserProfile() {
           <Formik
             initialValues={INITIAL_FORM_VALUES.DELETE_ACCOUNT}
             onSubmit={(values) =>
-              deleteUserAccount(values.password, () => {
-                history.goBack();
-                dispatch(authActions.clearAuthenticatedUser());
-                alert(DELETE_ACCOUNT_MESSAGE);
+              deleteUserAccount({
+                password: values.password,
+                onDeleteUserError: () =>
+                  alert("Couldn't delete the account..."),
+                onReauthenticationError: () =>
+                  alert("Couldn't reauthenticate..."),
+                onSuccess: () => {
+                  history.goBack();
+                  dispatch(authActions.clearAuthenticatedUser());
+                  alert(DELETE_ACCOUNT_MESSAGE);
+                },
+                onUpdateDatabaseError: () =>
+                  alert("Couldn't update the database..."),
               })
             }
             validationSchema={userProfileDeleteAccountValidationSchema}

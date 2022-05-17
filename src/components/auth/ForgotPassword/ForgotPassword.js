@@ -29,11 +29,9 @@ export function ForgotPassword(props) {
   return (
     <Formik
       initialValues={INITIAL_FORM_VALUES}
-      onSubmit={(values) => {
-        const { email } = values;
-
-        resetPassword(email, () => onSuccess());
-      }}
+      onSubmit={(values) =>
+        resetPassword({ email: values.email, onSuccess: () => onSuccess() })
+      }
       validationSchema={forgotPasswordValidationSchema}
     >
       {(formikProps) => (

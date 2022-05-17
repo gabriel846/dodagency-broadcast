@@ -1,11 +1,6 @@
 // Packages
 import { initializeApp, getApps, getApp } from "firebase/app";
-import {
-  getAuth,
-  EmailAuthProvider,
-  FacebookAuthProvider,
-  GoogleAuthProvider,
-} from "firebase/auth";
+import { getAuth, EmailAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { getDatabase } from "firebase/database";
 
 const {
@@ -33,5 +28,4 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 export const auth = getAuth(app);
 export const db = getDatabase(app);
 export const emailAuthProvider = new EmailAuthProvider();
-export const facebookAuthProvider = new FacebookAuthProvider();
 export const googleAuthProvider = new GoogleAuthProvider();

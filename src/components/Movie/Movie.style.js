@@ -24,7 +24,11 @@ export const StyledMovieImage = styled.img`
 export const StyledMovieTitle = styled.div`
   align-items: center;
   background-color: ${COLORS.SECONDARY};
-  border-radius: 0px 0px 2em 2em;
+  border-bottom-left-radius: 2em;
+  border-bottom-right-radius: 2em;
+  ${(props) =>
+    props.hasLoadingError &&
+    "border-top-left-radius: 2em; border-top-right-radius: 2em;"}
   color: ${COLORS.PRIMARY};
   display: flex;
   flex: 1;

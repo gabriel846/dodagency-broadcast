@@ -1,23 +1,32 @@
 // Packages
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+
+// Theme
+import COLORS from "../../environment/theme/Colors";
 
 // Stylings
 import { StyledMovie, StyledMovieImage, StyledMovieTitle } from "./Movie.style";
 
 export function Movie(props) {
+  const [hasLoadingError, setHasLoadingError] = useState(false);
   const { movie } = props;
   const { id: movieID } = movie;
   const history = useHistory();
 
   return (
     <StyledMovie onClick={() => history.push(`/details/${movieID}`)}>
-      <StyledMovieImage
-        alt={movie.title}
-        onError={() => console.log(`error loading image: ${movie.title}`)}
-        src={movie.large_cover_image}
-      />
-      <StyledMovieTitle>{movie.title_long}</StyledMovieTitle>
+      {!hasLoadingError && (
+        <StyledMovieImage
+          alt={movie.title_long}
+          onError={() => setHasLoadingError((previousValue) => !previousValue)}
+          src={movie.large_cover_image}
+          style={{ color: COLORS.SECONDARY }}
+        />
+      )}
+      <StyledMovieTitle hasLoadingError={hasLoadingError}>
+        {movie.title_long}
+      </StyledMovieTitle>
     </StyledMovie>
   );
 }

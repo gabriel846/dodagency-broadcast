@@ -27,7 +27,6 @@ export const fetchSelectedMovie = (movieID, onFail = () => {}) => {
         })
       );
     } catch (error) {
-      console.log(error);
       onFail();
     }
   };
