@@ -28,9 +28,7 @@ export function Comment(props) {
   );
 
   const removeCommentHandler = () => {
-    remove(ref(db, `comments/${comment.id}`)).catch((error) =>
-      console.log(error)
-    );
+    remove(ref(db, `comments/${comment.id}`));
   };
 
   return (

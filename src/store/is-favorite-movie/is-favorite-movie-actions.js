@@ -7,14 +7,19 @@ import { isFavoriteMovieActions } from "./is-favorite-movie-slice";
 // Firebase
 import { db } from "../../environment/firebase/Firebase";
 
-export const addMovieToFavorites = (userID, movieID, onSuccess) => {
+export const addMovieToFavorites = ({
+  userID,
+  movieID,
+  onFail = () => {},
+  onSuccess = () => {},
+}) => {
   if (!!!userID) {
     return;
   }
 
   set(ref(db, `users/${userID}/favoriteMovies/${movieID}`), true)
     .then(() => onSuccess())
-    .catch((error) => console.log(error));
+    .catch(() => onFail());
 };
 
 export const checkIfMovieIsAddedToFavorites = (userID, movieID) => {
@@ -36,12 +41,17 @@ export const checkIfMovieIsAddedToFavorites = (userID, movieID) => {
   };
 };
 
-export const removeMovieFromFavorites = (userID, movieID, onSuccess) => {
+export const removeMovieFromFavorites = ({
+  userID,
+  movieID,
+  onFail = () => {},
+  onSuccess = () => {},
+}) => {
   if (!!!userID) {
     return;
   }
 
   remove(ref(db, `users/${userID}/favoriteMovies/${movieID}`))
     .then(() => onSuccess())
-    .catch((error) => console.log(error));
+    .catch(() => onFail());
 };

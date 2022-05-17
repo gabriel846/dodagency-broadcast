@@ -26,7 +26,7 @@ import { StyledLoginContainer } from "./Login.style";
 // Validation
 import { loginValidationSchema } from "../../../validation";
 
-export function Login(props) {
+export function Login() {
   const INITIAL_FORM_VALUES = { email: "", password: "", rememberMe: false };
 
   const dispatch = useDispatch();
@@ -37,13 +37,17 @@ export function Login(props) {
       <Formik
         initialValues={INITIAL_FORM_VALUES}
         onSubmit={(values) =>
-          authenticateUser(
+          authenticateUser({
             dispatch,
-            values.email,
-            values.password,
-            () => history.goBack(),
-            values.rememberMe
-          )
+            email: values.email,
+            password: values.password,
+            onPersistenceError: () =>
+              alert("Couldn't set authentication's persistence..."),
+            onSendEmailVerificationError: () =>
+              alert("Couldn't send the email verification link..."),
+            onSuccess: () => history.goBack(),
+            rememberMe: values.rememberMe,
+          })
         }
         validationSchema={loginValidationSchema}
       >
@@ -98,7 +102,11 @@ export function Login(props) {
       </Formik>
       <Button
         onClick={() =>
-          authenticateUserWithGoogle(dispatch, () => history.goBack())
+          authenticateUserWithGoogle({
+            dispatch,
+            onSignInError: () => alert("Couldn't sign in..."),
+            onSuccess: () => history.goBack(),
+          })
         }
         style={AUTHENTICATION_BUTTON_STYLE}
         text="Log in with Google"

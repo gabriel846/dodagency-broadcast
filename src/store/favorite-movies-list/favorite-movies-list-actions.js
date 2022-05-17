@@ -11,13 +11,12 @@ import { db } from "../../environment/firebase/Firebase";
 // Theme
 import { MOVIES_LIST_URL_WITH_MOVIE_ID } from "../../environment/theme/Variables";
 
-export const fetchFavoriteMoviesList = (userID) => {
+export const fetchFavoriteMoviesList = ({ userID }) => {
   return async (dispatch) => {
     const fetchMovieData = async (movieID) => {
       const response = await axios.get(
         `${MOVIES_LIST_URL_WITH_MOVIE_ID}${movieID}`
       );
-
       const data = await response.data;
 
       return data;
@@ -45,8 +44,6 @@ export const fetchFavoriteMoviesList = (userID) => {
           );
         });
       });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 };

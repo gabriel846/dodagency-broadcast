@@ -37,7 +37,7 @@ export function FavoriteMovies() {
   );
 
   useEffect(() => {
-    dispatch(fetchFavoriteMoviesList(authenticatedUser.id));
+    dispatch(fetchFavoriteMoviesList({ userID: authenticatedUser.id }));
   }, [authenticatedUser.id, dispatch]);
 
   useEffect(() => {

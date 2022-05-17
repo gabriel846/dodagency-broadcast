@@ -42,11 +42,14 @@ export function AddComment(props) {
         onSubmit={(values, { resetForm }) => {
           resetForm();
           addMovieComment({
-            date: JSON.parse(JSON.stringify(new Date())),
-            id: genereateRandomUUID(),
-            message: values.message,
-            movieID,
-            userID: authenticatedUser.id,
+            comment: {
+              date: JSON.parse(JSON.stringify(new Date())),
+              id: genereateRandomUUID(),
+              message: values.message,
+              movieID,
+              userID: authenticatedUser.id,
+            },
+            onFail: () => alert("Couldn't add the comment. Please try again!"),
           });
         }}
         validationSchema={addCommentValidationSchema}

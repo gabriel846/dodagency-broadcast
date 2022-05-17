@@ -43,9 +43,10 @@ export function Home() {
   useEffect(() => {
     dispatch(moviesListActions.clearMoviesList());
     dispatch(
-      fetchMoviesList(currentPage, () =>
-        setHasFetchingError((previousValue) => !previousValue)
-      )
+      fetchMoviesList({
+        page: currentPage,
+        onFail: () => setHasFetchingError((previousValue) => !previousValue),
+      })
     );
   }, [currentPage, dispatch]);
 
