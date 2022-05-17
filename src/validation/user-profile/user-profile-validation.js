@@ -11,7 +11,11 @@ export const userProfileDeleteAccountValidationSchema = yup.object({
     ),
 });
 
-export const userProfileEmailValidationSchema = yup.object({
+export const userProfileEmailWithGoogleValidationSchema = yup.object({
+  email: yup.string().required("Email is required").email("Email is not valid"),
+});
+
+export const userProfileEmailWithPasswordValidationSchema = yup.object({
   email: yup.string().required("Email is required").email("Email is not valid"),
   password: yup
     .string()

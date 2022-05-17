@@ -20,7 +20,8 @@ import { UserAvatar } from "../../../components/UserAvatar/UserAvatar";
 import COLORS from "../../../environment/theme/Colors";
 import {
   deleteUserAccount,
-  updateUserEmail,
+  updateUserEmailWithGoogle,
+  updateUserEmailWithPassword,
   updateUserName,
   updateUserPassword,
 } from "../../../environment/firebase/firebase-methods";
@@ -41,7 +42,8 @@ import { StyledInputErrorMessage } from "../../auth/Authentication/Authenticatio
 // Validation
 import {
   userProfileDeleteAccountValidationSchema,
-  userProfileEmailValidationSchema,
+  userProfileEmailWithGoogleValidationSchema,
+  userProfileEmailWithPasswordValidationSchema,
   userProfileNameValidationSchema,
   userProfilePasswordValidationSchema,
 } from "../../../validation/user-profile";
@@ -54,14 +56,25 @@ export function UserProfile() {
     (state) => state.auth.authenticatedUser
   );
 
+  const userHasGoogleAuthenticationProvider =
+    Object.values(authenticatedUser.providers).filter(
+      (provider) => provider.providerId === "google.com"
+    ).length > 0;
   const userHasPasswordAuthenticationProvider =
     Object.values(authenticatedUser.providers).filter(
       (provider) => provider.providerId === "password"
     ).length > 0;
 
+  console.log(userHasPasswordAuthenticationProvider);
+  console.log(authenticatedUser.providers);
+
   const INITIAL_FORM_VALUES = {
     DELETE_ACCOUNT: { password: "" },
-    UPDATE_EMAIL: { email: authenticatedUser.email, password: "" },
+    UPDATE_EMAIL_WITH_GOOGLE: { email: "" },
+    UPDATE_EMAIL_WITH_PASSWORD: {
+      email: authenticatedUser.email,
+      password: "",
+    },
     UPDATE_NAME: { name: authenticatedUser.name },
     UPDATE_PASSWORD: { newPassword: "", password: "" },
   };
@@ -83,68 +96,120 @@ export function UserProfile() {
             flex: 1,
           }}
         >
-          <Formik
-            initialValues={INITIAL_FORM_VALUES.UPDATE_EMAIL}
-            onSubmit={(values) => {
-              updateUserEmail(values.email, values.password, () =>
-                alert(EMAIL_UPDATED_SUCCESSFULLY_MESSAGE)
-              );
-            }}
-            validationSchema={userProfileEmailValidationSchema}
-          >
-            {(formikProps) => (
-              <StyledUserProfileContainer
-                bordered
-                centeredCrossAxis
-                centeredMainAxis
-                vertical
+          {!!authenticatedUser.providers &&
+            !!userHasGoogleAuthenticationProvider &&
+            !!!userHasPasswordAuthenticationProvider && (
+              <Formik
+                initialValues={INITIAL_FORM_VALUES.UPDATE_EMAIL_WITH_GOOGLE}
+                onSubmit={(values) =>
+                  updateUserEmailWithGoogle(values.email, () =>
+                    alert(EMAIL_UPDATED_SUCCESSFULLY_MESSAGE)
+                  )
+                }
+                validationSchema={userProfileEmailWithGoogleValidationSchema}
               >
-                {formikProps.touched.email && formikProps.errors.email && (
-                  <StyledInputErrorMessage style={{ width: "100%" }}>
-                    {formikProps.errors.email}
-                  </StyledInputErrorMessage>
+                {(formikProps) => (
+                  <StyledUserProfileContainer
+                    bordered
+                    centeredCrossAxis
+                    centeredMainAxis
+                    vertical
+                  >
+                    {formikProps.touched.email && formikProps.errors.email && (
+                      <StyledInputErrorMessage style={{ width: "100%" }}>
+                        {formikProps.errors.email}
+                      </StyledInputErrorMessage>
+                    )}
+                    <BaseInput
+                      cursorColor={COLORS.SECONDARY}
+                      onBlur={formikProps.handleBlur("email")}
+                      onChange={formikProps.handleChange("email")}
+                      placeholder="Email"
+                      placeholderColor={COLORS.SECONDARY}
+                      style={{
+                        ...AUTHENTICATION_INPUT_STYLE,
+                        ...{ width: "100%" },
+                      }}
+                      type="email"
+                      value={formikProps.values.email}
+                    />
+                    <Button
+                      onClick={formikProps.handleSubmit}
+                      style={AUTHENTICATION_BUTTON_STYLE}
+                      text="Update email with Google"
+                      type="submit"
+                    />
+                  </StyledUserProfileContainer>
                 )}
-                <BaseInput
-                  cursorColor={COLORS.SECONDARY}
-                  onBlur={formikProps.handleBlur("email")}
-                  onChange={formikProps.handleChange("email")}
-                  placeholder="Email"
-                  placeholderColor={COLORS.SECONDARY}
-                  style={{
-                    ...AUTHENTICATION_INPUT_STYLE,
-                    ...{ width: "100%" },
-                  }}
-                  type="email"
-                  value={formikProps.values.email}
-                />
-                {formikProps.touched.password &&
-                  formikProps.errors.password && (
-                    <StyledInputErrorMessage style={{ width: "100%" }}>
-                      {formikProps.errors.password}
-                    </StyledInputErrorMessage>
-                  )}
-                <BaseInput
-                  cursorColor={COLORS.SECONDARY}
-                  onBlur={formikProps.handleBlur("password")}
-                  onChange={formikProps.handleChange("password")}
-                  placeholder="Password"
-                  placeholderColor={COLORS.SECONDARY}
-                  style={{
-                    ...AUTHENTICATION_INPUT_STYLE,
-                    ...{ width: "100%" },
-                  }}
-                  type="password"
-                  value={formikProps.values.password}
-                />
-                <Button
-                  onClick={formikProps.handleSubmit}
-                  style={AUTHENTICATION_BUTTON_STYLE}
-                  text="Update email"
-                  type="submit"
-                />
-              </StyledUserProfileContainer>
+              </Formik>
             )}
-          </Formik>
+          {!!authenticatedUser.providers &&
+            userHasPasswordAuthenticationProvider && (
+              <Formik
+                initialValues={INITIAL_FORM_VALUES.UPDATE_EMAIL_WITH_PASSWORD}
+                onSubmit={(values) => {
+                  updateUserEmailWithPassword(
+                    values.email,
+                    values.password,
+                    () => alert(EMAIL_UPDATED_SUCCESSFULLY_MESSAGE)
+                  );
+                }}
+                validationSchema={userProfileEmailWithPasswordValidationSchema}
+              >
+                {(formikProps) => (
+                  <StyledUserProfileContainer
+                    bordered
+                    centeredCrossAxis
+                    centeredMainAxis
+                    vertical
+                  >
+                    {formikProps.touched.email && formikProps.errors.email && (
+                      <StyledInputErrorMessage style={{ width: "100%" }}>
+                        {formikProps.errors.email}
+                      </StyledInputErrorMessage>
+                    )}
+                    <BaseInput
+                      cursorColor={COLORS.SECONDARY}
+                      onBlur={formikProps.handleBlur("email")}
+                      onChange={formikProps.handleChange("email")}
+                      placeholder="Email"
+                      placeholderColor={COLORS.SECONDARY}
+                      style={{
+                        ...AUTHENTICATION_INPUT_STYLE,
+                        ...{ width: "100%" },
+                      }}
+                      type="email"
+                      value={formikProps.values.email}
+                    />
+                    {formikProps.touched.password &&
+                      formikProps.errors.password && (
+                        <StyledInputErrorMessage style={{ width: "100%" }}>
+                          {formikProps.errors.password}
+                        </StyledInputErrorMessage>
+                      )}
+                    <BaseInput
+                      cursorColor={COLORS.SECONDARY}
+                      onBlur={formikProps.handleBlur("password")}
+                      onChange={formikProps.handleChange("password")}
+                      placeholder="Password"
+                      placeholderColor={COLORS.SECONDARY}
+                      style={{
+                        ...AUTHENTICATION_INPUT_STYLE,
+                        ...{ width: "100%" },
+                      }}
+                      type="password"
+                      value={formikProps.values.password}
+                    />
+                    <Button
+                      onClick={formikProps.handleSubmit}
+                      style={AUTHENTICATION_BUTTON_STYLE}
+                      text="Update email"
+                      type="submit"
+                    />
+                  </StyledUserProfileContainer>
+                )}
+              </Formik>
+            )}
           <Formik
             initialValues={INITIAL_FORM_VALUES.UPDATE_NAME}
             onSubmit={(values) => {

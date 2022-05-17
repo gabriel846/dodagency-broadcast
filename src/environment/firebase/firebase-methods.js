@@ -7,6 +7,7 @@ import {
   EmailAuthProvider,
   // GoogleAuthProvider,
   reauthenticateWithCredential,
+  reauthenticateWithPopup,
   sendEmailVerification,
   sendPasswordResetEmail,
   setPersistence,
@@ -267,7 +268,36 @@ export const signOutUser = (dispatch) => {
     });
 };
 
-export const updateUserEmail = (newEmail, password, onSuccess) => {
+export const updateUserEmailWithGoogle = (newEmail, onSuccess) => {
+  const { currentUser } = auth;
+
+  reauthenticateWithPopup(currentUser, googleAuthProvider)
+    .then(() =>
+      updateEmail(currentUser, newEmail)
+        .then(() => {
+          const userEmailRef = ref(
+            db,
+            `users/${currentUser.uid}/personalInformation/email`
+          );
+
+          set(userEmailRef, newEmail)
+            .then(() => {
+              sendEmailVerification(currentUser)
+                .then(() => onSuccess())
+                .catch((sendEmailVerificationError) =>
+                  console.log(sendEmailVerificationError)
+                );
+            })
+            .catch((updateDatabaseEmailError) =>
+              console.log(updateDatabaseEmailError)
+            );
+        })
+        .catch((updateEmailError) => console.log(updateEmailError))
+    )
+    .catch((reauthenticationError) => console.log(reauthenticationError));
+};
+
+export const updateUserEmailWithPassword = (newEmail, password, onSuccess) => {
   const { currentUser } = auth;
   const credential = EmailAuthProvider.credential(currentUser.email, password);
 
