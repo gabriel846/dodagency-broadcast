@@ -81,8 +81,6 @@ export const DELETE_ACCOUNT_ERROR = "Couldn't delete the account...";
 
 export const DELETE_ACCOUNT_MESSAGE = "Account successfully deleted";
 
-export const EMAIL_NOT_VALID_MESSAGE = "Email is not valid";
-
 export const EMAIL_UPDATED_SUCCESSFULLY_MESSAGE = "Email updated successfully";
 
 export const EMAIL_VERIFICATION_LINK_ERROR =
@@ -150,8 +148,6 @@ export const MOVIES_LIST_URL_WITH_MOVIE_ID =
 
 export const MOVIES_LIST_URL_WITH_PAGE =
   "https://yts.mx/api/v2/list_movies.json?page=";
-
-export const NAME_NOT_VALID_MESSAGE = "Name is not valid";
 
 export const NAME_UPDATED_SUCCESSFULLY_MESSAGE = "Name updated successfully";
 
