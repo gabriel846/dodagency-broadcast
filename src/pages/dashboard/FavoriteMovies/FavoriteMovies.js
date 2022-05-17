@@ -15,6 +15,7 @@ import { MoviesList } from "../../../components/MoviesList";
 // Theme
 import { getMovieGenresList } from "../../../environment/theme/Methods";
 import {
+  BACK_TO_TOP_BUTTON_STYLE,
   CANCEL_FETCHING_NUMBER_OF_FAVORITE_MOVIES_MESSAGE,
   FAVORITE_MOVIES_NO_DATA_FOUND_BUTTON_STYLE,
   FETCHING_FAVORITE_MOVIES_MESSAGE,
@@ -92,6 +93,15 @@ export function FavoriteMovies() {
           selectedMovieGenres={selectedMovieGenres.sort()}
         />
       )}
+      {!isLoading && !isEmpty && (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            onClick={() => history.goBack()}
+            style={FAVORITE_MOVIES_NO_DATA_FOUND_BUTTON_STYLE}
+            text="Go back"
+          />
+        </div>
+      )}
       <MoviesList
         isLoading={isLoading}
         isLoadingMessage={FETCHING_FAVORITE_MOVIES_MESSAGE}
@@ -100,6 +110,13 @@ export function FavoriteMovies() {
         numberOfMovies={numberOfFavoriteMovies}
         selectedMovieGenres={selectedMovieGenres.sort()}
       />
+      {!isLoading && !isEmpty && (
+        <Button
+          onClick={() => window.scrollTo(0, 0)}
+          style={BACK_TO_TOP_BUTTON_STYLE}
+          text="Back to the top"
+        />
+      )}
       {!isLoading && (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Button
