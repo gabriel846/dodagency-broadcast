@@ -5,6 +5,8 @@ import styled from "styled-components";
 import COLORS from "../../environment/theme/Colors";
 
 export const StyledMovie = styled.li`
+  display: flex;
+  flex-direction: column;
   list-style-type: none;
 `;
 
@@ -19,14 +21,19 @@ export const StyledMovieImage = styled.img`
   }
 `;
 
-export const StyledMovieTitle = styled.p`
+export const StyledMovieTitle = styled.div`
+  align-items: center;
   background-color: ${COLORS.SECONDARY};
   border-radius: 0px 0px 2em 2em;
   color: ${COLORS.PRIMARY};
+  display: flex;
+  flex: 1;
   font-size: large;
   font-weight: bold;
+  justify-content: center;
   margin: 0;
   padding: 1em;
   text-align: center;
   text-overflow: ellipsis;
+  user-select: none;
 `;
