@@ -73,6 +73,18 @@ export const DELETE_ACCOUNT_MESSAGE = "Account successfully deleted";
 
 export const EMAIL_UPDATED_SUCCESSFULLY_MESSAGE = "Email updated successfully";
 
+export const ERROR_CONTAINER_STYLE = {
+  alignItems: "center",
+  display: "flex",
+  flex: 1,
+  flexDirection: "column",
+  gap: "1em",
+  justifyContent: "center",
+  userSelect: "none",
+};
+
+export const ERROR_MESSAGE_STYLE = { color: COLORS.SECONDARY };
+
 export const FAVORITE_MOVIES_NO_DATA_FOUND_BUTTON_STYLE = {
   backgroundColor: COLORS.SECONDARY,
   borderRadius: "0.5em",
@@ -88,6 +100,15 @@ export const FETCHING_ERROR_MESSAGE =
 export const FETCHING_MOVIE_DETAILS_MESSAGE = "Fetching movie details...";
 
 export const FETCHING_FAVORITE_MOVIES_MESSAGE = "Fetching favorite movies...";
+
+export const GO_BACK_BUTTON_STYLE = {
+  backgroundColor: COLORS.SECONDARY,
+  borderRadius: "0.5em",
+  color: COLORS.PRIMARY,
+  fontWeight: "bold",
+  padding: "1em 2em",
+  width: "fit-content",
+};
 
 export const LOADING_CONTAINER_STYLE = {
   alignItems: "center",

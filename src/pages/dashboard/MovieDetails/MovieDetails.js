@@ -1,5 +1,5 @@
 // Packages
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 
@@ -16,6 +16,7 @@ import { selectedMovieActions } from "../../../store/selected-movie/selected-mov
 
 // Components
 import { GoBackIcon } from "../../../components/UI/GoBackIcon/GoBackIcon";
+import { Error } from "../../../components/Error";
 import { Loading } from "../../../components/Loading";
 import { MovieComments } from "../../../components/MovieComments/MovieComments";
 import { MovieGenresList } from "../../../components/MovieGenresList";
@@ -23,6 +24,9 @@ import { MovieTorrentsList } from "../../../components/MovieTorrentsList";
 
 // Themes
 import {
+  ERROR_CONTAINER_STYLE,
+  ERROR_MESSAGE_STYLE,
+  FETCHING_ERROR_MESSAGE,
   FETCHING_MOVIE_DETAILS_MESSAGE,
   LOADING_CONTAINER_STYLE,
   LOADING_MESSAGE_STYLE,
@@ -41,14 +45,18 @@ import {
 } from "./MovieDetails.style";
 
 export function MovieDetails() {
+  const [hasFetchingError, setHasFetchingError] = useState(false);
   const dispatch = useDispatch();
   const location = useLocation();
-
   const selectedMovieID = location.pathname.split("/details/")[1];
 
   useEffect(() => {
     dispatch(selectedMovieActions.clearSelectedMovie());
-    dispatch(fetchSelectedMovie(selectedMovieID));
+    dispatch(
+      fetchSelectedMovie(selectedMovieID, () =>
+        setHasFetchingError((previousValue) => !previousValue)
+      )
+    );
   }, [dispatch, selectedMovieID]);
 
   const authenticatedUser = useSelector(
@@ -73,11 +81,18 @@ export function MovieDetails() {
 
   return (
     <>
-      {!!!selectedMovieDetails ? (
+      {!!!selectedMovieDetails && !hasFetchingError ? (
         <Loading
           containerStyle={LOADING_CONTAINER_STYLE}
           message={FETCHING_MOVIE_DETAILS_MESSAGE}
           textStyle={LOADING_MESSAGE_STYLE}
+        />
+      ) : hasFetchingError ? (
+        <Error
+          containerStyle={ERROR_CONTAINER_STYLE}
+          hasGoBackButton
+          message={FETCHING_ERROR_MESSAGE}
+          textStyle={ERROR_MESSAGE_STYLE}
         />
       ) : (
         <StyledMovieDetailsContainer>

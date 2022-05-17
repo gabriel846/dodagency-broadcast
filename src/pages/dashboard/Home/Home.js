@@ -24,6 +24,7 @@ import {
 import {
   BACK_TO_TOP_BUTTON_STYLE,
   CANCEL_FETCHING_NUMBER_OF_MOVIES_MESSAGE,
+  FETCHING_ERROR_MESSAGE,
   LOADING_MESSAGE,
   MOVIES_LIST_URL_WITH_PAGE,
   NO_MOVIES_FOUND_MESSAGE,
@@ -33,6 +34,7 @@ export function Home() {
   const [currentPage, setCurrentPage] = useState(
     useSelector((state) => state.moviesListCurrentPage.currentPage)
   );
+  const [hasFetchingError, setHasFetchingError] = useState(false);
   const [numberOfMovies, setNumberOfMovies] = useState(-1);
   const [selectedMovieGenres, setSelectedMovieGenres] = useState([]);
 
@@ -40,7 +42,11 @@ export function Home() {
 
   useEffect(() => {
     dispatch(moviesListActions.clearMoviesList());
-    dispatch(fetchMoviesList(currentPage));
+    dispatch(
+      fetchMoviesList(currentPage, () =>
+        setHasFetchingError((previousValue) => !previousValue)
+      )
+    );
   }, [currentPage, dispatch]);
 
   useEffect(() => {
@@ -72,7 +78,7 @@ export function Home() {
   ).length;
   const hasFilteredMovies = filteredMoviesNumber > 0;
   const isEmpty = numberOfMovies === 0;
-  const isLoading = moviesList.length !== numberOfMovies;
+  const isLoading = !hasFetchingError && moviesList.length !== numberOfMovies;
 
   const onPreviousButtonClickHandler = () => {
     if (currentPage > 1) {
@@ -108,14 +114,14 @@ export function Home() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "5em" }}>
-      {!isLoading && !isEmpty && (
+      {!isLoading && !isEmpty && !hasFetchingError && (
         <MovieGenresList
           movieGenresList={movieGenresList}
           onMovieGenreClick={selectMovieGenreHandler}
           selectedMovieGenres={selectedMovieGenres.sort()}
         />
       )}
-      {!isLoading && !isEmpty && (
+      {!isLoading && !isEmpty && !hasFetchingError && (
         <MoviesListNavigation
           currentPage={currentPage}
           isCurrentPageShown
@@ -126,6 +132,8 @@ export function Home() {
       <MoviesList
         isLoading={isLoading}
         isLoadingMessage={LOADING_MESSAGE}
+        hasError={hasFetchingError}
+        hasErrorMessage={FETCHING_ERROR_MESSAGE}
         moviesList={moviesList}
         noDataFoundMessage={NO_MOVIES_FOUND_MESSAGE}
         numberOfMovies={numberOfMovies}

@@ -2,12 +2,15 @@
 import React from "react";
 
 // Components
+import { Error } from "../Error";
 import { Loading } from "../Loading";
 import { Movie } from "../Movie";
 
 // Themes
 import { arrayContainsAllElementsFrom } from "../../environment/theme/Methods";
 import {
+  ERROR_CONTAINER_STYLE,
+  ERROR_MESSAGE_STYLE,
   LOADING_CONTAINER_STYLE,
   LOADING_MESSAGE_STYLE,
   NO_DATA_CONTAINER_STYLE,
@@ -24,6 +27,8 @@ export function MoviesList(props) {
   const {
     isLoading,
     isLoadingMessage,
+    hasError,
+    hasErrorMessage,
     moviesList,
     noDataFoundMessage,
     numberOfMovies,
@@ -45,6 +50,12 @@ export function MoviesList(props) {
           containerStyle={LOADING_CONTAINER_STYLE}
           message={isLoadingMessage}
           textStyle={LOADING_MESSAGE_STYLE}
+        />
+      ) : hasError ? (
+        <Error
+          containerStyle={ERROR_CONTAINER_STYLE}
+          message={hasErrorMessage}
+          textStyle={ERROR_MESSAGE_STYLE}
         />
       ) : numberOfMovies === 0 ? (
         <Loading
