@@ -1,13 +1,22 @@
 // Packages
 import * as yup from "yup";
 
+// Theme
+import {
+  isNotValid,
+  isRequired,
+  shouldHaveAtLeastCharacters,
+} from "../../environment/theme/Methods";
+
 export const loginValidationSchema = yup.object({
-  email: yup.string().required("Email is required").email("Email is not valid"),
+  email: yup.string().required(isRequired("Email")).email(isNotValid("Email")),
   password: yup
     .string()
-    .required("Password is required")
-    .min(
-      8,
-      (chars) => `Password must be at least ${chars.min} characters long`
+    .required(isRequired("Password"))
+    .min(8, (chars) =>
+      shouldHaveAtLeastCharacters({
+        string: "Password",
+        characters: chars,
+      })
     ),
 });

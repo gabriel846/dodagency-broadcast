@@ -27,3 +27,10 @@ export const getMovieGenresList = (moviesList) => {
 
   return genresList.sort();
 };
+
+export const isNotValid = (string) => `${string} is not valid`;
+
+export const isRequired = (string) => `${string} is required`;
+
+export const shouldHaveAtLeastCharacters = ({ string, characters }) =>
+  `${string} must be at least ${characters} characters long`;
