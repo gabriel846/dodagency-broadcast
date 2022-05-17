@@ -27,10 +27,6 @@ export function Comment(props) {
     (state) => state.auth.authenticatedUser
   );
 
-  const removeCommentHandler = () => {
-    remove(ref(db, `comments/${comment.id}`));
-  };
-
   return (
     <StyledComment>
       {!!user && (
@@ -80,7 +76,9 @@ export function Comment(props) {
           {!!authenticatedUser &&
             !!user &&
             authenticatedUser.id === user.id && (
-              <StyledDeleteCommentIcon onClick={removeCommentHandler} />
+              <StyledDeleteCommentIcon
+                onClick={() => remove(ref(db, `comments/${comment.id}`))}
+              />
             )}
         </div>
       </StyledCommentDataContainer>

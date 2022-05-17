@@ -24,6 +24,7 @@ import { MovieTorrentsList } from "../../../components/MovieTorrentsList";
 
 // Themes
 import {
+  ADD_MOVIE_TO_FAVORITES_ERROR,
   ERROR_CONTAINER_STYLE,
   ERROR_MESSAGE_STYLE,
   FETCHING_ERROR_MESSAGE,
@@ -33,6 +34,7 @@ import {
   MOCKED_AUTHENTICATED_USER_ID,
   MOVIE_ADDED_TO_FAVORITES_MESSAGE,
   MOVIE_REMOVED_FROM_FAVORITES_MESSAGE,
+  REMOVE_USER_FROM_FAVORITES_ERROR,
 } from "../../../environment/theme/Variables";
 
 // Stylings
@@ -63,7 +65,6 @@ export function MovieDetails() {
   const authenticatedUser = useSelector(
     (state) => state.auth.authenticatedUser
   );
-
   const { id: authenticatedUserID } =
     authenticatedUser || MOCKED_AUTHENTICATED_USER_ID;
 
@@ -106,8 +107,7 @@ export function MovieDetails() {
                     removeMovieFromFavorites({
                       userID: authenticatedUserID,
                       movieID: selectedMovieID,
-                      onFail: () =>
-                        alert("Couldn't remove the movie from favorites..."),
+                      onFail: () => alert(REMOVE_USER_FROM_FAVORITES_ERROR),
                       onSuccess: () =>
                         alert(MOVIE_REMOVED_FROM_FAVORITES_MESSAGE),
                     })
@@ -119,7 +119,7 @@ export function MovieDetails() {
                     addMovieToFavorites({
                       userID: authenticatedUserID,
                       movieID: selectedMovieID,
-                      onFail: () => alert("Couldn't add movie to favorites..."),
+                      onFail: () => alert(ADD_MOVIE_TO_FAVORITES_ERROR),
                       onSuccess: () => alert(MOVIE_ADDED_TO_FAVORITES_MESSAGE),
                     })
                   }

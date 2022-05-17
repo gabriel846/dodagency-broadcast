@@ -9,6 +9,8 @@ export const ADD_COMMENT_BUTTON_STYLE = {
   padding: "0.25em 0",
 };
 
+export const ADD_COMMENT_ERROR = "Couldn't add the comment...";
+
 export const ADD_COMMENT_INPUT_STYLE = {
   backgroundColor: COLORS.PRIMARY,
   border: `0.25em solid ${COLORS.SECONDARY}`,
@@ -16,6 +18,9 @@ export const ADD_COMMENT_INPUT_STYLE = {
   fontSize: "medium",
   outline: "none",
 };
+
+export const ADD_MOVIE_TO_FAVORITES_ERROR =
+  "Couldn't add the movie to favorites...";
 
 export const APP_NAME = "DodagencyBroadcast";
 
@@ -37,10 +42,13 @@ export const AUTHENTICATION_INPUT_STYLE = {
   outline: "none",
 };
 
+export const AUTHENTICATION_PERSISTENCE_ERROR =
+  "Couldn't set authentication's persistence...";
+
 export const AUTHENTICATION_TYPES_LIST = [
-  `LOGIN`,
-  `REGISTER`,
-  `FORGOT_PASSWORD`,
+  "LOGIN",
+  "REGISTER",
+  "FORGOT_PASSWORD",
 ];
 
 export const BACK_TO_TOP_BUTTON_STYLE = {
@@ -69,9 +77,16 @@ export const DELETE_ACCOUNT_BUTTON_STYLE = {
   width: "100%",
 };
 
+export const DELETE_ACCOUNT_ERROR = "Couldn't delete the account...";
+
 export const DELETE_ACCOUNT_MESSAGE = "Account successfully deleted";
 
+export const EMAIL_NOT_VALID_MESSAGE = "Email is not valid";
+
 export const EMAIL_UPDATED_SUCCESSFULLY_MESSAGE = "Email updated successfully";
+
+export const EMAIL_VERIFICATION_LINK_ERROR =
+  "Couldn't send the email verification link...";
 
 export const ERROR_CONTAINER_STYLE = {
   alignItems: "center",
@@ -136,6 +151,8 @@ export const MOVIES_LIST_URL_WITH_MOVIE_ID =
 export const MOVIES_LIST_URL_WITH_PAGE =
   "https://yts.mx/api/v2/list_movies.json?page=";
 
+export const NAME_NOT_VALID_MESSAGE = "Name is not valid";
+
 export const NAME_UPDATED_SUCCESSFULLY_MESSAGE = "Name updated successfully";
 
 export const NEXT_BUTTON_STYLE = {
@@ -156,6 +173,9 @@ export const NO_DATA_CONTAINER_STYLE = {
 
 export const NO_DATA_MESSAGE_STYLE = { color: COLORS.SECONDARY };
 
+export const NO_FILTERED_MOVIES_FOUND =
+  "No movie containing the selected genres was found...";
+
 export const NO_MOVIE_COMMENTS_FOUND_BE_THE_FIRST_TO_COMMENT_MESSAGE =
   "Be the first to comment!";
 
@@ -172,6 +192,8 @@ export const PAGE_NOT_FOUND_BUTTON_STYLE = {
   width: "fit-content",
 };
 
+export const PASSWORD_UPDATE_ERROR = "Couldn't update the password...";
+
 export const PASSWORD_UPDATED_SUCCESSFULLY_MESSAGE =
   "Password updated successfully";
 
@@ -182,6 +204,17 @@ export const PREVIOUS_BUTTON_STYLE = {
   fontWeight: "bold",
   padding: "1em 2em",
 };
+
+export const REAUTHENTICATION_ERROR = "Couldn't reauthenticate...";
+
+export const REMOVE_USER_FROM_FAVORITES_ERROR =
+  "Couldn't remove the movie from favorites...";
+
+export const SIGN_IN_ERROR = "Couldn't sign in...";
+
+export const UPDATE_DATABASE_ERROR = "Couldn't update the database...";
+
+export const UPDATE_EMAIL_ERROR = "Couldn't update the email...";
 
 export const USER_AVATAR_MOVIE_COMMENTS_STYLE = {
   backgroundColor: COLORS.SECONDARY,

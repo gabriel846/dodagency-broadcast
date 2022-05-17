@@ -29,11 +29,11 @@ export function Register(props) {
   return (
     <Formik
       initialValues={INITIAL_FORM_VALUES}
-      onSubmit={(values) => {
-        const { email, name, password } = values;
-
-        registerUser(email, name, password, () => onSuccess());
-      }}
+      onSubmit={(values) =>
+        registerUser(values.email, values.name, values.password, () =>
+          onSuccess()
+        )
+      }
       validationSchema={registerValidationSchema}
     >
       {(formikProps) => (

@@ -29,10 +29,16 @@ import {
   AUTHENTICATION_BUTTON_STYLE,
   AUTHENTICATION_INPUT_STYLE,
   DELETE_ACCOUNT_BUTTON_STYLE,
+  DELETE_ACCOUNT_ERROR,
   DELETE_ACCOUNT_MESSAGE,
   EMAIL_UPDATED_SUCCESSFULLY_MESSAGE,
+  EMAIL_VERIFICATION_LINK_ERROR,
   NAME_UPDATED_SUCCESSFULLY_MESSAGE,
+  PASSWORD_UPDATE_ERROR,
   PASSWORD_UPDATED_SUCCESSFULLY_MESSAGE,
+  REAUTHENTICATION_ERROR,
+  UPDATE_DATABASE_ERROR,
+  UPDATE_EMAIL_ERROR,
 } from "../../../environment/theme/Variables";
 
 // Stylings
@@ -102,14 +108,12 @@ export function UserProfile() {
                   updateUserEmailWithGoogle({
                     newEmail: values.email,
                     onReauthenticationError: () =>
-                      alert("Couldn't reauthenticate..."),
+                      alert(REAUTHENTICATION_ERROR),
                     onSendEmailVerificationError: () =>
-                      alert("Couldn't send the email verification link..."),
+                      alert(EMAIL_VERIFICATION_LINK_ERROR),
                     onSuccess: () => alert(EMAIL_UPDATED_SUCCESSFULLY_MESSAGE),
-                    onUpdateDatabaseError: () =>
-                      alert("Couldn't update the database..."),
-                    onUpdateEmailError: () =>
-                      alert("Couldn't update the email..."),
+                    onUpdateDatabaseError: () => alert(UPDATE_DATABASE_ERROR),
+                    onUpdateEmailError: () => alert(UPDATE_EMAIL_ERROR),
                   })
                 }
                 validationSchema={userProfileEmailWithGoogleValidationSchema}
@@ -158,14 +162,12 @@ export function UserProfile() {
                     newEmail: values.email,
                     password: values.password,
                     onReauthenticationError: () =>
-                      alert("Couldn't reauthenticate..."),
+                      alert(REAUTHENTICATION_ERROR),
                     onSendEmailVerificationError: () =>
-                      alert("Couldn't send the email verification link..."),
+                      alert(EMAIL_VERIFICATION_LINK_ERROR),
                     onSuccess: () => alert(EMAIL_UPDATED_SUCCESSFULLY_MESSAGE),
-                    onUpdateDatabaseError: () =>
-                      alert("Couldn't update the database..."),
-                    onUpdateEmailError: () =>
-                      alert("Couldn't update the email..."),
+                    onUpdateDatabaseError: () => alert(UPDATE_DATABASE_ERROR),
+                    onUpdateEmailError: () => alert(UPDATE_EMAIL_ERROR),
                   });
                 }}
                 validationSchema={userProfileEmailWithPasswordValidationSchema}
@@ -230,8 +232,7 @@ export function UserProfile() {
               updateUserName({
                 newName: values.name,
                 onSuccess: () => alert(NAME_UPDATED_SUCCESSFULLY_MESSAGE),
-                onUpdateDatabaseError: () =>
-                  alert("Couldn't update the database..."),
+                onUpdateDatabaseError: () => alert(UPDATE_DATABASE_ERROR),
               })
             }
             validationSchema={userProfileNameValidationSchema}
@@ -279,11 +280,10 @@ export function UserProfile() {
                     password: values.password,
                     newPassword: values.newPassword,
                     onReauthenticationError: () =>
-                      alert("Couldn't reauthenticate..."),
+                      alert(REAUTHENTICATION_ERROR),
                     onSuccess: () =>
                       alert(PASSWORD_UPDATED_SUCCESSFULLY_MESSAGE),
-                    onUpdatePasswordError: () =>
-                      alert("Couldn't update the password..."),
+                    onUpdatePasswordError: () => alert(PASSWORD_UPDATE_ERROR),
                   });
                 }}
                 validationSchema={userProfilePasswordValidationSchema}
@@ -348,17 +348,14 @@ export function UserProfile() {
             onSubmit={(values) =>
               deleteUserAccount({
                 password: values.password,
-                onDeleteUserError: () =>
-                  alert("Couldn't delete the account..."),
-                onReauthenticationError: () =>
-                  alert("Couldn't reauthenticate..."),
+                onDeleteUserError: () => alert(DELETE_ACCOUNT_ERROR),
+                onReauthenticationError: () => alert(REAUTHENTICATION_ERROR),
                 onSuccess: () => {
                   history.goBack();
                   dispatch(authActions.clearAuthenticatedUser());
                   alert(DELETE_ACCOUNT_MESSAGE);
                 },
-                onUpdateDatabaseError: () =>
-                  alert("Couldn't update the database..."),
+                onUpdateDatabaseError: () => alert(UPDATE_DATABASE_ERROR),
               })
             }
             validationSchema={userProfileDeleteAccountValidationSchema}

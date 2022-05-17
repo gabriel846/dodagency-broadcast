@@ -13,6 +13,7 @@ import COLORS from "../../environment/theme/Colors";
 import { genereateRandomUUID } from "../../environment/theme/Methods";
 import {
   ADD_COMMENT_BUTTON_STYLE,
+  ADD_COMMENT_ERROR,
   ADD_COMMENT_INPUT_STYLE,
   USER_AVATAR_MOVIE_COMMENTS_STYLE,
 } from "../../environment/theme/Variables";
@@ -49,7 +50,7 @@ export function AddComment(props) {
               movieID,
               userID: authenticatedUser.id,
             },
-            onFail: () => alert("Couldn't add the comment. Please try again!"),
+            onFail: () => alert(ADD_COMMENT_ERROR),
           });
         }}
         validationSchema={addCommentValidationSchema}

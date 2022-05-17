@@ -15,6 +15,7 @@ import {
   LOADING_MESSAGE_STYLE,
   NO_DATA_CONTAINER_STYLE,
   NO_DATA_MESSAGE_STYLE,
+  NO_FILTERED_MOVIES_FOUND,
 } from "../../environment/theme/Variables";
 
 // Stylings
@@ -71,7 +72,7 @@ export function MoviesList(props) {
         </StyledMoviesList>
       ) : (
         <StyledNoFilteredMoviesWereFoundMessage>
-          No movie containing the selected genres was found...
+          {NO_FILTERED_MOVIES_FOUND}
         </StyledNoFilteredMoviesWereFoundMessage>
       )}
     </>

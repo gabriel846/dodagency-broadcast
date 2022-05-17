@@ -13,6 +13,9 @@ import COLORS from "../../../environment/theme/Colors";
 import {
   AUTHENTICATION_BUTTON_STYLE,
   AUTHENTICATION_INPUT_STYLE,
+  AUTHENTICATION_PERSISTENCE_ERROR,
+  EMAIL_VERIFICATION_LINK_ERROR,
+  SIGN_IN_ERROR,
 } from "../../../environment/theme/Variables";
 import {
   authenticateUser,
@@ -28,7 +31,6 @@ import { loginValidationSchema } from "../../../validation";
 
 export function Login() {
   const INITIAL_FORM_VALUES = { email: "", password: "", rememberMe: false };
-
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -41,10 +43,9 @@ export function Login() {
             dispatch,
             email: values.email,
             password: values.password,
-            onPersistenceError: () =>
-              alert("Couldn't set authentication's persistence..."),
+            onPersistenceError: () => alert(AUTHENTICATION_PERSISTENCE_ERROR),
             onSendEmailVerificationError: () =>
-              alert("Couldn't send the email verification link..."),
+              alert(EMAIL_VERIFICATION_LINK_ERROR),
             onSuccess: () => history.goBack(),
             rememberMe: values.rememberMe,
           })
@@ -104,7 +105,7 @@ export function Login() {
         onClick={() =>
           authenticateUserWithGoogle({
             dispatch,
-            onSignInError: () => alert("Couldn't sign in..."),
+            onSignInError: () => alert(SIGN_IN_ERROR),
             onSuccess: () => history.goBack(),
           })
         }

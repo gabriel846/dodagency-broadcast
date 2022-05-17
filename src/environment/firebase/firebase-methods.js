@@ -5,7 +5,6 @@ import {
   createUserWithEmailAndPassword,
   deleteUser,
   EmailAuthProvider,
-  // GoogleAuthProvider,
   reauthenticateWithCredential,
   reauthenticateWithPopup,
   sendEmailVerification,
@@ -21,8 +20,6 @@ import { onValue, ref, remove, set } from "firebase/database";
 
 // Redux slices
 import { authActions } from "../../store/auth/auth-slice";
-
-import { addUserPersonalInformationIfItDoesNotExist } from "../../lib/api";
 
 // Theme
 import { auth, db, googleAuthProvider } from "./Firebase";
@@ -43,6 +40,21 @@ export const addMovieComment = ({ comment, onFail = () => {} }) => {
   }
 
   set(ref(db, `comments/${comment.id}`), comment).catch(() => onFail());
+};
+
+export const addUserPersonalInformationIfItDoesNotExist = (
+  userID,
+  personalInformation
+) => {
+  const personalInformationRef = ref(db, `users/${userID}/personalInformation`);
+
+  onValue(personalInformationRef, (snapshot) => {
+    if (snapshot.exists()) {
+      return;
+    }
+
+    set(personalInformationRef, personalInformation);
+  });
 };
 
 export const authenticateUser = ({
@@ -125,7 +137,6 @@ export const authenticateUserWithGoogle = ({
 }) => {
   signInWithPopup(auth, googleAuthProvider)
     .then((result) => {
-      // const credential = GoogleAuthProvider.credentialFromResult(result);
       const { user } = result;
       const personalInformation = {
         email: user.email,
@@ -182,7 +193,6 @@ export const registerUser = (email, name, password, redirectToLoginHandler) => {
 
       sendEmailVerification(user).then(() => {
         alert(PLEASE_CHECK_YOUR_EMAIL.userMessage);
-
         setPersonalInformationPath({ email, id: user.uid, name });
         redirectToLoginHandler();
       });

@@ -1,52 +1,72 @@
 // Packages
 import * as yup from "yup";
 
+// Theme
+import {
+  isNotValid,
+  isRequired,
+  shouldHaveAtLeastCharacters,
+} from "../../environment/theme/Methods";
+
 export const userProfileDeleteAccountValidationSchema = yup.object({
   password: yup
     .string()
-    .required("Password is required")
-    .min(
-      8,
-      (chars) => `Password must be at least ${chars.min} characters long`
+    .required(isRequired("Password"))
+    .min(8, (chars) =>
+      shouldHaveAtLeastCharacters({
+        string: "Password",
+        characters: chars,
+      })
     ),
 });
 
 export const userProfileEmailWithGoogleValidationSchema = yup.object({
-  email: yup.string().required("Email is required").email("Email is not valid"),
+  email: yup.string().required(isRequired("Email")).email(isNotValid("Email")),
 });
 
 export const userProfileEmailWithPasswordValidationSchema = yup.object({
-  email: yup.string().required("Email is required").email("Email is not valid"),
+  email: yup.string().required(isRequired("Email")).email(isNotValid("Email")),
   password: yup
     .string()
-    .required("Password is required")
-    .min(
-      8,
-      (chars) => `Password must be at least ${chars.min} characters long`
+    .required(isRequired("Password"))
+    .min(8, (chars) =>
+      shouldHaveAtLeastCharacters({
+        string: "Password",
+        characters: chars,
+      })
     ),
 });
 
 export const userProfileNameValidationSchema = yup.object({
   name: yup
     .string()
-    .required("Name is required")
-    .matches(/^[a-z- \xC0-\xFF]+$/i, "Name is not valid")
-    .min(2, (chars) => `Name must be at least ${chars.min} characters long`),
+    .required(isRequired("Name"))
+    .matches(/^[a-z- \xC0-\xFF]+$/i, isNotValid("Name"))
+    .min(2, (chars) =>
+      shouldHaveAtLeastCharacters({
+        string: "Name",
+        characters: chars,
+      })
+    ),
 });
 
 export const userProfilePasswordValidationSchema = yup.object({
   password: yup
     .string()
-    .required("Password is required")
-    .min(
-      8,
-      (chars) => `Password must be at least ${chars.min} characters long`
+    .required(isRequired("Password"))
+    .min(8, (chars) =>
+      shouldHaveAtLeastCharacters({
+        string: "Password",
+        characters: chars,
+      })
     ),
   newPassword: yup
     .string()
-    .required("New password is required")
-    .min(
-      8,
-      (chars) => `New password must be at least ${chars.min} characters long`
+    .required(isRequired("New password"))
+    .min(8, (chars) =>
+      shouldHaveAtLeastCharacters({
+        string: "New password",
+        characters: chars,
+      })
     ),
 });
