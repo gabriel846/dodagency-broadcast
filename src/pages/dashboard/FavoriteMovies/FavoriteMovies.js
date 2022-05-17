@@ -67,6 +67,7 @@ export function FavoriteMovies() {
   );
 
   const movieGenresList = getMovieGenresList(favoriteMovies);
+  const isEmpty = numberOfFavoriteMovies === 0;
   const isLoading = favoriteMovies.length !== numberOfFavoriteMovies;
 
   const selectMovieGenreHandler = (newSelectedMovieGenre) => {
@@ -83,8 +84,8 @@ export function FavoriteMovies() {
   };
 
   return (
-    <StyledFavoriteMoviesContainer>
-      {!isLoading && numberOfFavoriteMovies > 0 && (
+    <StyledFavoriteMoviesContainer isEmpty={isEmpty}>
+      {!isLoading && !isEmpty && (
         <MovieGenresList
           movieGenresList={movieGenresList}
           onMovieGenreClick={selectMovieGenreHandler}
@@ -100,11 +101,13 @@ export function FavoriteMovies() {
         selectedMovieGenres={selectedMovieGenres.sort()}
       />
       {!isLoading && (
-        <Button
-          onClick={() => history.goBack()}
-          style={FAVORITE_MOVIES_NO_DATA_FOUND_BUTTON_STYLE}
-          text="Go back"
-        />
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button
+            onClick={() => history.goBack()}
+            style={FAVORITE_MOVIES_NO_DATA_FOUND_BUTTON_STYLE}
+            text="Go back"
+          />
+        </div>
       )}
     </StyledFavoriteMoviesContainer>
   );

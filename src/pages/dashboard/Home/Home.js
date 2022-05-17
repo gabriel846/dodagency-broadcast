@@ -70,6 +70,8 @@ export function Home() {
         : arrayContainsAllElementsFrom(movie.genres, selectedMovieGenres)
       : moviesList
   ).length;
+  const hasFilteredMovies = filteredMoviesNumber > 0;
+  const isEmpty = numberOfMovies === 0;
   const isLoading = moviesList.length !== numberOfMovies;
 
   const onPreviousButtonClickHandler = () => {
@@ -106,14 +108,14 @@ export function Home() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "5em" }}>
-      {!isLoading && numberOfMovies > 0 && (
+      {!isLoading && !isEmpty && (
         <MovieGenresList
           movieGenresList={movieGenresList}
           onMovieGenreClick={selectMovieGenreHandler}
           selectedMovieGenres={selectedMovieGenres.sort()}
         />
       )}
-      {!isLoading && numberOfMovies > 0 && (
+      {!isLoading && !isEmpty && (
         <MoviesListNavigation
           currentPage={currentPage}
           isCurrentPageShown
@@ -129,14 +131,14 @@ export function Home() {
         numberOfMovies={numberOfMovies}
         selectedMovieGenres={selectedMovieGenres.sort()}
       />
-      {!isLoading && numberOfMovies > 0 && filteredMoviesNumber > 0 && (
+      {!isLoading && !isEmpty && hasFilteredMovies && (
         <MoviesListNavigation
           currentPage={currentPage}
           onNextButtonClick={onNextButtonClickHandler}
           onPreviousButtonClick={onPreviousButtonClickHandler}
         />
       )}
-      {!isLoading && numberOfMovies > 0 && filteredMoviesNumber > 0 && (
+      {!isLoading && !isEmpty && hasFilteredMovies && (
         <Button
           onClick={() => window.scrollTo(0, 0)}
           style={BACK_TO_TOP_BUTTON_STYLE}

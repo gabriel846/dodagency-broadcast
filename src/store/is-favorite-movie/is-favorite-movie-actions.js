@@ -2,7 +2,7 @@
 import { onValue, ref, remove, set } from "firebase/database";
 
 // Redux slices
-import { movieIsAddedToFavoritesActions } from "./movie-is-added-to-favorites-slice";
+import { isFavoriteMovieActions } from "./is-favorite-movie-slice";
 
 // Firebase
 import { db } from "../../environment/firebase/Firebase";
@@ -24,12 +24,9 @@ export const checkIfMovieIsAddedToFavorites = (userID, movieID) => {
     }
 
     onValue(ref(db, `users/${userID}/favoriteMovies`), (snapshot) => {
-      if (!!!snapshot.val()) {
-        return;
-      }
-
+      dispatch(isFavoriteMovieActions.resetIsAddedToFavorites());
       dispatch(
-        movieIsAddedToFavoritesActions.setIsAddedToFavorites({
+        isFavoriteMovieActions.setIsAddedToFavorites({
           isAddedToFavorites: Object.keys(snapshot.val()).includes(
             movieID.toString()
           ),

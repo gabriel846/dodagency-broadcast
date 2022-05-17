@@ -5,10 +5,9 @@ import styled from "styled-components";
 import COLORS from "../../../environment/theme/Colors";
 
 export const StyledFavoriteMoviesContainer = styled.div`
-  align-items: center;
-  border: 0.25em solid ${COLORS.SECONDARY};
+  ${(props) => props.isEmpty && `border: 0.25em solid ${COLORS.SECONDARY};`};
   display: flex;
   flex-direction: column;
-  gap: 1em;
+  gap: ${(props) => (props.isEmpty ? "1em" : "5em")};
   padding: 1em;
 `;

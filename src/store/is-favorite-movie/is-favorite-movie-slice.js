@@ -3,8 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = { isAddedToFavorites: false };
 
-const movieIsAddedToFavoritesSlice = createSlice({
-  name: "movieIsAddedToFavorites",
+const isFavoriteMovieSlice = createSlice({
+  name: "isFavoriteMovie",
   initialState,
   reducers: {
     resetIsAddedToFavorites: (state) => {
@@ -18,7 +18,6 @@ const movieIsAddedToFavoritesSlice = createSlice({
   },
 });
 
-export const movieIsAddedToFavoritesActions =
-  movieIsAddedToFavoritesSlice.actions;
+export const isFavoriteMovieActions = isFavoriteMovieSlice.actions;
 
-export default movieIsAddedToFavoritesSlice;
+export default isFavoriteMovieSlice;

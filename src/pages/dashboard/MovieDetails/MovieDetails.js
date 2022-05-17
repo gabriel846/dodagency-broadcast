@@ -8,11 +8,10 @@ import {
   addMovieToFavorites,
   checkIfMovieIsAddedToFavorites,
   removeMovieFromFavorites,
-} from "../../../store/movie-is-added-to-favorites/movie-is-added-to-favorites-actions";
+} from "../../../store/is-favorite-movie/is-favorite-movie-actions";
 import { fetchSelectedMovie } from "../../../store/selected-movie/selected-movie-actions";
 
 // Redux slice
-import { movieIsAddedToFavoritesActions } from "../../../store/movie-is-added-to-favorites/movie-is-added-to-favorites-slice";
 import { selectedMovieActions } from "../../../store/selected-movie/selected-movie-slice";
 
 // Components
@@ -60,14 +59,13 @@ export function MovieDetails() {
     authenticatedUser || MOCKED_AUTHENTICATED_USER_ID;
 
   useEffect(() => {
-    dispatch(movieIsAddedToFavoritesActions.resetIsAddedToFavorites());
     dispatch(
       checkIfMovieIsAddedToFavorites(authenticatedUserID, selectedMovieID)
     );
   }, [authenticatedUserID, dispatch, selectedMovieID]);
 
   const isAddedToFavorites = useSelector(
-    (state) => state.movieIsAddedToFavorites.isAddedToFavorites
+    (state) => state.isFavoriteMovie.isAddedToFavorites
   );
   const selectedMovieDetails = useSelector(
     (state) => state.selectedMovie.selectedMovie
