@@ -1,7 +1,10 @@
 // Packages
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { authenticatedUser: null };
+const initialState = {
+  authenticatedUser: null,
+  isInitialFetchingFinished: false,
+};
 
 const authSlice = createSlice({
   name: "auth",
@@ -12,6 +15,11 @@ const authSlice = createSlice({
     },
     setAuthenticatedUser: (state, action) => {
       state.authenticatedUser = action.payload.authenticatedUser;
+    },
+    setIsInitialFetchingFinished: (state) => {
+      if (!state.isInitialFetchingFinished) {
+        state.isInitialFetchingFinished = true;
+      }
     },
   },
 });

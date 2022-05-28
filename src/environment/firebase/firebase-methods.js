@@ -132,30 +132,38 @@ export const authenticateUser = ({
 
 export const authenticateUserWithGoogle = ({
   dispatch,
+  onPersistenceError = () => {},
   onSignInError = () => {},
   onSuccess = () => {},
 }) => {
-  signInWithPopup(auth, googleAuthProvider)
-    .then((result) => {
-      const { user } = result;
-      const personalInformation = {
-        email: user.email,
-        id: user.uid,
-        name: user.displayName,
-      };
+  setPersistence(auth, browserLocalPersistence)
+    .then(() =>
+      signInWithPopup(auth, googleAuthProvider)
+        .then((result) => {
+          const { user } = result;
+          const personalInformation = {
+            email: user.email,
+            id: user.uid,
+            name: user.displayName,
+          };
 
-      addUserPersonalInformationIfItDoesNotExist(user.uid, personalInformation);
-      dispatch(
-        authActions.setAuthenticatedUser({
-          authenticatedUser: {
-            ...personalInformation,
-            providers: user.providerData,
-          },
+          addUserPersonalInformationIfItDoesNotExist(
+            user.uid,
+            personalInformation
+          );
+          dispatch(
+            authActions.setAuthenticatedUser({
+              authenticatedUser: {
+                ...personalInformation,
+                providers: user.providerData,
+              },
+            })
+          );
+          onSuccess();
         })
-      );
-      onSuccess();
-    })
-    .catch(() => onSignInError());
+        .catch(() => onSignInError())
+    )
+    .catch(() => onPersistenceError());
 };
 
 export const deleteUserAccount = ({
@@ -170,6 +178,28 @@ export const deleteUserAccount = ({
   const credential = EmailAuthProvider.credential(email, password);
 
   reauthenticateWithCredential(currentUser, credential)
+    .then(() =>
+      deleteUser(currentUser)
+        .then(() =>
+          remove(ref(db, `users/${uid}`))
+            .then(() => onSuccess())
+            .catch(() => onUpdateDatabaseError())
+        )
+        .catch(() => onDeleteUserError())
+    )
+    .catch(() => onReauthenticationError());
+};
+
+export const deleteUserAccountWithGoogle = ({
+  onDeleteUserError = () => {},
+  onReauthenticationError = () => {},
+  onSuccess = () => {},
+  onUpdateDatabaseError = () => {},
+}) => {
+  const { currentUser } = auth;
+  const { uid } = currentUser;
+
+  reauthenticateWithPopup(currentUser, googleAuthProvider)
     .then(() =>
       deleteUser(currentUser)
         .then(() =>
@@ -255,39 +285,7 @@ export const signOutUser = (dispatch) => {
     });
 };
 
-export const updateUserEmailWithGoogle = ({
-  newEmail,
-  onReauthenticationError = () => {},
-  onSendEmailVerificationError = () => {},
-  onSuccess = () => {},
-  onUpdateDatabaseError = () => {},
-  onUpdateEmailError = () => {},
-}) => {
-  const { currentUser } = auth;
-
-  reauthenticateWithPopup(currentUser, googleAuthProvider)
-    .then(() =>
-      updateEmail(currentUser, newEmail)
-        .then(() => {
-          const userEmailRef = ref(
-            db,
-            `users/${currentUser.uid}/personalInformation/email`
-          );
-
-          set(userEmailRef, newEmail)
-            .then(() => {
-              sendEmailVerification(currentUser)
-                .then(() => onSuccess())
-                .catch(() => onSendEmailVerificationError());
-            })
-            .catch(() => onUpdateDatabaseError());
-        })
-        .catch(() => onUpdateEmailError())
-    )
-    .catch(() => onReauthenticationError());
-};
-
-export const updateUserEmailWithPassword = ({
+export const updateUserEmail = ({
   newEmail,
   password,
   onReauthenticationError = () => {},
@@ -318,6 +316,38 @@ export const updateUserEmailWithPassword = ({
         })
         .catch(() => onUpdateEmailError());
     })
+    .catch(() => onReauthenticationError());
+};
+
+export const updateUserEmailWithGoogle = ({
+  newEmail,
+  onReauthenticationError = () => {},
+  onSendEmailVerificationError = () => {},
+  onSuccess = () => {},
+  onUpdateDatabaseError = () => {},
+  onUpdateEmailError = () => {},
+}) => {
+  const { currentUser } = auth;
+
+  reauthenticateWithPopup(currentUser, googleAuthProvider)
+    .then(() =>
+      updateEmail(currentUser, newEmail)
+        .then(() => {
+          const userEmailRef = ref(
+            db,
+            `users/${currentUser.uid}/personalInformation/email`
+          );
+
+          set(userEmailRef, newEmail)
+            .then(() => {
+              sendEmailVerification(currentUser)
+                .then(() => onSuccess())
+                .catch(() => onSendEmailVerificationError());
+            })
+            .catch(() => onUpdateDatabaseError());
+        })
+        .catch(() => onUpdateEmailError())
+    )
     .catch(() => onReauthenticationError());
 };
 

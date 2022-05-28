@@ -24,7 +24,7 @@ import {
 } from "./Topbar.style";
 
 export function Topbar(props) {
-  const { authenticatedUser } = props;
+  const { authenticatedUser, isInitialFetchingFinished } = props;
   const [isNavbarExpanded, setIsNavbarExpanded] = useState(false);
   const [viewportWidth] = useWindowSize();
 
@@ -65,84 +65,88 @@ export function Topbar(props) {
         >
           <Logo />
         </Navbar.Brand>
-        <Navbar.Toggle
-          aria-controls="responsive-navbar-nav"
-          onClick={() => toggleNavbarHandler()}
-          style={{ border: "none", color: "transparent" }}
-        >
-          <span>
-            {isNavbarExpanded ? (
-              <StyledHamburgerIconOpen />
-            ) : (
-              <StyledHamburgerIconClosed />
-            )}
-          </span>
-        </Navbar.Toggle>
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto"></Nav>
-          <Nav>
-            {!!!authenticatedUser && (
-              <NavLink
-                active={location.pathname === "/authentication"}
-                onClick={() => {
-                  closeNavbarHandler();
-                  redirectToPageHandler("/authentication");
-                }}
-              >
-                Authentication
-              </NavLink>
-            )}
-            {!!authenticatedUser && (
-              <NavLink
-                active={location.pathname === "/favorite-movies"}
-                onClick={() => {
-                  closeNavbarHandler();
-                  redirectToPageHandler("/favorite-movies");
-                }}
-              >
-                Favorite movies
-              </NavLink>
-            )}
-            {!!authenticatedUser && isSmallScreen && (
-              <NavLink
-                onClick={() => {
-                  closeNavbarHandler();
-                  redirectToPageHandler("/profile");
-                }}
-              >
-                Profile
-              </NavLink>
-            )}
-            {!!authenticatedUser && (
-              <NavLink
-                onClick={() => {
-                  signOutUser(dispatch);
+        {isInitialFetchingFinished && (
+          <>
+            <Navbar.Toggle
+              aria-controls="responsive-navbar-nav"
+              onClick={() => toggleNavbarHandler()}
+              style={{ border: "none", color: "transparent" }}
+            >
+              <span>
+                {isNavbarExpanded ? (
+                  <StyledHamburgerIconOpen />
+                ) : (
+                  <StyledHamburgerIconClosed />
+                )}
+              </span>
+            </Navbar.Toggle>
+            <Navbar.Collapse id="responsive-navbar-nav">
+              <Nav className="me-auto"></Nav>
+              <Nav>
+                {!!!authenticatedUser && (
+                  <NavLink
+                    active={location.pathname === "/authentication"}
+                    onClick={() => {
+                      closeNavbarHandler();
+                      redirectToPageHandler("/authentication");
+                    }}
+                  >
+                    Authentication
+                  </NavLink>
+                )}
+                {!!authenticatedUser && (
+                  <NavLink
+                    active={location.pathname === "/favorite-movies"}
+                    onClick={() => {
+                      closeNavbarHandler();
+                      redirectToPageHandler("/favorite-movies");
+                    }}
+                  >
+                    Favorite movies
+                  </NavLink>
+                )}
+                {!!authenticatedUser && isSmallScreen && (
+                  <NavLink
+                    onClick={() => {
+                      closeNavbarHandler();
+                      redirectToPageHandler("/profile");
+                    }}
+                  >
+                    Profile
+                  </NavLink>
+                )}
+                {!!authenticatedUser && (
+                  <NavLink
+                    onClick={() => {
+                      signOutUser(dispatch);
 
-                  if (
-                    location.pathname === "/favorite-movies" ||
-                    location.pathname === "/profile"
-                  ) {
-                    history.push("/");
-                  }
-                }}
-              >
-                Sign out
-              </NavLink>
-            )}
-            {!!authenticatedUser && !isSmallScreen && (
-              <NavLink>
-                <UserAvatar
-                  onClick={() => {
-                    closeNavbarHandler();
-                    redirectToPageHandler("/profile");
-                  }}
-                  style={USER_AVATAR_TOPBAR_STYLE}
-                  user={authenticatedUser}
-                />
-              </NavLink>
-            )}
-          </Nav>
-        </Navbar.Collapse>
+                      if (
+                        location.pathname === "/favorite-movies" ||
+                        location.pathname === "/profile"
+                      ) {
+                        history.push("/");
+                      }
+                    }}
+                  >
+                    Sign out
+                  </NavLink>
+                )}
+                {!!authenticatedUser && !isSmallScreen && (
+                  <NavLink>
+                    <UserAvatar
+                      onClick={() => {
+                        closeNavbarHandler();
+                        redirectToPageHandler("/profile");
+                      }}
+                      style={USER_AVATAR_TOPBAR_STYLE}
+                      user={authenticatedUser}
+                    />
+                  </NavLink>
+                )}
+              </Nav>
+            </Navbar.Collapse>
+          </>
+        )}
       </Container>
     </StyledNavbar>
   );

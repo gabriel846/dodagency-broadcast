@@ -12,6 +12,7 @@ export const fetchAuthenticatedUser = () => {
   return async (dispatch) => {
     onAuthStateChanged(auth, (user) => {
       if (!user || !user.emailVerified) {
+        dispatch(authActions.setIsInitialFetchingFinished());
         return;
       }
 
@@ -30,6 +31,7 @@ export const fetchAuthenticatedUser = () => {
             },
           })
         );
+        dispatch(authActions.setIsInitialFetchingFinished());
       });
     });
   };

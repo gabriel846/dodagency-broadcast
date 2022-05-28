@@ -105,6 +105,7 @@ export function Login() {
         onClick={() =>
           authenticateUserWithGoogle({
             dispatch,
+            onPersistenceError: () => alert(AUTHENTICATION_PERSISTENCE_ERROR),
             onSignInError: () => alert(SIGN_IN_ERROR),
             onSuccess: () => history.goBack(),
           })

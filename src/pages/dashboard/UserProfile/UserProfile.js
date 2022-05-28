@@ -20,8 +20,9 @@ import { UserAvatar } from "../../../components/UserAvatar/UserAvatar";
 import COLORS from "../../../environment/theme/Colors";
 import {
   deleteUserAccount,
+  deleteUserAccountWithGoogle,
+  updateUserEmail,
   updateUserEmailWithGoogle,
-  updateUserEmailWithPassword,
   updateUserName,
   updateUserPassword,
 } from "../../../environment/firebase/firebase-methods";
@@ -47,11 +48,11 @@ import { StyledInputErrorMessage } from "../../auth/Authentication/Authenticatio
 
 // Validation
 import {
-  userProfileDeleteAccountValidationSchema,
-  userProfileEmailWithGoogleValidationSchema,
-  userProfileEmailWithPasswordValidationSchema,
-  userProfileNameValidationSchema,
-  userProfilePasswordValidationSchema,
+  userProfileDeleteAccountWithPasswordValidationSchema,
+  userProfileUpdateEmailWithGoogleValidationSchema,
+  userProfileUpdateEmailWithPasswordValidationSchema,
+  userProfileUpdateNameValidationSchema,
+  userProfileUpdatePasswordValidationSchema,
 } from "../../../validation/user-profile";
 
 export function UserProfile() {
@@ -116,7 +117,9 @@ export function UserProfile() {
                     onUpdateEmailError: () => alert(UPDATE_EMAIL_ERROR),
                   })
                 }
-                validationSchema={userProfileEmailWithGoogleValidationSchema}
+                validationSchema={
+                  userProfileUpdateEmailWithGoogleValidationSchema
+                }
               >
                 {(formikProps) => (
                   <StyledUserProfileContainer
@@ -158,7 +161,7 @@ export function UserProfile() {
               <Formik
                 initialValues={INITIAL_FORM_VALUES.UPDATE_EMAIL_WITH_PASSWORD}
                 onSubmit={(values) => {
-                  updateUserEmailWithPassword({
+                  updateUserEmail({
                     newEmail: values.email,
                     password: values.password,
                     onReauthenticationError: () =>
@@ -170,7 +173,9 @@ export function UserProfile() {
                     onUpdateEmailError: () => alert(UPDATE_EMAIL_ERROR),
                   });
                 }}
-                validationSchema={userProfileEmailWithPasswordValidationSchema}
+                validationSchema={
+                  userProfileUpdateEmailWithPasswordValidationSchema
+                }
               >
                 {(formikProps) => (
                   <StyledUserProfileContainer
@@ -235,7 +240,7 @@ export function UserProfile() {
                 onUpdateDatabaseError: () => alert(UPDATE_DATABASE_ERROR),
               })
             }
-            validationSchema={userProfileNameValidationSchema}
+            validationSchema={userProfileUpdateNameValidationSchema}
           >
             {(formikProps) => (
               <StyledUserProfileContainer
@@ -286,7 +291,7 @@ export function UserProfile() {
                     onUpdatePasswordError: () => alert(PASSWORD_UPDATE_ERROR),
                   });
                 }}
-                validationSchema={userProfilePasswordValidationSchema}
+                validationSchema={userProfileUpdatePasswordValidationSchema}
               >
                 {(formikProps) => (
                   <StyledUserProfileContainer
@@ -343,58 +348,87 @@ export function UserProfile() {
                 )}
               </Formik>
             )}
-          <Formik
-            initialValues={INITIAL_FORM_VALUES.DELETE_ACCOUNT}
-            onSubmit={(values) =>
-              deleteUserAccount({
-                password: values.password,
-                onDeleteUserError: () => alert(DELETE_ACCOUNT_ERROR),
-                onReauthenticationError: () => alert(REAUTHENTICATION_ERROR),
-                onSuccess: () => {
-                  history.goBack();
-                  dispatch(authActions.clearAuthenticatedUser());
-                  alert(DELETE_ACCOUNT_MESSAGE);
-                },
-                onUpdateDatabaseError: () => alert(UPDATE_DATABASE_ERROR),
-              })
-            }
-            validationSchema={userProfileDeleteAccountValidationSchema}
-          >
-            {(formikProps) => (
-              <StyledUserProfileContainer
-                bordered
-                centeredCrossAxis
-                centeredMainAxis
-                vertical
+          {!!authenticatedUser.providers &&
+            userHasPasswordAuthenticationProvider && (
+              <Formik
+                initialValues={INITIAL_FORM_VALUES.DELETE_ACCOUNT}
+                onSubmit={(values) =>
+                  deleteUserAccount({
+                    password: values.password,
+                    onDeleteUserError: () => alert(DELETE_ACCOUNT_ERROR),
+                    onReauthenticationError: () =>
+                      alert(REAUTHENTICATION_ERROR),
+                    onSuccess: () => {
+                      history.goBack();
+                      dispatch(authActions.clearAuthenticatedUser());
+                      alert(DELETE_ACCOUNT_MESSAGE);
+                    },
+                    onUpdateDatabaseError: () => alert(UPDATE_DATABASE_ERROR),
+                  })
+                }
+                validationSchema={
+                  userProfileDeleteAccountWithPasswordValidationSchema
+                }
               >
-                {formikProps.touched.password &&
-                  formikProps.errors.password && (
-                    <StyledInputErrorMessage style={{ width: "100%" }}>
-                      {formikProps.errors.password}
-                    </StyledInputErrorMessage>
-                  )}
-                <BaseInput
-                  cursorColor={COLORS.SECONDARY}
-                  onBlur={formikProps.handleBlur("password")}
-                  onChange={formikProps.handleChange("password")}
-                  placeholder="Password"
-                  placeholderColor={COLORS.SECONDARY}
-                  style={{
-                    ...AUTHENTICATION_INPUT_STYLE,
-                    ...{ width: "100%" },
-                  }}
-                  type="password"
-                  value={formikProps.values.password}
-                />
+                {(formikProps) => (
+                  <StyledUserProfileContainer
+                    bordered
+                    centeredCrossAxis
+                    centeredMainAxis
+                    vertical
+                  >
+                    {formikProps.touched.password &&
+                      formikProps.errors.password && (
+                        <StyledInputErrorMessage style={{ width: "100%" }}>
+                          {formikProps.errors.password}
+                        </StyledInputErrorMessage>
+                      )}
+                    <BaseInput
+                      cursorColor={COLORS.SECONDARY}
+                      onBlur={formikProps.handleBlur("password")}
+                      onChange={formikProps.handleChange("password")}
+                      placeholder="Password"
+                      placeholderColor={COLORS.SECONDARY}
+                      style={{
+                        ...AUTHENTICATION_INPUT_STYLE,
+                        ...{ width: "100%" },
+                      }}
+                      type="password"
+                      value={formikProps.values.password}
+                    />
+                    <Button
+                      onClick={formikProps.handleSubmit}
+                      style={DELETE_ACCOUNT_BUTTON_STYLE}
+                      text="Delete account"
+                      type="submit"
+                    />
+                  </StyledUserProfileContainer>
+                )}
+              </Formik>
+            )}
+          {!!authenticatedUser.providers &&
+            userHasGoogleAuthenticationProvider && (
+              <StyledUserProfileContainer bordered>
                 <Button
-                  onClick={formikProps.handleSubmit}
+                  onClick={() =>
+                    deleteUserAccountWithGoogle({
+                      onDeleteUserError: () => alert(DELETE_ACCOUNT_ERROR),
+                      onReauthenticationError: () =>
+                        alert(REAUTHENTICATION_ERROR),
+                      onSuccess: () => {
+                        history.goBack();
+                        dispatch(authActions.clearAuthenticatedUser());
+                        alert(DELETE_ACCOUNT_MESSAGE);
+                      },
+                      onUpdateDatabaseError: () => alert(UPDATE_DATABASE_ERROR),
+                    })
+                  }
                   style={DELETE_ACCOUNT_BUTTON_STYLE}
-                  text="Delete account"
+                  text="Delete account with Google"
                   type="submit"
                 />
               </StyledUserProfileContainer>
             )}
-          </Formik>
         </StyledUserProfileContainer>
         <StyledUserProfileContainer
           bordered

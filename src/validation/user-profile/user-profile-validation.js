@@ -8,7 +8,7 @@ import {
   shouldHaveAtLeastCharacters,
 } from "../../environment/theme/Methods";
 
-export const userProfileDeleteAccountValidationSchema = yup.object({
+export const userProfileDeleteAccountWithPasswordValidationSchema = yup.object({
   password: yup
     .string()
     .required(isRequired("Password"))
@@ -20,11 +20,11 @@ export const userProfileDeleteAccountValidationSchema = yup.object({
     ),
 });
 
-export const userProfileEmailWithGoogleValidationSchema = yup.object({
+export const userProfileUpdateEmailWithGoogleValidationSchema = yup.object({
   email: yup.string().required(isRequired("Email")).email(isNotValid("Email")),
 });
 
-export const userProfileEmailWithPasswordValidationSchema = yup.object({
+export const userProfileUpdateEmailWithPasswordValidationSchema = yup.object({
   email: yup.string().required(isRequired("Email")).email(isNotValid("Email")),
   password: yup
     .string()
@@ -37,7 +37,7 @@ export const userProfileEmailWithPasswordValidationSchema = yup.object({
     ),
 });
 
-export const userProfileNameValidationSchema = yup.object({
+export const userProfileUpdateNameValidationSchema = yup.object({
   name: yup
     .string()
     .required(isRequired("Name"))
@@ -50,7 +50,7 @@ export const userProfileNameValidationSchema = yup.object({
     ),
 });
 
-export const userProfilePasswordValidationSchema = yup.object({
+export const userProfileUpdatePasswordValidationSchema = yup.object({
   password: yup
     .string()
     .required(isRequired("Password"))

@@ -20,10 +20,16 @@ export function App() {
   const authenticatedUser = useSelector(
     (state) => state.auth.authenticatedUser
   );
+  const isInitialFetchingFinished = useSelector(
+    (state) => state.auth.isInitialFetchingFinished
+  );
 
   return (
     <>
-      <Topbar authenticatedUser={authenticatedUser} />
+      <Topbar
+        authenticatedUser={authenticatedUser}
+        isInitialFetchingFinished={isInitialFetchingFinished}
+      />
       <Main centeredMainAxis vertical>
         <Routes authenticatedUser={authenticatedUser} />
       </Main>

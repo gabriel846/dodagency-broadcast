@@ -16,7 +16,7 @@ export const loginValidationSchema = yup.object({
     .min(8, (chars) =>
       shouldHaveAtLeastCharacters({
         string: "Password",
-        characters: chars,
+        characters: chars.min,
       })
     ),
 });

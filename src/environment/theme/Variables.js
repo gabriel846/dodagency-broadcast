@@ -22,7 +22,7 @@ export const ADD_COMMENT_INPUT_STYLE = {
 export const ADD_MOVIE_TO_FAVORITES_ERROR =
   "Couldn't add the movie to favorites...";
 
-export const APP_NAME = "DodagencyBroadcast";
+export const APP_NAME = "filmbook";
 
 export const AUTHENTICATION_BUTTON_STYLE = {
   backgroundColor: COLORS.SECONDARY,
